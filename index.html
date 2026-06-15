@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Phonon — Turn old phones into AI infrastructure</title>
-<meta name="description" content="Phonon turns old Android phones into a private, local AI inference cluster. Zero e-waste. Zero cloud dependency.">
+<meta name="description" content="Phonon turns old Android phones into a private, local AI inference cluster. Alpha quality. Help us build the future of sustainable AI infrastructure.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://phononai.org/">
+<link rel="canonical" href="https://chezgoulet.github.io/phononai.org/">
 
 <!-- Solarpunk colour: #4a9e6b (leaf green), #e8b84b (honey amber), #2c5f3a (deep forest) -->
 
@@ -512,51 +512,6 @@ nav {
 .stat-card p { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
 
 /* ═══════════════════════════════════════════════════
-   PRICING
-   ═══════════════════════════════════════════════════ */
-.pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-  align-items: start;
-}
-.pricing-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 32px;
-  transition: all 0.2s var(--ease);
-}
-.pricing-card:hover { box-shadow: 0 8px 24px var(--shadow); }
-.pricing-featured {
-  border: 2px solid var(--green-leaf);
-  position: relative;
-}
-.pricing-featured::after {
-  content: 'Most popular';
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--green-leaf);
-  color: var(--white);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 4px 16px;
-  border-radius: var(--radius-pill);
-}
-.pricing-name { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 8px; }
-.pricing-price { font-size: 2.5rem; font-weight: 800; color: var(--green-deep); margin-bottom: 4px; }
-.pricing-price span { font-size: 1rem; font-weight: 400; color: var(--ink-muted); }
-.pricing-desc { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 24px; line-height: 1.6; }
-.pricing-features { list-style: none; margin-bottom: 24px; }
-.pricing-features li { padding: 8px 0; font-size: 0.9rem; color: var(--ink-soft); border-bottom: 1px solid var(--cream-dark); display: flex; align-items: center; gap: 8px; }
-.pricing-features li::before { content: '✓'; color: var(--green-leaf); font-weight: 700; }
-.pricing-card .btn { width: 100%; justify-content: center; }
-
-/* ═══════════════════════════════════════════════════
    CTA BANNER
    ═══════════════════════════════════════════════════ */
 .cta-section { text-align: center; }
@@ -716,7 +671,7 @@ nav {
     <ul class="nav-links" id="nav-links">
       <li><a href="/" onclick="return navigate(event, 'home')" aria-current="page">Home</a></li>
       <li><a href="/how-it-works" onclick="return navigate(event, 'how-it-works')">How It Works</a></li>
-      <li><a href="/pricing" onclick="return navigate(event, 'pricing')">Pricing</a></li>
+      <li><a href="/contribute" onclick="return navigate(event, 'contribute')">Contribute</a></li>
       <li><a href="/docs" onclick="return navigate(event, 'docs')">Docs</a></li>
       <li><a href="/blog" onclick="return navigate(event, 'blog')">Blog</a></li>
       <li><a href="/about" onclick="return navigate(event, 'about')">About</a></li>
@@ -738,8 +693,8 @@ nav {
       <div class="circuit-overlay"></div>
     </div>
     <div class="container">
-      <h1 class="animate-in">Turn old phones into <em>AI infrastructure</em><br><span class="amp">Zero e-waste.</span> Zero cloud dependency.</h1>
-      <p class="animate-in animate-in-d1">Phonon turns a handful of old Android phones into a private, local AI inference cluster. Each phone's NPU, GPU, and RAM become compute nodes — connected, orchestrated, and fully yours.</p>
+      <h1 class="animate-in">Turn old phones into <em>AI infrastructure</em></h1>
+      <p class="animate-in animate-in-d1">Phonon turns old Android phones into a private, local AI inference cluster. We're in <strong>alpha</strong> — the project works, and we need your help getting it to beta. Test it, break it, tell us what's missing.</p>
       <div class="hero-actions animate-in animate-in-d1">
         <a href="/getting-started" class="btn btn-primary" onclick="return navigate(event, 'getting-started')">Get Started Free</a>
         <a href="/how-it-works" class="btn btn-secondary" onclick="return navigate(event, 'how-it-works')">How It Works</a>
@@ -747,20 +702,20 @@ nav {
       </div>
       <div class="hero-stats animate-in animate-in-d2">
         <div class="hero-stat">
+          <div class="hero-stat-num">Alpha</div>
+          <div class="hero-stat-label">Quality — works, evolving</div>
+        </div>
+        <div class="hero-stat">
           <div class="hero-stat-num">100%</div>
           <div class="hero-stat-label">Open Source</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-num">$0</div>
-          <div class="hero-stat-label">Self-hosted</div>
+          <div class="hero-stat-label">Self-hosted, always</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num">~500</div>
-          <div class="hero-stat-label">tok/s per cluster</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">0</div>
-          <div class="hero-stat-label">e-waste</div>
+          <div class="hero-stat-num">Help</div>
+          <div class="hero-stat-label">Wanted — testers, phones, code</div>
         </div>
       </div>
     </div>
@@ -772,7 +727,7 @@ nav {
       <div class="text-center" style="margin-bottom: 48px;">
         <div class="section-label">What you get</div>
         <h2 class="section-title">Your phones, your inference</h2>
-        <p class="section-subtitle mx-auto">No cloud, no subscription, no data leaving your network. Just a cluster built from phones you already own.</p>
+        <p class="section-subtitle mx-auto">No cloud, no subscription, no data leaving your network. Just a cluster built from phones you already own. <strong>Alpha warning:</strong> things will break. That's why we need you.</p>
       </div>
       <div class="features-grid">
         <div class="feature-card">
@@ -802,8 +757,8 @@ nav {
         </div>
         <div class="feature-card">
           <div class="card-icon forest">🌐</div>
-          <h3>Public Pool Optional</h3>
-          <p>Donate a phone to the public pool, earn credits. Or subscribe for flat-rate access. Or stay fully self-hosted. Your choice, always.</p>
+          <h3>Your Data Stays Yours</h3>
+          <p>Inference runs entirely on your local network. No telemetry, no phone-home, no cloud dependency. Your prompts and models never touch an external server.</p>
         </div>
       </div>
     </div>
@@ -812,13 +767,13 @@ nav {
   <!-- Stats / Callout -->
   <section class="stats-section">
     <div class="container text-center">
-      <div class="section-label" style="color: var(--green-bright);">Why it matters</div>
-      <h2 class="section-title">AI shouldn't create waste</h2>
-      <p class="section-subtitle mx-auto" style="color: rgba(255,255,255,0.7);">Every year, millions of perfectly capable smartphones end up in drawers or landfills — each one containing an NPU, GPU, and 6–12 GB of RAM that could be running AI models.</p>
+      <div class="section-label" style="color: var(--green-bright);">Alpha — help us build</div>
+      <h2 class="section-title">This project needs you</h2>
+      <p class="section-subtitle mx-auto" style="color: rgba(255,255,255,0.7);">Phonon works. The coordinator runs, phones pair, inference happens. But alpha software needs real people testing it on real hardware in real networks. That's where you come in.</p>
       <div class="stats-grid" style="margin-top: 48px;">
         <div class="stat-card leaf"><h3>5,000+</h3><p>Stars on GitHub</p></div>
-        <div class="stat-card amber"><h3>$0</h3><p>Cost to self-host your own pool</p></div>
-        <div class="stat-card"><h3>$9/mo</h3><p>Public pool subscription</p></div>
+        <div class="stat-card amber"><h3>Alpha</h3><p>Test it, break it, report it</p></div>
+        <div class="stat-card"><h3>0</h3><p>Cost to try it yourself</p></div>
         <div class="stat-card leaf"><h3>Apache 2.0</h3><p>Fully permissive license</p></div>
       </div>
     </div>
@@ -828,24 +783,25 @@ nav {
   <section>
     <div class="container">
       <div class="text-center" style="margin-bottom: 48px;">
-        <div class="section-label">Three ways</div>
-        <h2 class="section-title">Use Phonon your way</h2>
+        <div class="section-label">How to help</div>
+        <h2 class="section-title">Three ways to contribute</h2>
+        <p class="section-subtitle mx-auto">Phonon is alpha-quality open-source software. The fastest path to beta is people like you using it, testing it, and helping us improve it.</p>
       </div>
       <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
         <div class="feature-card" style="text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🏠</div>
-          <h3>Run Your Own Pool</h3>
-          <p>Free, always. Install the coordinator on a Pi or Odroid, sideload the APK on your phones. Point your agents at the endpoint. Zero cost, full privacy.</p>
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🔧</div>
+          <h3>Test and Report</h3>
+          <p>Set up a cluster on your hardware. Try different phones, different networks, different models. Open issues for everything that doesn't work — and everything that does. Your feedback shapes the roadmap.</p>
         </div>
         <div class="feature-card" style="text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">📦</div>
-          <h3>Donate, Earn Credits</h3>
-          <p>Send us your old phone. We wipe it, test it, add it to the public pool. You get token credits proportional to its compute value. Use them or redeem for hardware.</p>
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">📱</div>
+          <h3>Donate a Phone</h3>
+          <p>Have an old Android phone gathering dust? Send it in. We wipe it, test it, and add it to our testing cluster. More hardware = more regression coverage = faster path to beta.</p>
         </div>
         <div class="feature-card" style="text-align: center;">
-          <div style="font-size: 2.5rem; margin-bottom: 12px;">🌍</div>
-          <h3>Subscribe</h3>
-          <p>Flat monthly rate plus metered usage. Cheaper than any cloud provider because our hardware is recycled phones — pennies to operate.</p>
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">💻</div>
+          <h3>Contribute Code</h3>
+          <p>The coordinator is Go, the sidecar is Kotlin, the visualizer is Compose Canvas. Pick an issue, open a PR, or propose something new. Apache 2.0 — no CLA, no friction.</p>
         </div>
       </div>
     </div>
@@ -855,11 +811,12 @@ nav {
   <section class="cta-section">
     <div class="container">
       <div class="cta-card">
-        <h2>Ready to build your cluster?</h2>
-        <p>It takes about 15 minutes. One coordinator, a few phones, and you're running local inference.</p>
+        <h2>Try it. Break it. Tell us.</h2>
+        <p>Alpha software is a conversation. Run it on your hardware, open issues for everything you find, and help us ship something solid together.</p>
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
           <a href="/getting-started" class="btn btn-amber" onclick="return navigate(event, 'getting-started')">Get Started</a>
-          <a href="/docs" class="btn btn-secondary" onclick="return navigate(event, 'docs')">Read the Docs</a>
+          <a href="https://github.com/chezgoulet/phonon/issues" class="btn btn-secondary" target="_blank" rel="noopener">Open an Issue</a>
+          <a href="/contribute" class="btn btn-secondary" onclick="return navigate(event, 'contribute')">Contribute</a>
         </div>
       </div>
     </div>
@@ -937,9 +894,6 @@ $ phonon coordinator --config cluster.yaml<br>
 
         <h3>Shard Mode (Phase 2+) — Coming</h3>
         <p>Multiple phones collectively run one large model via pipelined-ring parallelism. The coordinator routes to the group as a single logical device. Enables running models larger than any single phone can handle (Gemma 4 12B across 3-4 phones).</p>
-
-        <h3>Public Pool — Coming</h3>
-        <p>Donated or subscribed phones aggregated into a shared cluster at phononai.org. Authentik handles multi-tenant auth, Stripe handles billing, donated phones get priority scheduling.</p>
       </div>
 
       <div class="arch-section">
@@ -971,11 +925,11 @@ curl https://phonon.local/v1/chat/completions \<br>
       </div>
 
       <div class="cta-card" style="margin-top: 48px;">
-        <h2>Ready to set up your cluster?</h2>
-        <p>15 minutes. One Pi or Odroid. A few old phones. Zero cloud.</p>
+        <h2>Set up your cluster</h2>
+        <p>15 minutes. One Pi or Odroid. A few old phones. Then open an issue and tell us how it went.</p>
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
           <a href="/getting-started" class="btn btn-amber" onclick="return navigate(event, 'getting-started')">Get Started</a>
-          <a href="https://github.com/chezgoulet/phonon" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" target="_blank" rel="noopener">View on GitHub →</a>
+          <a href="https://github.com/chezgoulet/phonon/issues" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" target="_blank" rel="noopener">Report What You Find →</a>
         </div>
       </div>
     </div>
@@ -983,65 +937,56 @@ curl https://phonon.local/v1/chat/completions \<br>
 </main>
 
 <!-- ═══════════════════════════════════════════════════
-     PAGE: PRICING
+     PAGE: CONTRIBUTE
      ═══════════════════════════════════════════════════ -->
-<main id="page-pricing" class="page">
+<main id="page-contribute" class="page">
   <section>
-    <div class="container text-center" style="max-width: 800px;">
-      <div class="section-label">Pricing</div>
-      <h1 class="section-title">Fair, transparent, low-cost</h1>
-      <p class="section-subtitle mx-auto">Self-hosted is always free. The public pool exists for people who want inference without hardware — priced as close to zero as physics allows.</p>
-    </div>
-    <div class="container">
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <div class="pricing-name">Self-Hosted</div>
-          <div class="pricing-price">$0 <span>/ forever</span></div>
-          <p class="pricing-desc">Run entirely on your own hardware. Full features, no restrictions, no telemetry.</p>
-          <ul class="pricing-features">
-            <li>Full cluster orchestration</li>
-            <li>All model sizes supported</li>
-            <li>OpenAI-compatible API</li>
-            <li>Web UI and monitoring</li>
-            <li>No account required</li>
-            <li>All theme packs included</li>
-            <li>Home Assistant integration</li>
-          </ul>
-          <a href="/getting-started" class="btn btn-primary" onclick="return navigate(event, 'getting-started')">Start Now</a>
-        </div>
+    <div class="container" style="max-width: 720px;">
+      <div class="section-label text-center">Contribute</div>
+      <h1 class="section-title text-center">Help us get to beta</h1>
+      <p class="section-subtitle text-center mx-auto">Phonon is alpha software that works. The fastest path to a stable, reliable beta is people like you testing it, reporting issues, donating hardware, and contributing code.</p>
 
-        <div class="pricing-card pricing-featured">
-          <div class="pricing-name">Public Pool</div>
-          <div class="pricing-price">$9 <span>/ month</span></div>
-          <p class="pricing-desc">Metered usage at cost. Pay for what you use, nothing more. No minimum commitment.</p>
-          <ul class="pricing-features">
-            <li>Access to shared phone cluster</li>
-            <li>Pay-per-token metering</li>
-            <li>All supported models</li>
-            <li>No hardware setup needed</li>
-            <li>Data stored in Quebec (OVH)</li>
-            <li>Priority scheduling included</li>
-            <li>Cancel any time</li>
-          </ul>
-          <a href="#" class="btn btn-amber" onclick="return false">Coming Soon</a>
-        </div>
+      <div class="arch-section">
+        <h2><span class="emoji-badge">🔧</span> Test and report</h2>
+        <p>This is the single most valuable thing you can do. Set up a Phonon cluster on whatever hardware you have. Try different phone models, different network configurations, different models. Everything you find — every crash, every rough edge, every unclear error message — open an issue.</p>
+        <p>Even reporting "it worked perfectly on my Pixel 7a with a Raspberry Pi 5" is valuable. It tells us what's stable and what combinations need more testing.</p>
+        <p><a href="https://github.com/chezgoulet/phonon/issues" target="_blank" rel="noopener">Open an issue on GitHub →</a></p>
+      </div>
 
-        <div class="pricing-card">
-          <div class="pricing-name">Donor</div>
-          <div class="pricing-price">1 phone <span>= credits</span></div>
-          <p class="pricing-desc">Send us your old phone. We wipe it, test it, add it to the pool. You get token credits proportional to its fair market value.</p>
-          <ul class="pricing-features">
-            <li>Credits at Swappa/eBay value</li>
-            <li>Priority scheduling on pool</li>
-            <li>Redeem for compute or hardware kits</li>
-            <li>Tax receipt available</li>
-            <li>Phone data fully wiped</li>
-            <li>Free return shipping label</li>
-          </ul>
-          <a href="#" class="btn btn-secondary" onclick="return false">Coming Soon</a>
+      <div class="arch-section">
+        <h2><span class="emoji-badge">📱</span> Donate a phone</h2>
+        <p>Have an old Android phone sitting in a drawer? We'll take it. Every phone we receive gets wiped, tested, and added to our testing cluster. More hardware diversity means better regression coverage and a faster path to beta.</p>
+        <p><strong>What we need:</strong> Any Android phone running 14+, preferably with an NPU (Pixel 6+, Galaxy S24+, OnePlus 12+). But even phones without NPUs are useful for testing the coordinator, networking, and orchestration layers.</p>
+        <p><strong>What happens:</strong> We wipe the phone completely, install the Phonon sidecar, and add it to the pool. We'll report back on what works and what doesn't with your specific hardware.</p>
+        <p>For now, reach out via <a href="https://github.com/chezgoulet/phonon/issues">GitHub Issues</a> to coordinate shipping. A proper donation pipeline is coming.</p>
+      </div>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">💻</span> Contribute code</h2>
+        <p>The full stack is open source under Apache 2.0:</p>
+        <ul>
+          <li><strong>Coordinator</strong> — Go HTTP server, mDNS discovery, load balancing, Prometheus metrics</li>
+          <li><strong>Sidecar</strong> — Kotlin foreground service, LiteRT-LM inference, health reporting</li>
+          <li><strong>Visualizer</strong> — Compose Canvas theme packs, multi-phone coordinated animations</li>
+          <li><strong>Website</strong> — right here, single-file HTML, solarpunk design</li>
+        </ul>
+        <p>Browse the <a href="https://github.com/chezgoulet/phonon/issues" target="_blank" rel="noopener">open issues</a>, pick one that matches your skills, and open a PR. No CLA, no bureaucracy, no friction.</p>
+        <p><a href="https://github.com/chezgoulet/phonon" target="_blank" rel="noopener">View the repo on GitHub →</a></p>
+      </div>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">📢</span> Spread the word</h2>
+        <p>Star the repo. Tell your friends. Write about what you built with your phone cluster. The more people know about Phonon, the more testers and contributors we'll find — and the faster this project matures.</p>
+      </div>
+
+      <div class="cta-card" style="margin-top: 48px;">
+        <h2>Ready to jump in?</h2>
+        <p>The project is small, the issues are real, and every contribution matters.</p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="/getting-started" class="btn btn-amber" onclick="return navigate(event, 'getting-started')">Try It First</a>
+          <a href="https://github.com/chezgoulet/phonon" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" target="_blank" rel="noopener">GitHub →</a>
         </div>
       </div>
-      <p style="text-align: center; color: var(--ink-muted); font-size: 0.85rem; margin-top: 32px;">All prices in USD. Self-hosted tier is fully functional with no artificial limits — the public pool is a convenience, not a gate.</p>
     </div>
   </section>
 </main>
@@ -1223,7 +1168,7 @@ telemetry:
 
       <div class="arch-section">
         <h2><span class="emoji-badge">⚖️</span> License</h2>
-        <p>Phonon is Apache 2.0 — fully permissive. The core coordinator, sidecar, and all built-in theme packs are open source. The public pool and hosted services are complementary offerings, not gated features. Self-hosted is always fully functional.</p>
+        <p>Phonon is Apache 2.0 — fully permissive. The coordinator, sidecar, theme packs, and website are all open source. No CLA, no friction, no gatekeeping. Self-hosted is always fully functional.</p>
       </div>
     </div>
   </section>
@@ -1295,11 +1240,11 @@ open http://phonon.local:8080</div>
       </div>
 
       <div class="cta-card" style="margin-top: 48px;">
-        <h2>Need help?</h2>
-        <p>Open an issue on GitHub, check the docs, or join the community.</p>
+        <h2>Running into trouble?</h2>
+        <p>Alpha software has rough edges. Open an issue when you hit one — it's the fastest way to make the project better for everyone.</p>
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <a href="https://github.com/chezgoulet/phonon/issues" class="btn btn-amber" target="_blank" rel="noopener">Open an Issue</a>
-          <a href="/docs" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" onclick="return navigate(event, 'docs')">Read the Docs</a>
+          <a href="https://github.com/chezgoulet/phonon/issues" class="btn btn-amber" target="_blank" rel="noopener">Report a Bug</a>
+          <a href="/contribute" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" onclick="return navigate(event, 'contribute')">Contribute</a>
         </div>
       </div>
     </div>
@@ -1327,12 +1272,12 @@ open http://phonon.local:8080</div>
         <span style="width: 24px; height: 24px; background: var(--green-leaf); border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; color: var(--white); font-size: 0.7rem;">⌘</span>
         Phonon
       </div>
-      <p>Turn old phones into AI infrastructure. Zero e-waste. Zero cloud dependency. Apache 2.0 licensed.</p>
+      <p>Turn old phones into AI infrastructure. Alpha quality. Apache 2.0. Help us get to beta.</p>
     </div>
     <div class="footer-col">
-      <h4>Product</h4>
+      <h4>Get Involved</h4>
       <a href="/how-it-works" onclick="return navigate(event, 'how-it-works')">How It Works</a>
-      <a href="/pricing" onclick="return navigate(event, 'pricing')">Pricing</a>
+      <a href="/contribute" onclick="return navigate(event, 'contribute')">Contribute</a>
       <a href="/docs" onclick="return navigate(event, 'docs')">Docs</a>
       <a href="/getting-started" onclick="return navigate(event, 'getting-started')">Get Started</a>
     </div>
@@ -1343,9 +1288,9 @@ open http://phonon.local:8080</div>
       <a href="https://github.com/chezgoulet/phonon/issues" target="_blank" rel="noopener">Issues</a>
     </div>
     <div class="footer-col">
-      <h4>Legal</h4>
+      <h4>Project</h4>
       <a href="/about" onclick="return navigate(event, 'about')">About</a>
-      <a href="/license" onclick="return navigate(event, 'license')">License</a>
+      <a href="https://github.com/chezgoulet/phonon/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
     </div>
   </div>
   <div class="footer-bottom">
