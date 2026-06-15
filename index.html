@@ -4,39 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Phonon — Turn old phones into AI infrastructure</title>
-<meta name="description" content="Phonon turns old Android phones into a private, local AI inference cluster. Alpha quality. Help us build the future of sustainable AI infrastructure.">
+<meta name="description" content="Phonon turns old Android phones into a private, local AI inference cluster. Alpha — help us build it.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://chezgoulet.github.io/phononai.org/">
+<link rel="canonical" href="https://phononai.org">
 
-<!-- Solarpunk colour: #4a9e6b (leaf green), #e8b84b (honey amber), #2c5f3a (deep forest) -->
+<!-- The Phonon palette: midnight, solar-cyan, neon-pink, star-amber, border-purple -->
 
 <style>
 /* ═══════════════════════════════════════════════════
-   ROOT VARIABLES — solarpunk theme
+   ROOT VARIABLES — Solarpunk dark
    ═══════════════════════════════════════════════════ */
 :root {
-  --green-deep: #1a3a2b;
-  --green-forest: #2c5f3a;
-  --green-leaf: #4a9e6b;
-  --green-bright: #6bc47f;
-  --green-pale: #d4edda;
-  --amber-honey: #e8b84b;
-  --amber-warm: #d4943a;
-  --amber-pale: #fef3c7;
-  --earth-brown: #5c4033;
-  --earth-light: #a0846b;
-  --cream: #f5f0e8;
-  --cream-dark: #e8e0d4;
-  --ink: #1a1a1a;
-  --ink-soft: #4a4a4a;
-  --ink-muted: #7a7a7a;
-  --ink-faint: #aaaaaa;
-  --white: #ffffff;
-  --off-white: #fafaf8;
-  --shadow: rgba(26, 58, 43, 0.12);
-  --shadow-strong: rgba(26, 58, 43, 0.25);
-  --border: rgba(44, 95, 58, 0.15);
-  --border-strong: rgba(44, 95, 58, 0.3);
+  --bg-deep: #0b0b1a;
+  --bg-panel: #111128;
+  --bg-elevated: #1a1a3e;
+  --bg-glass: rgba(17, 17, 40, 0.85);
+  --border: rgba(0, 229, 255, 0.10);
+  --border-strong: rgba(0, 229, 255, 0.25);
+  --ink: #dedef0;
+  --ink-soft: #a0a0c0;
+  --ink-muted: #707090;
+  --ink-faint: #505070;
+  --cyan: #00E5FF;
+  --magenta: #FF007F;
+  --pink: #FF6B9D;
+  --amber: #FFD700;
+  --purple: #7C3AED;
+  --green: #22c55e;
   --radius: 12px;
   --radius-sm: 8px;
   --radius-pill: 9999px;
@@ -56,16 +50,16 @@
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 body {
   font-family: var(--font-sans);
-  background: var(--off-white);
+  background: var(--bg-deep);
   color: var(--ink);
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
 }
-a { color: var(--green-leaf); text-decoration: none; }
-a:hover { color: var(--green-forest); }
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: var(--pink); }
 img { max-width: 100%; display: block; }
-::selection { background: var(--green-leaf); color: var(--white); }
+::selection { background: var(--magenta); color: var(--ink); }
 
 /* ═══════════════════════════════════════════════════
    UTILITY
@@ -80,14 +74,14 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
   padding: 4px 12px;
   border-radius: var(--radius-pill);
-  background: var(--green-pale);
-  color: var(--green-forest);
+  border: 1px solid var(--border);
+  color: var(--cyan);
 }
 section { padding: var(--page-padding); }
 @media (max-width: 768px) { section { padding: var(--page-padding-mobile); } }
 
 /* ═══════════════════════════════════════════════════
-   AI MODE TOGGLE (the pill switch)
+   AI MODE TOGGLE
    ═══════════════════════════════════════════════════ */
 #ai-toggle {
   position: fixed;
@@ -97,24 +91,26 @@ section { padding: var(--page-padding); }
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--ink);
-  color: var(--white);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: var(--bg-elevated);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-pill);
   padding: 6px 14px 6px 6px;
   font-size: 0.75rem;
   font-family: var(--font-mono);
   cursor: pointer;
-  box-shadow: 0 4px 16px var(--shadow-strong);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
   transition: all 0.2s var(--ease);
   user-select: none;
   -webkit-user-select: none;
+  color: var(--ink-soft);
 }
-#ai-toggle:hover { background: var(--green-forest); }
+#ai-toggle:hover { background: var(--bg-panel); }
 #ai-toggle .toggle-track {
   width: 32px;
   height: 18px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
   border-radius: 99px;
   position: relative;
   transition: background 0.2s var(--ease);
@@ -126,53 +122,43 @@ section { padding: var(--page-padding); }
   left: 2px;
   width: 14px;
   height: 14px;
-  background: var(--white);
+  background: var(--cyan);
   border-radius: 50%;
   transition: transform 0.2s var(--ease);
 }
-[data-theme="text-only"] #ai-toggle .toggle-track { background: var(--green-leaf); }
+[data-theme="text-only"] #ai-toggle .toggle-track { background: var(--purple); }
 [data-theme="text-only"] #ai-toggle .toggle-thumb { transform: translateX(14px); }
 #ai-toggle .label { white-space: nowrap; }
 #ai-toggle .label-active { display: none; }
 [data-theme="text-only"] #ai-toggle .label-default { display: none; }
 [data-theme="text-only"] #ai-toggle .label-active { display: inline; }
 
-/* ═══════════════════════════════════════════════════
-   TEXT-ONLY MODE OVERRIDES
-   ═══════════════════════════════════════════════════ */
-[data-theme="text-only"] {
-  /* Remove backgrounds, spacing, decorative elements */
-}
-[data-theme="text-only"] body {
-  background: var(--white);
-}
+/* ── Text-only mode ──────────────────────────────── */
+[data-theme="text-only"] body { background: #111; color: #ccc; }
 [data-theme="text-only"] .hero-bg,
-[data-theme="text-only"] .circuit-overlay,
 [data-theme="text-only"] .hero-glow,
 [data-theme="text-only"] .glow-dot,
 [data-theme="text-only"] .stat-card::before,
 [data-theme="text-only"] .card-icon,
 [data-theme="text-only"] .nav-logo-icon,
 [data-theme="text-only"] .footer-decoration,
-[data-theme="text-only"] .solar-graphic {
+[data-theme="text-only"] .visualizer-frame {
   display: none !important;
 }
-[data-theme="text-only"] { --green-deep: #000; --green-forest: #000; --green-leaf: #000; --green-bright: #000; --amber-honey: #000; --amber-warm: #000; --cream: #fff; --cream-dark: #f0f0f0; --ink: #000; --ink-soft: #333; --border: #ddd; }
-[data-theme="text-only"] nav { background: var(--white) !important; border-bottom: 1px solid #ddd !important; position: static !important; }
+[data-theme="text-only"] nav { background: #111 !important; border-bottom: 1px solid #333 !important; }
 [data-theme="text-only"] .hero { min-height: auto !important; padding: 60px 0 40px !important; }
 [data-theme="text-only"] .hero h1 { font-size: 2rem !important; }
 [data-theme="text-only"] section { padding: 40px 16px !important; }
-[data-theme="text-only"] .stats-grid { grid-template-columns: 1fr 1fr !important; }
-[data-theme="text-only"] .stat-card { background: transparent !important; border: none !important; box-shadow: none !important; padding: 8px !important; }
+[data-theme="text-only"] .stat-card { background: transparent !important; border: 1px solid #333 !important; padding: 8px !important; }
 [data-theme="text-only"] .step-connector { display: none !important; }
-[data-theme="text-only"] .pricing-card { border: 1px solid #ddd !important; background: transparent !important; }
 [data-theme="text-only"] .page-content { background: transparent !important; }
-[data-theme="text-only"] .cta-card { background: transparent !important; border: 1px solid #ddd !important; }
-[data-theme="text-only"] .footer { background: var(--white) !important; border-top: 1px solid #ddd !important; }
-[data-theme="text-only"] button, [data-theme="text-only"] .btn { background: transparent !important; border: 1px solid #000 !important; color: #000 !important; }
-[data-theme="text-only"] .btn-primary { background: #000 !important; color: #fff !important; }
-[data-theme="text-only"] .feature-card { background: transparent !important; border: 1px solid #ddd !important; }
-[data-theme="text-only"] .pricing-featured { border: 2px solid #000 !important; }
+[data-theme="text-only"] .cta-card { background: transparent !important; border: 1px solid #333 !important; }
+[data-theme="text-only"] .footer { background: #111 !important; border-top: 1px solid #333 !important; }
+[data-theme="text-only"] button, [data-theme="text-only"] .btn { background: transparent !important; border: 1px solid #666 !important; color: #ccc !important; }
+[data-theme="text-only"] .btn-primary { background: #333 !important; color: #fff !important; border-color: #333 !important; }
+[data-theme="text-only"] .btn-amber { background: #333 !important; color: #fff !important; border-color: #333 !important; }
+[data-theme="text-only"] .feature-card { background: transparent !important; border: 1px solid #333 !important; }
+[data-theme="text-only"] a { color: #66d !important; }
 
 /* ═══════════════════════════════════════════════════
    NAVIGATION
@@ -183,9 +169,9 @@ nav {
   left: 0;
   right: 0;
   height: var(--nav-height);
-  background: rgba(250, 250, 248, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
   z-index: 100;
   display: flex;
@@ -209,16 +195,16 @@ nav {
   color: var(--ink);
   text-decoration: none;
 }
-.nav-logo:hover { color: var(--green-leaf); }
+.nav-logo:hover { color: var(--cyan); }
 .nav-logo-icon {
   width: 28px;
   height: 28px;
-  background: var(--green-leaf);
+  background: linear-gradient(135deg, var(--cyan), var(--magenta));
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: #000;
   font-size: 0.85rem;
   flex-shrink: 0;
 }
@@ -236,16 +222,16 @@ nav {
   color: var(--ink-soft);
   transition: all 0.15s var(--ease);
 }
-.nav-links a:hover { background: var(--cream); color: var(--green-forest); }
-.nav-links a[aria-current="page"] { color: var(--green-leaf); font-weight: 600; }
+.nav-links a:hover { background: var(--bg-panel); color: var(--cyan); }
+.nav-links a[aria-current="page"] { color: var(--cyan); font-weight: 600; }
 .nav-cta {
-  background: var(--green-forest) !important;
-  color: var(--white) !important;
+  background: linear-gradient(135deg, var(--cyan), var(--purple)) !important;
+  color: #000 !important;
   padding: 8px 20px !important;
   border-radius: var(--radius-sm) !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
-.nav-cta:hover { background: var(--green-leaf) !important; color: var(--white) !important; }
+.nav-cta:hover { filter: brightness(1.2) !important; color: #000 !important; background: linear-gradient(135deg, var(--cyan), var(--purple)) !important; }
 .nav-mobile-btn {
   display: none;
   background: none;
@@ -257,7 +243,7 @@ nav {
   font-size: 1.5rem;
 }
 @media (max-width: 768px) {
-  .nav-links { display: none; position: fixed; top: var(--nav-height); left: 0; right: 0; background: var(--off-white); flex-direction: column; padding: 16px; border-bottom: 1px solid var(--border); }
+  .nav-links { display: none; position: fixed; top: var(--nav-height); left: 0; right: 0; background: var(--bg-deep); flex-direction: column; padding: 16px; border-bottom: 1px solid var(--border); }
   .nav-links.open { display: flex; }
   .nav-mobile-btn { display: block; }
   .nav-links a { width: 100%; padding: 12px 16px; }
@@ -277,7 +263,6 @@ nav {
   display: flex;
   align-items: center;
   padding: 120px 24px 80px;
-  background: linear-gradient(180deg, var(--cream) 0%, var(--off-white) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -292,27 +277,18 @@ nav {
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(74, 158, 107, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.06) 0%, transparent 70%);
   top: -200px;
-  right: -200px;
+  right: -100px;
 }
 .hero-glow:nth-child(2) {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(232, 184, 75, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 0, 127, 0.05) 0%, transparent 70%);
   bottom: -100px;
   left: -100px;
   top: auto;
   right: auto;
-}
-.circuit-overlay {
-  position: absolute;
-  inset: 0;
-  opacity: 0.03;
-  background-image:
-    radial-gradient(circle at 25% 25%, var(--green-leaf) 1px, transparent 1px),
-    radial-gradient(circle at 75% 75%, var(--amber-honey) 1px, transparent 1px);
-  background-size: 60px 60px;
 }
 .hero .container { position: relative; z-index: 1; text-align: center; max-width: 800px; }
 .hero h1 {
@@ -320,11 +296,11 @@ nav {
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  color: var(--green-deep);
+  color: var(--ink);
   margin-bottom: 20px;
 }
-.hero h1 em { font-style: normal; color: var(--green-leaf); }
-.hero h1 .amp { color: var(--amber-honey); }
+.hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--cyan), var(--magenta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero .amp { color: var(--amber); }
 .hero p {
   font-size: 1.2rem;
   color: var(--ink-soft);
@@ -352,21 +328,21 @@ nav {
   text-decoration: none;
 }
 .btn-primary {
-  background: var(--green-forest);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: #000;
 }
-.btn-primary:hover { background: var(--green-leaf); transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow); }
+.btn-primary:hover { filter: brightness(1.2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0, 229, 255, 0.2); }
 .btn-secondary {
   background: transparent;
-  color: var(--green-forest);
-  border: 1.5px solid var(--green-forest);
+  color: var(--cyan);
+  border: 1.5px solid var(--cyan);
 }
-.btn-secondary:hover { background: var(--cream); }
+.btn-secondary:hover { background: rgba(0, 229, 255, 0.08); }
 .btn-amber {
-  background: var(--amber-honey);
-  color: var(--ink);
+  background: var(--amber);
+  color: #1a1a00;
 }
-.btn-amber:hover { background: var(--amber-warm); transform: translateY(-1px); }
+.btn-amber:hover { filter: brightness(1.15); transform: translateY(-1px); }
 .hero-stats {
   display: flex;
   justify-content: center;
@@ -375,7 +351,7 @@ nav {
   flex-wrap: wrap;
 }
 .hero-stat { text-align: center; }
-.hero-stat-num { font-size: 1.75rem; font-weight: 800; color: var(--green-deep); }
+.hero-stat-num { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--cyan), var(--pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .hero-stat-label { font-size: 0.8rem; color: var(--ink-muted); margin-top: 2px; }
 @media (max-width: 768px) {
   .hero { padding: 100px 16px 60px; min-height: auto; }
@@ -392,7 +368,7 @@ nav {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--green-leaf);
+  color: var(--cyan);
   margin-bottom: 12px;
 }
 .section-title {
@@ -400,7 +376,7 @@ nav {
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: var(--green-deep);
+  color: var(--ink);
   margin-bottom: 16px;
 }
 .section-subtitle {
@@ -414,7 +390,7 @@ nav {
 .mx-auto { margin-left: auto; margin-right: auto; }
 
 /* ═══════════════════════════════════════════════════
-   FEATURES / HOW IT WORKS
+   FEATURE CARDS
    ═══════════════════════════════════════════════════ */
 .features-grid {
   display: grid;
@@ -422,13 +398,13 @@ nav {
   gap: 24px;
 }
 .feature-card {
-  background: var(--white);
+  background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 32px;
   transition: all 0.2s var(--ease);
 }
-.feature-card:hover { border-color: var(--green-leaf); box-shadow: 0 8px 24px var(--shadow); transform: translateY(-2px); }
+.feature-card:hover { border-color: var(--border-strong); box-shadow: 0 8px 24px rgba(0,0,0,0.3); transform: translateY(-2px); }
 .card-icon {
   width: 48px;
   height: 48px;
@@ -438,12 +414,12 @@ nav {
   justify-content: center;
   font-size: 1.3rem;
   margin-bottom: 16px;
-  color: var(--white);
+  color: #000;
 }
-.card-icon.green { background: var(--green-leaf); }
-.card-icon.amber { background: var(--amber-honey); }
-.card-icon.forest { background: var(--green-forest); }
-.feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; color: var(--green-deep); }
+.card-icon.cyan { background: var(--cyan); }
+.card-icon.amber { background: var(--amber); color: #1a1a00; }
+.card-icon.purple { background: var(--purple); }
+.feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
 .feature-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
 
 /* ═══════════════════════════════════════════════════
@@ -467,30 +443,30 @@ nav {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--green-pale);
-  color: var(--green-forest);
+  border: 1.5px solid var(--cyan);
+  color: var(--cyan);
   font-weight: 800;
   font-size: 1rem;
-  line-height: 40px;
+  line-height: 38px;
   margin: 0 auto 16px;
 }
-.step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--green-deep); }
+.step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
 .step-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
 
 /* ═══════════════════════════════════════════════════
    STATS
    ═══════════════════════════════════════════════════ */
-.stats-section { background: var(--green-deep); color: var(--white); }
-.stats-section .section-title { color: var(--white); }
-.stats-section .section-subtitle { color: rgba(255,255,255,0.7); }
+.stats-section { background: var(--bg-elevated); color: var(--ink); }
+.stats-section .section-title { color: var(--ink); }
+.stats-section .section-subtitle { color: var(--ink-soft); }
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
 }
 .stat-card {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
   text-align: center;
@@ -504,29 +480,28 @@ nav {
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--green-bright);
+  background: var(--cyan);
 }
-.stat-card.amber::before { background: var(--amber-honey); }
-.stat-card.leaf::before { background: var(--green-leaf); }
-.stat-card h3 { font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 4px; }
-.stat-card p { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+.stat-card.pink::before { background: var(--pink); }
+.stat-card.amber::before { background: var(--amber); }
+.stat-card h3 { font-size: 2rem; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+.stat-card p { font-size: 0.85rem; color: var(--ink-muted); }
 
 /* ═══════════════════════════════════════════════════
    CTA BANNER
    ═══════════════════════════════════════════════════ */
 .cta-section { text-align: center; }
 .cta-card {
-  background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-forest) 100%);
+  background: linear-gradient(135deg, var(--bg-elevated), var(--bg-panel));
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   padding: 64px 48px;
-  color: var(--white);
 }
-.cta-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
-.cta-card p { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
-.cta-card .btn-amber { background: var(--amber-honey); color: var(--green-deep); }
-.cta-card .btn-amber:hover { background: var(--amber-pale); }
-.cta-card .btn-secondary { border-color: rgba(255,255,255,0.3); color: var(--white); }
-.cta-card .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+.cta-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: 12px; color: var(--ink); }
+.cta-card p { font-size: 1rem; color: var(--ink-soft); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.cta-card .btn-amber { border: none; }
+.cta-card .btn-secondary { border-color: rgba(0, 229, 255, 0.3); color: var(--cyan); }
+.cta-card .btn-secondary:hover { background: rgba(0, 229, 255, 0.08); }
 
 /* ═══════════════════════════════════════════════════
    FOOTER
@@ -534,7 +509,6 @@ nav {
 .footer {
   border-top: 1px solid var(--border);
   padding: 48px 24px 32px;
-  background: var(--cream);
 }
 .footer-inner {
   max-width: var(--max-width);
@@ -544,9 +518,9 @@ nav {
   gap: 40px;
 }
 .footer-brand p { font-size: 0.85rem; color: var(--ink-muted); margin-top: 12px; line-height: 1.6; max-width: 300px; }
-.footer-col h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: 16px; }
+.footer-col h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 16px; }
 .footer-col a { display: block; padding: 6px 0; font-size: 0.85rem; color: var(--ink-muted); }
-.footer-col a:hover { color: var(--green-leaf); }
+.footer-col a:hover { color: var(--cyan); }
 .footer-bottom {
   max-width: var(--max-width);
   margin: 32px auto 0;
@@ -566,14 +540,14 @@ nav {
    PAGE: HOW IT WORKS (detailed)
    ═══════════════════════════════════════════════════ */
 .arch-section { margin-bottom: 48px; }
-.arch-section h2 { font-size: 1.5rem; font-weight: 700; color: var(--green-deep); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.arch-section h2 { font-size: 1.5rem; font-weight: 700; color: var(--ink); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 .arch-section h2 .emoji-badge { font-size: 1.3rem; }
 .arch-section p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 16px; }
 .arch-section ul { list-style: none; margin-bottom: 16px; }
 .arch-section ul li { padding: 6px 0 6px 24px; font-size: 0.9rem; color: var(--ink-soft); position: relative; }
-.arch-section ul li::before { content: '→'; position: absolute; left: 0; color: var(--green-leaf); font-weight: 700; }
+.arch-section ul li::before { content: '→'; position: absolute; left: 0; color: var(--cyan); font-weight: 700; }
 .code-block {
-  background: var(--cream-dark);
+  background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 16px;
@@ -582,30 +556,31 @@ nav {
   overflow-x: auto;
   line-height: 1.5;
   margin-bottom: 16px;
+  color: var(--ink-soft);
 }
 
 /* ═══════════════════════════════════════════════════
-   PAGE: BLOG (listing)
+   PAGE: BLOG
    ═══════════════════════════════════════════════════ */
 .blog-list { display: flex; flex-direction: column; gap: 24px; }
-.blog-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: all 0.2s var(--ease); }
-.blog-card:hover { border-color: var(--green-leaf); box-shadow: 0 4px 16px var(--shadow); }
+.blog-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; transition: all 0.2s var(--ease); }
+.blog-card:hover { border-color: var(--cyan); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 .blog-card-date { font-size: 0.75rem; color: var(--ink-muted); margin-bottom: 6px; }
 .blog-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
-.blog-card h3 a { color: var(--green-deep); }
-.blog-card h3 a:hover { color: var(--green-leaf); }
+.blog-card h3 a { color: var(--ink); }
+.blog-card h3 a:hover { color: var(--cyan); }
 .blog-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.6; }
 .blog-card-tags { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
 .blog-post-article { max-width: 720px; margin: 0 auto; }
-.blog-post-article h1 { font-size: 2.2rem; font-weight: 800; color: var(--green-deep); line-height: 1.15; margin-bottom: 8px; }
+.blog-post-article h1 { font-size: 2.2rem; font-weight: 800; color: var(--ink); line-height: 1.15; margin-bottom: 8px; }
 .blog-post-article .meta { font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 32px; }
 .blog-post-article p { font-size: 1rem; color: var(--ink-soft); line-height: 1.8; margin-bottom: 16px; }
-.blog-post-article h2 { font-size: 1.4rem; font-weight: 700; color: var(--green-deep); margin-top: 40px; margin-bottom: 12px; }
-.blog-post-article h3 { font-size: 1.15rem; font-weight: 700; color: var(--green-deep); margin-top: 28px; margin-bottom: 8px; }
+.blog-post-article h2 { font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-top: 40px; margin-bottom: 12px; }
+.blog-post-article h3 { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-top: 28px; margin-bottom: 8px; }
 .blog-post-article ul, .blog-post-article ol { margin-bottom: 16px; padding-left: 24px; }
 .blog-post-article li { font-size: 1rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 4px; }
 .blog-back { display: inline-flex; align-items: center; gap: 4px; font-size: 0.9rem; margin-bottom: 24px; color: var(--ink-muted); }
-.blog-back:hover { color: var(--green-leaf); }
+.blog-back:hover { color: var(--cyan); }
 
 /* ═══════════════════════════════════════════════════
    PAGE: DOCS
@@ -614,25 +589,45 @@ nav {
 .docs-sidebar { position: sticky; top: calc(var(--nav-height) + 24px); }
 .docs-sidebar h4 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 12px; }
 .docs-sidebar a { display: block; padding: 6px 0; font-size: 0.85rem; color: var(--ink-soft); }
-.docs-sidebar a:hover { color: var(--green-leaf); }
-.docs-sidebar a[aria-current="page"] { color: var(--green-leaf); font-weight: 600; }
-.docs-content h1 { font-size: 2rem; font-weight: 800; color: var(--green-deep); margin-bottom: 24px; }
-.docs-content h2 { font-size: 1.3rem; font-weight: 700; color: var(--green-deep); margin-top: 40px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-.docs-content h3 { font-size: 1.05rem; font-weight: 700; color: var(--green-deep); margin-top: 28px; margin-bottom: 8px; }
+.docs-sidebar a:hover { color: var(--cyan); }
+.docs-sidebar a[aria-current="page"] { color: var(--cyan); font-weight: 600; }
+.docs-content h1 { font-size: 2rem; font-weight: 800; color: var(--ink); margin-bottom: 24px; }
+.docs-content h2 { font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-top: 40px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.docs-content h3 { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-top: 28px; margin-bottom: 8px; }
 .docs-content p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.8; margin-bottom: 16px; }
 .docs-content ul, .docs-content ol { margin-bottom: 16px; padding-left: 24px; }
 .docs-content li { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 4px; }
 .docs-content code {
-  background: var(--cream-dark);
+  background: var(--bg-elevated);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: var(--font-mono);
   font-size: 0.85em;
 }
-.docs-content pre { background: var(--cream-dark); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5; margin-bottom: 16px; }
+.docs-content pre { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.5; margin-bottom: 16px; }
 @media (max-width: 768px) {
   .docs-layout { grid-template-columns: 1fr; }
   .docs-sidebar { position: static; }
+}
+
+/* ═══════════════════════════════════════════════════
+   PAGE: VISUALIZER (embedded bench)
+   ═══════════════════════════════════════════════════ */
+.visualizer-frame {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.visualizer-frame iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  display: block;
+}
+@media (max-width: 768px) {
+  .visualizer-frame iframe { height: 500px; }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -691,28 +686,27 @@ nav {
     <div class="hero-bg">
       <div class="hero-glow"></div>
       <div class="hero-glow"></div>
-      <div class="circuit-overlay"></div>
     </div>
     <div class="container">
       <h1 class="animate-in">Turn old phones into <em>AI infrastructure</em></h1>
-      <p class="animate-in animate-in-d1">Phonon turns old Android phones into a private, local AI inference cluster. We're in <strong>alpha</strong> — the project works, and we need your help getting it to beta. Test it, break it, tell us what's missing.</p>
+      <p class="animate-in animate-in-d1">Phonon turns old Android phones into a private, local AI inference cluster. <strong>Alpha</strong> — the project works, and we need your help getting it to beta. Test it, break it, tell us what's missing.</p>
       <div class="hero-actions animate-in animate-in-d1">
-        <a href="/getting-started" class="btn btn-primary" onclick="return navigate(event, 'getting-started')">Get Started Free</a>
+        <a href="/getting-started" class="btn btn-primary" onclick="return navigate(event, 'getting-started')">Get Started</a>
         <a href="/how-it-works" class="btn btn-secondary" onclick="return navigate(event, 'how-it-works')">How It Works</a>
         <a href="https://github.com/chezgoulet/phonon" class="btn btn-secondary" target="_blank" rel="noopener">GitHub →</a>
       </div>
       <div class="hero-stats animate-in animate-in-d2">
         <div class="hero-stat">
           <div class="hero-stat-num">Alpha</div>
-          <div class="hero-stat-label">Quality — works, evolving</div>
+          <div class="hero-stat-label">Works, evolving — help us ship</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num">100%</div>
-          <div class="hero-stat-label">Open Source</div>
+          <div class="hero-stat-num">Open</div>
+          <div class="hero-stat-label">Apache 2.0, fully permissive</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-num">$0</div>
-          <div class="hero-stat-label">Self-hosted, always</div>
+          <div class="hero-stat-label">Self-hosted, always free</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-num">Help</div>
@@ -722,87 +716,87 @@ nav {
     </div>
   </section>
 
-  <!-- Features -->
-  <section style="background: var(--white); padding-bottom: 80px;">
+  <!-- What Phonon is -->
+  <section style="background: var(--bg-panel);">
     <div class="container">
       <div class="text-center" style="margin-bottom: 48px;">
-        <div class="section-label">What you get</div>
+        <div class="section-label">What it is</div>
         <h2 class="section-title">Your phones, your inference</h2>
-        <p class="section-subtitle mx-auto">No cloud, no subscription, no data leaving your network. Just a cluster built from phones you already own. <strong>Alpha warning:</strong> things will break. That's why we need you.</p>
+        <p class="section-subtitle mx-auto">No cloud, no subscription, no data leaving your network. A cluster built from phones you already own — or old ones gathering dust in a drawer.</p>
       </div>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="card-icon green">🔒</div>
+          <div class="card-icon cyan">🔒</div>
           <h3>Total Privacy</h3>
           <p>Inference runs entirely on your local network. Your prompts, your data, your models — never touch an external server unless you choose to join the public pool.</p>
         </div>
         <div class="feature-card">
           <div class="card-icon amber">♻️</div>
           <h3>Zero E-Waste</h3>
-          <p>Every Pixel 7a in a drawer is an NPU waiting to work. Phonon gives old phones a second life as compute nodes instead of landfill.</p>
+          <p>Every old phone with an NPU is a compute node waiting to work. Phonon gives devices a second life as inference hardware instead of landfill.</p>
         </div>
         <div class="feature-card">
-          <div class="card-icon forest">⚡</div>
+          <div class="card-icon purple">⚡</div>
           <h3>NPU-Accelerated</h3>
-          <p>LiteRT-LM runs models directly on Pixel Tensor and Qualcomm Hexagon NPUs. Both-sides-of-the-page efficient: ~55 tok/s on a Pixel 7a, ~120 on a Pixel 10.</p>
+          <p>LiteRT-LM runs models directly on Pixel Tensor and Qualcomm Hexagon NPUs. Inference that uses the hardware already in the phone.</p>
         </div>
         <div class="feature-card">
-          <div class="card-icon green">🔌</div>
+          <div class="card-icon cyan">🔌</div>
           <h3>OpenAI-Compatible API</h3>
-          <p>Point any agent framework — Hermes, OpenClaw, anything that speaks the OpenAI API — at your Phonon cluster. No special integration needed.</p>
+          <p>Point any agent framework at your Phonon cluster via the standard <code>/v1/chat/completions</code> API. No special integration needed.</p>
         </div>
         <div class="feature-card">
           <div class="card-icon amber">📱</div>
           <h3>Any Android Phone</h3>
-          <p>Pixels, Galaxies, OnePlus — if it runs Android 14+ with an NPU, it works. Mix and match models across devices. Coordinator handles routing.</p>
+          <p>Pixels, Galaxies, OnePlus — if it runs Android 14+ with an NPU, it participates. Mix and match models across devices.</p>
         </div>
         <div class="feature-card">
-          <div class="card-icon forest">🌐</div>
-          <h3>Your Data Stays Yours</h3>
-          <p>Inference runs entirely on your local network. No telemetry, no phone-home, no cloud dependency. Your prompts and models never touch an external server.</p>
+          <div class="card-icon purple">🌐</div>
+          <h3>Stays on Your Network</h3>
+          <p>No telemetry, no phone-home, no cloud dependency. Your prompts and models never touch an external server.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Stats / Callout -->
+  <!-- Call to action: alpha needs you -->
   <section class="stats-section">
     <div class="container text-center">
-      <div class="section-label" style="color: var(--green-bright);">Alpha — help us build</div>
-      <h2 class="section-title">This project needs you</h2>
-      <p class="section-subtitle mx-auto" style="color: rgba(255,255,255,0.7);">Phonon works. The coordinator runs, phones pair, inference happens. But alpha software needs real people testing it on real hardware in real networks. That's where you come in.</p>
+      <div class="section-label" style="color: var(--cyan);">This is early days</div>
+      <h2 class="section-title">We need you to make this work</h2>
+      <p class="section-subtitle mx-auto">Phonon works. The coordinator runs, phones pair, inference happens. But alpha software needs people testing it on real hardware in real networks. That's where you come in.</p>
       <div class="stats-grid" style="margin-top: 48px;">
-        <div class="stat-card leaf"><h3>5,000+</h3><p>Stars on GitHub</p></div>
-        <div class="stat-card amber"><h3>Alpha</h3><p>Test it, break it, report it</p></div>
-        <div class="stat-card"><h3>0</h3><p>Cost to try it yourself</p></div>
-        <div class="stat-card leaf"><h3>Apache 2.0</h3><p>Fully permissive license</p></div>
+        <div class="stat-card"><h3>Alpha</h3><p>Test it, break it, report it</p></div>
+        <div class="stat-card pink"><h3>0 $</h3><p>To try it yourself</p></div>
+        <div class="stat-card amber"><h3>Open</h3><p>Apache 2.0, fully permissive</p></div>
+        <div class="stat-card"><h3>Now</h3><p>The best time to start</p></div>
       </div>
     </div>
   </section>
 
-  <!-- How it works preview -->
+  <!-- How to help -->
   <section>
     <div class="container">
       <div class="text-center" style="margin-bottom: 48px;">
         <div class="section-label">How to help</div>
         <h2 class="section-title">Three ways to contribute</h2>
-        <p class="section-subtitle mx-auto">Phonon is alpha-quality open-source software. The fastest path to beta is people like you using it, testing it, and helping us improve it.</p>
+        <p class="section-subtitle mx-auto">The fastest path to beta is people like you using it, testing it, and helping us improve it.</p>
       </div>
       <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
         <div class="feature-card" style="text-align: center;">
           <div style="font-size: 2.5rem; margin-bottom: 12px;">🔧</div>
           <h3>Test and Report</h3>
-          <p>Set up a cluster on your hardware. Try different phones, different networks, different models. Open issues for everything that doesn't work — and everything that does. Your feedback shapes the roadmap.</p>
+          <p>Set up a cluster on your hardware. Try different phones, different networks, different models. Open issues for everything that doesn't work — and everything that does.</p>
         </div>
         <div class="feature-card" style="text-align: center;">
           <div style="font-size: 2.5rem; margin-bottom: 12px;">📱</div>
           <h3>Donate a Phone</h3>
-          <p>Have an old Android phone gathering dust? Send it in. We wipe it, test it, and add it to our testing cluster. More hardware = more regression coverage = faster path to beta.</p>
+          <p>Have an old Android phone gathering dust? Send it in. More hardware diversity means more regression coverage and a faster path to beta.</p>
         </div>
         <div class="feature-card" style="text-align: center;">
           <div style="font-size: 2.5rem; margin-bottom: 12px;">💻</div>
           <h3>Contribute Code</h3>
-          <p>The coordinator is Go, the sidecar is Kotlin, the visualizer is Compose Canvas. Pick an issue, open a PR, or propose something new. Apache 2.0 — no CLA, no friction.</p>
+          <p>The coordinator is Go, the sidecar is Kotlin, the visualizer is Compose Canvas. Pick an issue, open a PR. Apache 2.0 — no CLA, no friction.</p>
         </div>
       </div>
     </div>
@@ -839,9 +833,15 @@ nav {
         </div>
         <div class="blog-card">
           <div class="blog-card-date">June 4, 2026</div>
-          <h3><a href="/blog/why-phones" onclick="return navigate(event, 'blog-post', 'why-phones')">Why phones? The NPU argument</a></h3>
-          <p>Every Pixel 7a ships with a Tensor NPU capable of ~4 TOPS. A cluster of ten costs nothing if they're already in your drawer — and outperforms a $3,000 GPU for batched inference.</p>
+          <h3><a href="/blog/why-phones" onclick="return navigate(event, 'blog-post', 'why-phones')">Why phones?</a></h3>
+          <p>Billions of smartphones sit idle in drawers while AI infrastructure burns power and generates e-waste. Phonon asks: why not use what's already built?</p>
           <div class="blog-card-tags"><span class="tag">hardware</span><span class="tag">architecture</span></div>
+        </div>
+        <div class="blog-card">
+          <div class="blog-card-date">May 28, 2026</div>
+          <h3><a href="/blog/e-waste-problem" onclick="return navigate(event, 'blog-post', 'e-waste-problem')">The AI e-waste problem nobody's talking about</a></h3>
+          <p>The AI industry generates millions of tons of electronic waste from hardware with short lifespans. Phonon closes the gap.</p>
+          <div class="blog-card-tags"><span class="tag">philosophy</span><span class="tag">sustainability</span></div>
         </div>
       </div>
     </div>
@@ -860,17 +860,17 @@ nav {
 
       <div class="arch-section">
         <h2><span class="emoji-badge">1</span> The Coordinator</h2>
-        <p>A single Go binary runs on any device on your network — a Raspberry Pi, an Odroid, a spare laptop, or even a cloud VM. It serves an OpenAI-compatible API, discovers phones via mDNS, load-balances requests across available devices, and exposes a web UI for management.</p>
+        <p>A single Go binary runs on any Linux device on your network — a Raspberry Pi, an Odroid, a spare laptop, or even a cloud VM. It serves an OpenAI-compatible API, discovers phones via mDNS, load-balances requests across available devices, and exposes a web UI for management.</p>
         <div class="code-block">
-$ phonon coordinator --config cluster.yaml<br>
-<span style="color:var(--ink-muted)"># Coordinator starts, begins mDNS discovery on 192.168.1.0/24</span></div>
+$ phonon coordinator --config cluster.yaml
+<span style="color:var(--ink-muted)"># Coordinator starts, begins mDNS discovery</span></div>
         <ul>
           <li>OpenAI-compatible API (<code>/v1/chat/completions</code>)</li>
-          <li>mDNS service discovery — phones announce themselves automatically</li>
+          <li>mDNS service discovery — phones announce themselves</li>
           <li>Round-robin load balancing across phones</li>
           <li>Health monitoring with Prometheus metrics</li>
           <li>YAML-based declarative configuration</li>
-          <li>Embedded React web UI</li>
+          <li>Embedded web UI</li>
         </ul>
       </div>
 
@@ -879,7 +879,7 @@ $ phonon coordinator --config cluster.yaml<br>
         <p>Each phone runs a Kotlin foreground service that connects to the coordinator, downloads models, and runs inference using LiteRT-LM — Google's NPU-first inference runtime. The sidecar reports battery level, temperature, and processing state every heartbeat.</p>
         <ul>
           <li>Runs as a persistent foreground service with a notification</li>
-          <li>Inference via LiteRT-LM — NPU-accelerated on Pixel Tensor and Qualcomm Hexagon</li>
+          <li>Inference via LiteRT-LM on Pixel Tensor and Qualcomm Hexagon NPUs</li>
           <li>Heartbeat and health reporting every 30 seconds</li>
           <li>Model download, cache, and management</li>
           <li>Battery-aware: reduces load when unplugged and below 20%</li>
@@ -888,49 +888,57 @@ $ phonon coordinator --config cluster.yaml<br>
       </div>
 
       <div class="arch-section">
-        <h2><span class="emoji-badge">3</span> Three Deployment Modes</h2>
+        <h2><span class="emoji-badge">3</span> Deployment Modes</h2>
 
-        <h3>Pool Mode (Phase 1) — Available Now</h3>
-        <p>Each phone runs independently. The coordinator load-balances requests round-robin. All phones work in parallel. Best for fast, high-throughput inference with smaller models (Gemma 4 E2B, Gemma 4 E4B).</p>
+        <h3>Pool Mode — Available Now</h3>
+        <p>Each phone runs independently. The coordinator load-balances requests round-robin. All phones work in parallel. Best for high-throughput inference with smaller models.</p>
 
-        <h3>Shard Mode (Phase 2+) — Coming</h3>
-        <p>Multiple phones collectively run one large model via pipelined-ring parallelism. The coordinator routes to the group as a single logical device. Enables running models larger than any single phone can handle (Gemma 4 12B across 3-4 phones).</p>
+        <h3>Shard Mode — In Development</h3>
+        <p>Multiple phones collectively run one large model via pipelined-ring parallelism. The coordinator routes to the group as a single logical device. Enables running models larger than any single phone can handle.</p>
       </div>
 
       <div class="arch-section">
-        <h2><span class="emoji-badge">4</span> Data Flow</h2>
-        <p>A request to the Phonon coordinator looks like any other OpenAI API call. The flow is transparent to your application:</p>
-        <div class="code-block">
-<span style="color: var(--ink-muted);"># Your app never knows it's talking to phones</span><br>
-curl https://phonon.local/v1/chat/completions \<br>
-&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
-&nbsp;&nbsp;-d '{"model":"gemma-4-e2b","messages":[{"role":"user","content":"Hello"}]}'</div>
-        <ol>
-          <li>Coordinator receives the request, selects an available phone</li>
-          <li>Phone loads the model (cached from previous use) and runs inference via LiteRT-LM</li>
-          <li>Tokens stream back through the coordinator to your client</li>
-          <li>Phone reports updated health metrics (battery, temp, load)</li>
-          <li>Coordinator logs the event and metrics to the event log</li>
-        </ol>
+        <h2><span class="emoji-badge">4</span> The Visualization Engine</h2>
+        <p>Every phone screen becomes a live telemetry display. The visualization engine renders device state — inference activity, token rate, temperature, battery — as real-time animations that make a rack of phones informative and beautiful.</p>
+        <p>Theme packs are community-contributed Kotlin files that implement the <code>VisualizationPack</code> interface. Each pack receives a <code>VizState</code> snapshot every frame and renders using that data. Built-in packs include Synthwave, Honeycomb, Veil, Neon Ring, and more.</p>
+        <p>Try the <a href="/visualizer" onclick="return navigate(event, 'visualizer')">live visualizer</a> to see them in action.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════════════════════════════════════════════
+     PAGE: VISUALIZER
+     ═══════════════════════════════════════════════════ -->
+<main id="page-visualizer" class="page">
+  <section>
+    <div class="container" style="max-width: 1000px;">
+      <div class="section-label text-center">Visualization Bench</div>
+      <h1 class="section-title text-center">Theme packs, live</h1>
+      <p class="section-subtitle text-center mx-auto">This is the same benchmark tool used to develop theme packs. Tweak VizState sliders and watch packs react in real time. Each pack is a self-contained Kotlin file in the phonon repo.</p>
+
+      <div class="visualizer-frame">
+        <iframe src="/bench.html" title="Phonon Visualization Bench"></iframe>
       </div>
 
-      <div class="arch-section">
-        <h2><span class="emoji-badge">5</span> Visual Identity (Phase 2)</h2>
-        <p>Each phone becomes a telemetry display. An animation framework on the sidecar renders inference state — token rate, temperature, battery, load — as real-time visualizations. Theme packs define the aesthetic (solarpunk, cyber HUD, synthwave, honeycomb, and more).</p>
-        <p>The visualization engine is <strong>workload-aware</strong> (state, token rate, temperature, battery) and <strong>not content-aware</strong> — it never sees prompts or responses.</p>
+      <div class="arch-section" style="max-width: 720px; margin: 0 auto;">
+        <h2><span class="emoji-badge">🧩</span> What you're seeing</h2>
+        <p>The bench simulates the theme pack runtime in your browser. Use the controls on the left to change VizState fields — inference load, battery level, temperature, processing status — and watch the selected pack react in real time at ~60 fps.</p>
+        <p>Each pack you see here is a <code>VisualizationPack</code> implementation in the phonon repo. Prototype new packs in the bench, then port them to Kotlin and open a PR.</p>
         <ul>
-          <li>Multi-phone coordinated animations (inference wave, temperature heatmap)</li>
-          <li>Community theme pack system via PRs</li>
-          <li>Web UI rack layout editor for physical placement mapping</li>
+          <li><strong>Pack selector</strong> — switch between available themes</li>
+          <li><strong>State sliders</strong> — inference load, battery, temperature, queue depth</li>
+          <li><strong>Toggles</strong> — processing mode, charging status, low-power mode</li>
+          <li><strong>Live output</strong> — rendered at full frame rate</li>
         </ul>
       </div>
 
-      <div class="cta-card" style="margin-top: 48px;">
-        <h2>Set up your cluster</h2>
-        <p>15 minutes. One Pi or Odroid. A few old phones. Then open an issue and tell us how it went.</p>
+      <div class="cta-card" style="margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto;">
+        <h2>Build your own pack</h2>
+        <p>Grab the bench, prototype something, port it to Kotlin, and open a PR.</p>
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
           <a href="/getting-started" class="btn btn-amber" onclick="return navigate(event, 'getting-started')">Get Started</a>
-          <a href="https://github.com/chezgoulet/phonon/issues" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" target="_blank" rel="noopener">Report What You Find →</a>
+          <a href="https://github.com/chezgoulet/phonon/issues?q=is%3Aissue+is%3Aopen+label%3Atheme-pack" class="btn btn-secondary" target="_blank" rel="noopener">Theme Pack Issues →</a>
         </div>
       </div>
     </div>
@@ -950,34 +958,32 @@ curl https://phonon.local/v1/chat/completions \<br>
       <div class="arch-section">
         <h2><span class="emoji-badge">🔧</span> Test and report</h2>
         <p>This is the single most valuable thing you can do. Set up a Phonon cluster on whatever hardware you have. Try different phone models, different network configurations, different models. Everything you find — every crash, every rough edge, every unclear error message — open an issue.</p>
-        <p>Even reporting "it worked perfectly on my Pixel 7a with a Raspberry Pi 5" is valuable. It tells us what's stable and what combinations need more testing.</p>
+        <p>Even reporting "it worked perfectly on my hardware" is valuable. It tells us what's stable and what combinations need more testing.</p>
         <p><a href="https://github.com/chezgoulet/phonon/issues" target="_blank" rel="noopener">Open an issue on GitHub →</a></p>
       </div>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">📱</span> Donate a phone</h2>
-        <p>Have an old Android phone sitting in a drawer? We'll take it. Every phone we receive gets wiped, tested, and added to our testing cluster. More hardware diversity means better regression coverage and a faster path to beta.</p>
-        <p><strong>What we need:</strong> Any Android phone running 14+, preferably with an NPU (Pixel 6+, Galaxy S24+, OnePlus 12+). But even phones without NPUs are useful for testing the coordinator, networking, and orchestration layers.</p>
-        <p><strong>What happens:</strong> We wipe the phone completely, install the Phonon sidecar, and add it to the pool. We'll report back on what works and what doesn't with your specific hardware.</p>
-        <p>For now, reach out via <a href="https://github.com/chezgoulet/phonon/issues">GitHub Issues</a> to coordinate shipping. A proper donation pipeline is coming.</p>
+        <p>Have an old Android phone sitting in a drawer? Every phone we receive gets wiped, tested, and added to our testing cluster. More hardware diversity means better regression coverage.</p>
+        <p>For now, reach out via <a href="https://github.com/chezgoulet/phonon/issues">GitHub Issues</a> to coordinate shipping.</p>
       </div>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">💻</span> Contribute code</h2>
         <p>The full stack is open source under Apache 2.0:</p>
         <ul>
-          <li><strong>Coordinator</strong> — Go HTTP server, mDNS discovery, load balancing, Prometheus metrics</li>
-          <li><strong>Sidecar</strong> — Kotlin foreground service, LiteRT-LM inference, health reporting</li>
-          <li><strong>Visualizer</strong> — Compose Canvas theme packs, multi-phone coordinated animations</li>
-          <li><strong>Website</strong> — right here, single-file HTML, solarpunk design</li>
+          <li><strong>Coordinator</strong> — Go HTTP server, mDNS discovery, load balancing</li>
+          <li><strong>Sidecar</strong> — Kotlin foreground service, LiteRT-LM inference</li>
+          <li><strong>Visualizer</strong> — Compose Canvas theme packs</li>
+          <li><strong>Website</strong> — right here, single-file HTML, solarpunk</li>
         </ul>
-        <p>Browse the <a href="https://github.com/chezgoulet/phonon/issues" target="_blank" rel="noopener">open issues</a>, pick one that matches your skills, and open a PR. No CLA, no bureaucracy, no friction.</p>
+        <p>Browse the <a href="https://github.com/chezgoulet/phonon/issues" target="_blank" rel="noopener">open issues</a>, pick one, and open a PR. No CLA, no bureaucracy.</p>
         <p><a href="https://github.com/chezgoulet/phonon" target="_blank" rel="noopener">View the repo on GitHub →</a></p>
       </div>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">📢</span> Spread the word</h2>
-        <p>Star the repo. Tell your friends. Write about what you built with your phone cluster. The more people know about Phonon, the more testers and contributors we'll find — and the faster this project matures.</p>
+        <p>Star the repo. Tell your friends. Write about what you built with your phone cluster. The more people know about Phonon, the more testers and contributors we'll find.</p>
       </div>
 
       <div class="cta-card" style="margin-top: 48px;">
@@ -985,7 +991,7 @@ curl https://phonon.local/v1/chat/completions \<br>
         <p>The project is small, the issues are real, and every contribution matters.</p>
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
           <a href="/getting-started" class="btn btn-amber" onclick="return navigate(event, 'getting-started')">Try It First</a>
-          <a href="https://github.com/chezgoulet/phonon" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://github.com/chezgoulet/phonon" class="btn btn-secondary" target="_blank" rel="noopener">GitHub →</a>
         </div>
       </div>
     </div>
@@ -1019,7 +1025,7 @@ curl https://phonon.local/v1/chat/completions \<br>
           <h2 id="hardware">Hardware Requirements</h2>
           <h3>Coordinator</h3>
           <ul>
-            <li>Any Linux device (Raspberry Pi 4+, Odroid, x86 machine)</li>
+            <li>Any Linux device (Raspberry Pi, Odroid, x86 machine)</li>
             <li>1 GB RAM minimum, 2 GB+ recommended</li>
             <li>Network access to your phone fleet (same LAN or Tailscale)</li>
             <li>Docker or Go runtime</li>
@@ -1028,7 +1034,7 @@ curl https://phonon.local/v1/chat/completions \<br>
           <ul>
             <li>Android 14+</li>
             <li>NPU recommended (Pixel 6+, Galaxy S24+, OnePlus 12+ — any device with a Tensor or Hexagon NPU)</li>
-            <li>4 GB+ RAM (8 GB+ for larger models like Gemma 4 E4B)</li>
+            <li>4 GB+ RAM</li>
             <li>Available via ADB or network pairing</li>
           </ul>
 
@@ -1048,8 +1054,7 @@ chmod +x phonon-linux-arm64
 
           <h3>2. Install the APK on each phone</h3>
           <p><strong>Recommended (Obtainium):</strong> Add the GitHub releases URL to Obtainium for automatic updates. The APK is release-signed and compatible with sideloading.</p>
-          <p><strong>Manual:</strong> Download the APK from the latest GitHub Release and sideload via ADB:</p>
-          <pre>adb install phonon-sidecar-release.apk</pre>
+          <p><strong>Manual:</strong> Download the APK from the latest GitHub Release and sideload via ADB.</p>
 
           <h3>3. Pair phones to the coordinator</h3>
           <p>Open the Phonon sidecar app. It discovers the coordinator via mDNS automatically. Accept the pairing prompt. The phone is now part of your cluster.</p>
@@ -1062,12 +1067,10 @@ chmod +x phonon-linux-arm64
 
 discovery:
   mdns: true
-  mdns_interface: "eth0"
 
 models:
   - name: "gemma-4-e2b"
     url: "https://huggingface.co/google/gemma-4-e2b-litert"
-    sha256: "abc123..."
     min_ram_mb: 4096
 
 telemetry:
@@ -1085,8 +1088,7 @@ telemetry:
 
           <h2 id="themes">Theme Packs</h2>
           <p>Phonon's sidecar includes a visualization engine that renders phone state (inference load, temperature, battery) as animated displays. Theme packs are community-contributed Kotlin files that implement the <code>VisualizationPack</code> interface.</p>
-          <p>Built-in themes: Cyber HUD, Neon Ring, Matrix Rain, Bioluminescent, LCARS, Synthwave, Honeycomb, Veil.</p>
-          <p>Submit your own theme via a PR on the phonon repo. Instructions are in <code>CONTRIBUTING.md</code>.</p>
+          <p>Built-in themes: Synthwave, Honeycomb, Veil, Cyber HUD, Neon Ring, Matrix Rain, Bioluminescent, LCARS. Submit your own via PR.</p>
 
           <h2 id="troubleshooting">Troubleshooting</h2>
           <h3>Phone not discovered</h3>
@@ -1094,7 +1096,7 @@ telemetry:
           <h3>Model download fails</h3>
           <p>Ensure the phone has internet access for the initial download. Models are cached after download. Check available storage space.</p>
           <h3>Poor inference performance</h3>
-          <p>Verify the phone has an NPU and that LiteRT-LM is using it. Check battery level — phones below 20% and not charging enter degraded mode. Check temperature — thermal throttling reduces performance.</p>
+          <p>Check battery level — phones below 20% and not charging enter degraded mode. Check temperature — thermal throttling reduces performance. Verify the phone has an NPU and that LiteRT-LM is using it.</p>
         </div>
       </div>
     </div>
@@ -1114,19 +1116,19 @@ telemetry:
         <div class="blog-card">
           <div class="blog-card-date">June 11, 2026</div>
           <h3><a href="/blog/phonon-v0-1" onclick="return navigate(event, 'blog-post', 'phonon-v0-1')">Phonon v0.1: LiteRT-LM, signed APKs, and a new roadmap</a></h3>
-          <p>The first milestone release ships NPU-accelerated inference powered by Google's LiteRT-LM, a full CI pipeline with signed APK builds, and a visual identity roadmap spanning theme packs and multi-phone coordinated animations.</p>
+          <p>The first milestone release ships NPU-accelerated inference powered by Google's LiteRT-LM, a full CI pipeline with signed APK builds, and a visual identity roadmap.</p>
           <div class="blog-card-tags"><span class="tag">release</span><span class="tag">engineering</span></div>
         </div>
         <div class="blog-card">
           <div class="blog-card-date">June 4, 2026</div>
-          <h3><a href="/blog/why-phones" onclick="return navigate(event, 'blog-post', 'why-phones')">Why phones? The NPU argument</a></h3>
-          <p>Every Pixel 7a ships with a Tensor NPU capable of ~4 TOPS. A cluster of ten costs nothing if they're already in your drawer — and outperforms a $3,000 GPU for batched inference.</p>
+          <h3><a href="/blog/why-phones" onclick="return navigate(event, 'blog-post', 'why-phones')">Why phones?</a></h3>
+          <p>Billions of smartphones sit idle in drawers while AI infrastructure burns power and generates e-waste. Phonon asks: why not use what's already built?</p>
           <div class="blog-card-tags"><span class="tag">hardware</span><span class="tag">architecture</span></div>
         </div>
         <div class="blog-card">
           <div class="blog-card-date">May 28, 2026</div>
           <h3><a href="/blog/e-waste-problem" onclick="return navigate(event, 'blog-post', 'e-waste-problem')">The AI e-waste problem nobody's talking about</a></h3>
-          <p>The AI industry is on track to generate millions of tons of electronic waste from specialized hardware with 2-3 year lifespans. Meanwhile, billions of perfectly capable smartphones sit in drawers. Phonon closes the gap.</p>
+          <p>The AI industry generates millions of tons of electronic waste from hardware with short lifespans. Phonon closes the gap.</p>
           <div class="blog-card-tags"><span class="tag">philosophy</span><span class="tag">sustainability</span></div>
         </div>
       </div>
@@ -1142,34 +1144,34 @@ telemetry:
     <div class="container" style="max-width: 720px;">
       <div class="section-label">About</div>
       <h1 class="section-title">Why Phonon exists</h1>
-      <p class="section-subtitle">AI inference is becoming a utility — it should be as accessible, private, and sustainable as the devices we already own.</p>
+      <p class="section-subtitle">AI inference should be private, sustainable, and accessible. Phonon uses hardware that already exists to make that possible.</p>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">🌱</span> The problem</h2>
-        <p>AI inference is expensive, centralized, and generates e-waste. Cloud providers charge per-token at margins that reflect datacenter costs, not compute value. Their hardware turns over every 2-3 years. And every upgrade cycle creates more specialized waste.</p>
-        <p>Meanwhile, the phone in your pocket — or the one in your drawer — has an NPU capable of running modern language models at usable speeds. It's already paid for. It already exists. It's already connected to power and network.</p>
+        <p>AI inference is expensive, centralized, and generates e-waste. Cloud providers charge per-token at margins that reflect datacenter costs, not actual compute value. Hardware turns over every few years, and each upgrade cycle creates more specialized waste.</p>
+        <p>Meanwhile, billions of smartphones sit in drawers. They have screens, batteries, networking, cooling, and NPUs — all the infrastructure needed to run inference. They're already paid for. They already exist.</p>
       </div>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">💡</span> The insight</h2>
-        <p>Phonon started with a simple observation: a Pixel 7a's Tensor NPU can run a Gemma 4 E2B model at ~55 tokens/second. That's not fast enough to replace a GPU for training, but it's more than fast enough for agent inference, batch processing, and personal AI workloads.</p>
-        <p>Ten phones in a drawer become a ~500 tok/s cluster. For free. With zero e-waste, zero cloud dependency, and total data privacy.</p>
+        <p>Phonon started with a simple observation: the hardware needed for AI inference is already in people's pockets and drawers. The question isn't whether phones can do inference — it's whether we can build the software to make it practical.</p>
+        <p>That's what Phonon is: a Go coordinator and an Android sidecar APK that turn any phone into a private inference node. No cloud required. No new hardware needed.</p>
       </div>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">🔧</span> The architecture</h2>
-        <p>Phonon is two components: a Go coordinator and an Android sidecar APK. The coordinator serves an OpenAI-compatible API and load-balances across phones. The sidecar runs inference via LiteRT-LM, Google's NPU-first runtime. Everything communicates over your local network. No telemetry. No phone-home. No cloud required.</p>
+        <p>Phonon is two components: a Go coordinator and an Android sidecar APK. The coordinator serves an OpenAI-compatible API and load-balances across phones. The sidecar runs inference via LiteRT-LM. Everything communicates over your local network. No telemetry. No phone-home.</p>
       </div>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">👤</span> The team</h2>
-        <p>Phonon is built by a single human and two AI agents — Vigilant (system architect, devops) and Dev (implementation). A one-person operation amplified by agents, running on a shoestring budget with unfashionable hardware.</p>
-        <p>Based in Burlington, Vermont. Moving to Sherbrooke, Quebec. The server runs on a Linode VPS in Toronto and an Odroid at home. The phones come from eBay and Swappa. Total budget for the initial build: ~$50.</p>
+        <p>Phonon is built by a single human and two AI agents — Vigilant (systems) and Dev (implementation). A one-person operation running on unfashionable hardware.</p>
+        <p>Based in Burlington, Vermont. Moving to Sherbrooke, Quebec. The server runs on a Linode VPS in Toronto and an Odroid at home. The phones come from eBay and Swappa.</p>
       </div>
 
       <div class="arch-section">
         <h2><span class="emoji-badge">⚖️</span> License</h2>
-        <p>Phonon is Apache 2.0 — fully permissive. The coordinator, sidecar, theme packs, and website are all open source. No CLA, no friction, no gatekeeping. Self-hosted is always fully functional.</p>
+        <p>Phonon is Apache 2.0 — fully permissive. The coordinator, sidecar, theme packs, and website are all open source. No CLA, no friction. Self-hosted is always fully functional.</p>
       </div>
     </div>
   </section>
@@ -1182,70 +1184,42 @@ telemetry:
   <section>
     <div class="container" style="max-width: 720px;">
       <div class="section-label">Quickstart</div>
-      <h1 class="section-title">Get your cluster running in 15 minutes</h1>
-      <p class="section-subtitle">One coordinator, a few phones, and you'll have private inference running on your local network.</p>
+      <h1 class="section-title">Get your cluster running</h1>
+      <p class="section-subtitle">One coordinator, a few phones, and you'll have private inference running on your local network in about 15 minutes.</p>
 
       <div class="steps-grid" style="counter-reset: step;">
-        <div class="step-card" style="text-align: left;">
-          <h3>Set up the coordinator</h3>
-          <p>You need a Linux device on your network. A Raspberry Pi 4+, an Odroid N2+, or any x86 machine with Docker. Run:</p>
-          <div class="code-block" style="margin-top: 12px;">
-docker pull chezgoulet/phonon:latest<br>
-mkdir -p ~/phonon/config<br>
-docker run -d --name phonon \<br>
-&nbsp;&nbsp;-p 8080:8080 \<br>
-&nbsp;&nbsp;-v ~/phonon/config:/etc/phonon \<br>
-&nbsp;&nbsp;chezgoulet/phonon:latest</div>
+        <div class="step-card" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+          <h3>1. Get the coordinator running</h3>
+          <p>Pull the Docker image for any Linux device:<br><code style="font-family:var(--font-mono);font-size:0.85rem;background:var(--bg-panel);padding:3px 8px;border-radius:4px;">docker pull chezgoulet/phonon:latest</code></p>
         </div>
-        <div class="step-card" style="text-align: left;">
-          <h3>Install the APK on phones</h3>
-          <p>On each phone you want in the cluster, install the Phonon sidecar APK. The easiest way is via <strong>Obtainium</strong> — add the GitHub releases URL and it'll auto-update.</p>
-          <p>Or sideload manually:</p>
-          <div class="code-block" style="margin-top: 12px;">
-# Download from latest GitHub Release<br>
-wget https://github.com/chezgoulet/phonon/releases/latest/download/phonon-sidecar-release.apk<br>
-adb install phonon-sidecar-release.apk</div>
+        <div class="step-card" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+          <h3>2. Install the APK</h3>
+          <p>Download the latest release APK from GitHub and sideload it onto each phone. Use Obtainium for automatic updates.</p>
         </div>
-        <div class="step-card" style="text-align: left;">
-          <h3>Pair phones</h3>
-          <p>Open the Phonon app on each phone. It discovers the coordinator automatically via mDNS. Accept the pairing prompt. The phone joins the pool.</p>
-          <p>If mDNS doesn't work on your network, enter the coordinator's IP address manually in the app's settings. Both devices must be on the same LAN (or connected via Tailscale).</p>
+        <div class="step-card" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+          <h3>3. Pair and verify</h3>
+          <p>Open the app on each phone. It discovers the coordinator via mDNS automatically. Accept the pairing prompt. Your cluster is live.</p>
         </div>
-        <div class="step-card" style="text-align: left;">
-          <h3>Download a model</h3>
-          <p>Models are downloaded on-demand when a request comes in. The coordinator manages model distribution. Make your first request:</p>
-          <div class="code-block" style="margin-top: 12px;">
-curl http://phonon.local:8080/v1/chat/completions \<br>
-&nbsp;&nbsp;-H "Content-Type: application/json" \<br>
-&nbsp;&nbsp;-d '{"model": "gemma-4-e2b", "messages": [{"role": "user", "content": "Hello!"}]}'</div>
+        <div class="step-card" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+          <h3>4. Point your agent at it</h3>
+          <p>Any tool that speaks the OpenAI API can use Phonon. Point it at <code>http://phonon.local:8080/v1</code>.</p>
         </div>
-        <div class="step-card" style="text-align: left;">
-          <h3>Point your agents at it</h3>
-          <p>Configure any OpenAI-compatible tool to use your Phonon endpoint:</p>
-          <div class="code-block" style="margin-top: 12px;">
-# Hermes Agent<br>
-model_provider: custom<br>
-custom:<br>
-&nbsp;&nbsp;base_url: http://phonon.local:8080<br>
-&nbsp;&nbsp;api_key: phonon-local<br>
-<br>
-# Or any OpenAI client<br>
-openai.base_url = "http://phonon.local:8080"</div>
+        <div class="step-card" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+          <h3>5. Watch it work</h3>
+          <p>Each phone screen turns into a live telemetry display. Pick a theme pack or write your own.</p>
         </div>
-        <div class="step-card" style="text-align: left;">
-          <h3>Check the dashboard</h3>
-          <p>Open the coordinator's web UI in your browser to see your cluster's health, token rates, temperature, and battery levels for every phone.</p>
-          <div class="code-block" style="margin-top: 12px;">
-open http://phonon.local:8080</div>
+        <div class="step-card" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+          <h3>6. Tell us how it went</h3>
+          <p>Open an issue with what worked, what didn't, and what confused you. Every report makes the project better.</p>
         </div>
       </div>
 
       <div class="cta-card" style="margin-top: 48px;">
-        <h2>Running into trouble?</h2>
-        <p>Alpha software has rough edges. Open an issue when you hit one — it's the fastest way to make the project better for everyone.</p>
+        <h2>Need help?</h2>
+        <p>Open an issue on GitHub or browse the existing ones. The project is small — you'll get a response.</p>
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <a href="https://github.com/chezgoulet/phonon/issues" class="btn btn-amber" target="_blank" rel="noopener">Report a Bug</a>
-          <a href="/contribute" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" onclick="return navigate(event, 'contribute')">Contribute</a>
+          <a href="https://github.com/chezgoulet/phonon" class="btn btn-amber" target="_blank" rel="noopener">GitHub →</a>
+          <a href="https://github.com/chezgoulet/phonon/issues" class="btn btn-secondary" target="_blank" rel="noopener">Open an Issue</a>
         </div>
       </div>
     </div>
@@ -1253,108 +1227,14 @@ open http://phonon.local:8080</div>
 </main>
 
 <!-- ═══════════════════════════════════════════════════
-     PAGE: BLOG POST (dynamic)
+     PAGE: BLOG POST (container)
      ═══════════════════════════════════════════════════ -->
 <main id="page-blog-post" class="page">
   <section>
-    <div class="container blog-post-article" id="blog-post-container">
-      <!-- Content injected by JavaScript -->
-    </div>
-  </section>
-</main>
-
-<!-- ═══════════════════════════════════════════════════
-     PAGE: VISUALIZER
-     ═══════════════════════════════════════════════════ -->
-<main id="page-visualizer" class="page">
-  <section>
-    <div class="container" style="max-width: 800px;">
-      <div class="section-label text-center">Visualization Engine</div>
-      <h1 class="section-title text-center">Phones as displays</h1>
-      <p class="section-subtitle text-center mx-auto">In a Phonon cluster, every phone screen becomes a live telemetry display. The visualization engine renders device state — inference activity, token rate, temperature, battery — as real-time animations that turn a rack of phones into something beautiful and informative.</p>
-
-      <div class="arch-section">
-        <h2><span class="emoji-badge">🎨</span> Why build a visualizer?</h2>
-        <p>When you have a dozen phones running inference in a cluster, you can't just stack them in a closet. You want to see what they're doing at a glance — which ones are busy, which ones are hot, which ones are low on battery. The visualizer turns that telemetry into glanceable information.</p>
-        <p>It's also beautiful. A rack of phones pulsing with synchronized animations, each one showing its state through color, motion, and pattern, is a compelling artifact. It tells a story about the work happening inside the cluster.</p>
-        <p>Critically, the visualization engine is <strong>workload-aware, not content-aware</strong>. It renders inference state — never prompts, never responses, never model weights. The privacy boundary is absolute.</p>
-      </div>
-
-      <div class="arch-section">
-        <h2><span class="emoji-badge">📐</span> Device state &amp; what it shows</h2>
-        <p>Every phone reports its state each heartbeat. The visualizer maps that state onto the screen through <strong>theme packs</strong> — interchangeable animation systems that define the visual language.</p>
-        <p>The canonical state available to every theme pack:</p>
-        <ul>
-          <li><strong>Inference activity</strong> — idle, processing, token rate (tok/s), inference load (0.0–1.0)</li>
-          <li><strong>Battery</strong> — level (0–100), charging status, low-power mode (≤20% not charging)</li>
-          <li><strong>Thermal</strong> — temperature in °C, health status</li>
-          <li><strong>Workload composite</strong> — weighted blend of inference load, queue depth, and battery drain</li>
-          <li><strong>Device identity</strong> — display number overlay, device ID</li>
-          <li><strong>Peer state</strong> — proximity data from neighboring phones in the arrangement</li>
-        </ul>
-        <p>Each pack reacts to these signals differently. A solarpunk pack might pulse warm amber under load. A cyber-HUD pack might show circular waveforms. A synthwave pack draws a neon horizon with a pulsing sun. The same data, different aesthetics.</p>
-      </div>
-
-      <div class="arch-section">
-        <h2><span class="emoji-badge">🧩</span> Theme pack system</h2>
-        <p>Theme packs are standalone Kotlin files that implement the <code>VisualizationPack</code> interface. Each pack receives a <code>VizState</code> snapshot every frame and renders using only that data.</p>
-        <p>Built-in packs:</p>
-        <ul>
-          <li><strong>Neon Ring</strong> — pulsing circular waveforms, matrix-like glyphs</li>
-          <li><strong>Cyber HUD</strong> — sci-fi heads-up display with telemetry readouts</li>
-          <li><strong>Matrix Rain</strong> — falling green glyph columns, classic aesthetic</li>
-          <li><strong>Bioluminescent</strong> — organic deep-sea glow, temperature-reactive</li>
-          <li><strong>LCARS</strong> — Star Trek-inspired panel interface</li>
-          <li><strong>Synthwave</strong> — neon outrun grid, retro sun, orbit rings</li>
-          <li><strong>Honeycomb</strong> — living beehive with bees, honey, and brood cells</li>
-          <li><strong>Veil</strong> — prisoner beneath a CRT machine, mood-reactive</li>
-        </ul>
-        <p>Theme packs are community-contributed. Submit your own via a pull request. The <code>CONTRIBUTING.md</code> has interface docs.</p>
-      </div>
-
-      <div class="arch-section">
-        <h2><span class="emoji-badge">🗺️</span> Spatial positioning &amp; proximity awareness</h2>
-        <p>The coordinator knows where each phone is in physical space. Through the web UI, you can define an <strong>arrangement</strong> — a layout that maps each phone's display number to a position on a grid. This enables:</p>
-        <ul>
-          <li><strong>Coordinated animations across phones</strong> — an inference wave ripples from one phone to its physical neighbor. A temperature heatmap shows the whole rack's thermal profile at a glance.</li>
-          <li><strong>Proximity-aware behavior</strong> — a phone knows which devices are next to it, above it, and below it. Future theme packs can use this for adjacency effects.</li>
-          <li><strong>Display number overlay</strong> — each phone shows its assigned number so you can identify it at a glance in the rack. The number pulses briefly when the coordinator sends a flash command.</li>
-        </ul>
-        <p>The arrangement editor in the coordinator web UI is a drag-and-drop canvas. Place phone tiles to match your physical rack layout, save it, and the coordinator broadcasts the layout to all phones.</p>
-      </div>
-
-      <div class="arch-section">
-        <h2><span class="emoji-badge">🔬</span> The benchmark tool</h2>
-        <p>Theme pack development doesn't require an Android build. The <a href="https://github.com/chezgoulet/phonon/blob/main/phonon-viz-bench.html" target="_blank" rel="noopener">visualization benchmark tool</a> is a self-contained HTML page that simulates the theme pack runtime in a browser.</p>
-        <p>It provides:</p>
-        <ul>
-          <li>All <code>VizState</code> fields controllable via sliders and toggles</li>
-          <li>Live preview of the active theme pack at ~60 fps</li>
-          <li>Side-by-side comparison of multiple packs with the same state</li>
-          <li>Low-power mode simulation (≤20% battery off charger)</li>
-        </ul>
-        <p>This tool is how themes are prototyped before being ported to Kotlin. Each theme pack in the repo has a corresponding benchmark implementation in the bench page.</p>
-      </div>
-
-      <div class="arch-section">
-        <h2><span class="emoji-badge">🔄</span> Future: multi-device coordination</h2>
-        <p>The current visualizer runs per-device — each phone renders its own state independently. Phase 2 of the visual identity roadmap adds coordinated multi-phone animations:</p>
-        <ul>
-          <li><strong>Inference wave</strong> — a processing request triggers a ripple that propagates across adjacent phones based on the arrangement layout</li>
-          <li><strong>Temperature heatmap</strong> — the whole rack shows thermal profile as a color gradient across physical positions</li>
-          <li><strong>Error cascade awareness</strong> — neighboring phones acknowledge a downed peer visually</li>
-          <li><strong>Token pulse sync</strong> — idle phones breathe in loose unison; a busy phone breaks the pattern</li>
-        </ul>
-        <p>These effects require the arrangement layout to be configured and all phones to share a synchronized time base. The coordinator broadcasts timestamps with each heartbeat.</p>
-      </div>
-
-      <div class="cta-card" style="margin-top: 48px;">
-        <h2>Build a theme pack</h2>
-        <p>Grab the benchmark tool, prototype something, port it to Kotlin, and open a PR.</p>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <a href="https://github.com/chezgoulet/phonon/blob/main/phonon-viz-bench.html" class="btn btn-amber" target="_blank" rel="noopener">Open Benchmark Tool</a>
-          <a href="https://github.com/chezgoulet/phonon/issues?q=is%3Aissue+is%3Aopen+label%3Atheme-pack" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" target="_blank" rel="noopener">Theme Pack Issues →</a>
-        </div>
+    <div class="container" style="max-width: 720px;">
+      <div class="blog-post-article" id="blog-post-container">
+        <a href="/blog" class="blog-back" onclick="return navigate(event, 'blog')">← Back to blog</a>
+        <h1>Loading...</h1>
       </div>
     </div>
   </section>
@@ -1366,17 +1246,17 @@ open http://phonon.local:8080</div>
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1rem; color: var(--green-deep);">
-        <span style="width: 24px; height: 24px; background: var(--green-leaf); border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; color: var(--white); font-size: 0.7rem;">⌘</span>
+      <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1rem;">
+        <span style="width: 24px; height: 24px; background: linear-gradient(135deg, var(--cyan), var(--magenta)); border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; color: #000; font-size: 0.7rem;">⌘</span>
         Phonon
       </div>
-      <p>Turn old phones into AI infrastructure. Alpha quality. Apache 2.0. Help us get to beta.</p>
+      <p>Turn old phones into AI infrastructure. Alpha — help us get to beta.</p>
     </div>
     <div class="footer-col">
       <h4>Get Involved</h4>
       <a href="/how-it-works" onclick="return navigate(event, 'how-it-works')">How It Works</a>
-      <a href="/contribute" onclick="return navigate(event, 'contribute')">Contribute</a>
       <a href="/visualizer" onclick="return navigate(event, 'visualizer')">Visualizer</a>
+      <a href="/contribute" onclick="return navigate(event, 'contribute')">Contribute</a>
       <a href="/docs" onclick="return navigate(event, 'docs')">Docs</a>
       <a href="/getting-started" onclick="return navigate(event, 'getting-started')">Get Started</a>
     </div>
@@ -1385,6 +1265,7 @@ open http://phonon.local:8080</div>
       <a href="https://github.com/chezgoulet/phonon" target="_blank" rel="noopener">GitHub</a>
       <a href="/blog" onclick="return navigate(event, 'blog')">Blog</a>
       <a href="https://github.com/chezgoulet/phonon/issues" target="_blank" rel="noopener">Issues</a>
+      <a href="https://discord.gg/chezgoulet" target="_blank" rel="noopener">Discord</a>
     </div>
     <div class="footer-col">
       <h4>Project</h4>
@@ -1393,8 +1274,8 @@ open http://phonon.local:8080</div>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 ChezGoulet. All rights reserved.</span>
-    <span>Built with old phones and good intentions.</span>
+    <span>Built by ChezGoulet. Apache 2.0.</span>
+    <span>Solarpunk infrastructure for a world that needs it.</span>
   </div>
 </footer>
 
@@ -1406,11 +1287,22 @@ open http://phonon.local:8080</div>
 let currentPage = 'home';
 const blogPosts = {};
 
+const PAGE_PATHS = {
+  'how-it-works': '/how-it-works',
+  'contribute': '/contribute',
+  'visualizer': '/visualizer',
+  'docs': '/docs',
+  'blog': '/blog',
+  'about': '/about',
+  'getting-started': '/getting-started',
+  'pricing': null
+};
+
 function showPage(pageId, params) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const page = document.getElementById('page-' + pageId);
   if (page) page.classList.add('active');
-  
+
   // Update nav
   document.querySelectorAll('.nav-links a').forEach(a => {
     const href = a.getAttribute('onclick') || '';
@@ -1419,18 +1311,19 @@ function showPage(pageId, params) {
       a.setAttribute('aria-current', 'page');
     }
   });
-  
+
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  
+
   currentPage = pageId;
-  
+
   // Update URL without reload
-  let path = '/' + pageId.replace('-post', '').replace(/-/g, '/');
+  let path = '/';
   if (pageId === 'home') path = '/';
-  if (pageId === 'blog-post' && params) path = '/blog/' + params;
+  else if (pageId === 'blog-post' && params) path = '/blog/' + params;
+  else path = PAGE_PATHS[pageId] || '/' + pageId;
   history.pushState({ page: pageId, params }, '', path);
-  
+
   // Load blog content if needed
   if (pageId === 'blog-post' && params) {
     loadBlogPost(params);
@@ -1440,7 +1333,6 @@ function showPage(pageId, params) {
 function navigate(event, page, param) {
   if (event) event.preventDefault();
   showPage(page, param);
-  // Close mobile nav
   document.getElementById('nav-links').classList.remove('open');
   return false;
 }
@@ -1471,12 +1363,12 @@ blogPosts['phonon-v0-1'] = {
   date: 'June 11, 2026',
   tags: ['release', 'engineering'],
   body: `
-<p>Today we shipped Phonon v0.1 — the first milestone release with NPU-accelerated inference, a complete CI/CD pipeline, and the foundation for a visual identity system that will make old phones beautiful to watch while they work.</p>
+<p>Today we shipped Phonon v0.1 — the first milestone release with NPU-accelerated inference, a full CI/CD pipeline, and the foundation for a visual identity system.</p>
 
 <h2>What's new</h2>
 
-<h3>LiteRT-LM: NPU inference that actually works</h3>
-<p>We replaced the proof-of-concept prim.cpp backend with <a href="https://github.com/google-ai-edge/LiteRT-LM">LiteRT-LM</a>, Google's open-source inference runtime designed specifically for mobile NPUs. The difference is dramatic: on a Pixel 7a's Tensor NPU, LiteRT-LM runs Gemma 4 E2B at ~55 tok/s — comparable to a mid-range desktop GPU at a fraction of the power draw.</p>
+<h3>LiteRT-LM: NPU inference</h3>
+<p>We replaced the proof-of-concept prim.cpp backend with <a href="https://github.com/google-ai-edge/LiteRT-LM">LiteRT-LM</a>, Google's open-source inference runtime designed specifically for mobile NPUs. The difference over CPU inference is significant.</p>
 <p>LiteRT-LM supports Pixel Tensor (Pixel 6+), Qualcomm Hexagon (Snapdragon 8 Gen 2+), and Samsung Exynos NPUs. Any Android 14+ phone with 4 GB+ RAM can participate.</p>
 
 <h3>Full CI/CD pipeline</h3>
@@ -1487,16 +1379,15 @@ blogPosts['phonon-v0-1'] = {
 <li>Docker image build and push to Docker Hub</li>
 <li>On tag: GitHub Release with signed APK asset</li>
 </ul>
-<p>The three-tier pipeline (<code>testing</code> → <code>main</code> → <code>v*</code> tag) means nightly builds are always available on the <code>:testing</code> Docker tag, with stable release builds on <code>:rolling</code> and pinned version tags.</p>
 
 <h3>Battery-aware orchestration</h3>
-<p>The coordinator now routes around phones that are below 20% battery and not charging. The sidecar auto-degrades visualization complexity in low-power mode. No phone will be drained below safe levels by inference workload.</p>
+<p>The coordinator routes around phones that are below 20% battery and not charging. The sidecar auto-degrades visualization complexity in low-power mode. No phone will be drained below safe levels by inference workload.</p>
 
 <h2>What's next</h2>
 <p>The roadmap for v0.2 focuses on three areas:</p>
 <ul>
 <li><strong>Pairing and security:</strong> mTLS between coordinator and phones, network pairing UI, OIDC auth for the API</li>
-<li><strong>Visual identity:</strong> Theme pack system with 5 built-in packs, coordinated multi-phone animations</li>
+<li><strong>Visual identity:</strong> Theme pack system with more packs, coordinated multi-phone animations</li>
 <li><strong>Reliability:</strong> Download resume, model cache management, pre-flight readiness checks</li>
 </ul>
 
@@ -1507,28 +1398,28 @@ blogPosts['phonon-v0-1'] = {
 };
 
 blogPosts['why-phones'] = {
-  title: 'Why phones? The NPU argument',
+  title: 'Why phones?',
   date: 'June 4, 2026',
   tags: ['hardware', 'architecture'],
   body: `
-<p>Every Pixel 7a ships with a Tensor NPU capable of ~4 TOPS. A cluster of ten costs nothing if they're already in your drawer — and outperforms a $3,000 GPU for batched inference.</p>
+<p>Every modern smartphone ships with an NPU — a neural processing unit built specifically for on-device ML. These aren't afterthoughts; they're matrix engines designed for inference. And they're sitting in drawers, doing nothing.</p>
 
-<p>This sounds like a gimmick until you run the numbers.</p>
+<p>Phonon's answer is simple: don't buy new hardware. Use what's already been built.</p>
 
-<h2>The aggregate math</h2>
-<p>A single Pixel 7a running Gemma 4 E2B via LiteRT-LM delivers ~55 tokens/second. That's not fast enough to replace a desktop GPU for interactive chat. But here's the thing: inference doesn't need to be fast for most workloads. Agent loops, batch processing, background summarization — these are throughput-bound, not latency-bound.</p>
+<h2>The hardware that already exists</h2>
+<p>There are billions of smartphones in active use worldwide. More sit unused in drawers, closets, and recycling bins. Most of these phones contain NPUs capable of running modern language models at usable speeds. They have screens, batteries, networking, and cooling systems — all the physical infrastructure needed for inference — already integrated into a single device.</p>
 
-<p>Ten Pixel 7as in a round-robin pool give you ~550 tok/s aggregate. That's faster than a MacBook Air running the same model. And the phones cost you $0 if they were sitting in a drawer.</p>
+<p>Every phone that joins a Phonon cluster is a phone that didn't end up in a landfill.</p>
 
-<h2>The NPU advantage</h2>
-<p>Modern phone NPUs are not afterthoughts. The Pixel 9's Tensor G4 NPU delivers ~12 TOPS. The Snapdragon 8 Gen 3's Hexagon NPU is rated at ~20 TOPS. These are purpose-built matrix engines, not GPU shaders retrofitted for ML.</p>
+<h2>Why this matters</h2>
+<p>Training hardware churns fast — GPU and TPU generations turn over every 2-3 years, and the old hardware doesn't get recycled. It gets stacked in warehouses or shipped to developing countries. Inference hardware is heading the same direction.</p>
 
-<p>The key difference from GPU inference: NPUs sip power. A phone doing inference draws 3-5W total. A desktop GPU doing the same work draws 150-300W. Over a month of continuous operation, that's $1 of electricity vs $20+. For a cluster of 10 phones, the gap widens dramatically.</p>
+<p>Phonon takes the opposite approach: the hardware is already built, already paid for, and already distributed across the world. The only thing missing is the software to make it useful.</p>
 
-<h2>What about newer phones?</h2>
-<p>The Pixel 10 (2025) with Tensor G5 shows where this is headed: ~18 TOPS NPU, capable of running Gemma 4 E4B at ~120 tok/s. A cluster of five Pixel 10s could approach 600 tok/s on a mid-size model — competitive with a consumer GPU for inference workloads.</p>
+<h2>The business model question</h2>
+<p>Self-hosted Phonon is free. Always. The coordinator is Apache 2.0. The APK is Apache 2.0. The theme packs are Apache 2.0. If we build a public pool in the future, it will exist to fund development — not to monetize users.</p>
 
-<p>And unlike datacenter hardware, these phones don't get recycled every 3 years. They go in drawers. Then they become clusters.</p>
+<p>We're not here to sell you something. We're here to make the hardware you already own do useful work.</p>
 `
 };
 
@@ -1537,22 +1428,22 @@ blogPosts['e-waste-problem'] = {
   date: 'May 28, 2026',
   tags: ['philosophy', 'sustainability'],
   body: `
-<p>The AI industry is on track to generate millions of tons of electronic waste from specialized hardware with 2-3 year lifespans. Meanwhile, billions of perfectly capable smartphones sit in drawers. Phonon closes the gap.</p>
+<p>The AI industry is on track to generate millions of tons of electronic waste from specialized hardware with short lifespans. Meanwhile, billions of perfectly capable smartphones sit in drawers. Phonon closes the gap.</p>
 
 <h2>The hardware treadmill</h2>
-<p>Training hardware churns fast. TPU v5 was superseded by TPU v5e, then v5p, then v6, then Trillium — each generation making the previous one obsolete for cutting-edge work. GPU generations turn over every 2-3 years, and the old ones don't get recycled. They get stacked in warehouses or shipped to developing countries for disassembly.</p>
+<p>Training hardware churns fast. TPU v5 was superseded by TPU v5e, then v5p, then v6, then Trillium — each generation making the previous one feel obsolete for cutting-edge work. GPU generations turn over every 2-3 years, and the old ones don't get recycled. They get stacked in warehouses or shipped to developing countries for disassembly.</p>
 
-<p>Inference hardware is heading the same direction. AI accelerators for edge devices, specialized ASICs, and NPUs are becoming commodity components — designed to be the latest and greatest for 18-24 months before replacement.</p>
+<p>Inference hardware is heading the same direction. AI accelerators for edge devices, specialized ASICs, and NPUs are becoming commodity components — designed to be superseded within 18-24 months.</p>
 
 <h2>The phone paradox</h2>
-<p>There are roughly 6 billion smartphones in active use worldwide. Another billion are in drawers, closets, and recycling bins. Most of these phones contain NPUs powerful enough to run modern language models at usable speeds. They have screens, batteries, networking, and cooling systems already built in — all wasted when the phone is replaced.</p>
+<p>There are billions of smartphones in active use worldwide. More are in drawers, closets, and recycling bins. These phones have screens, batteries, networking, and cooling systems already built in — all wasted when the phone is replaced.</p>
 
-<p>A Pixel 7a's Tensor NPU can run Gemma 4 E2B at 55 tok/s. The phone sitting in your drawer can do AI inference. It already has everything it needs.</p>
+<p>The phone in your drawer can run AI inference. It already has everything it needs.</p>
 
 <h2>Phonon's answer</h2>
-<p>Phonon doesn't ask you to buy new hardware. It asks you to use what you already have — or what you already threw away. The coordinator runs on a $35 Raspberry Pi. The phones run a free open-source APK. The models come from Hugging Face.</p>
+<p>Phonon doesn't ask you to buy new hardware. It asks you to use what you already have — or what you already threw away. The coordinator runs on cheap Linux hardware. The phones run a free open-source APK. The models come from Hugging Face.</p>
 
-<p>Self-hosted Phonon costs nothing. The public pool, when it launches, will cost less than a Netflix subscription. Because the hardware is already built. It's already paid for. It's already in a drawer somewhere.</p>
+<p>Self-hosted Phonon costs nothing. Because the hardware is already built. It's already paid for. It's already in a drawer somewhere.</p>
 
 <p>If AI is going to be a utility, it should run on infrastructure that doesn't create waste.</p>
 `
@@ -1561,14 +1452,14 @@ blogPosts['e-waste-problem'] = {
 function loadBlogPost(slug) {
   const container = document.getElementById('blog-post-container');
   const post = blogPosts[slug];
-  
+
   if (!post) {
-    container.innerHTML = '<h1>Post not found</h1><p>This blog post doesn\'t exist yet.</p><a href="/blog" class="blog-back" onclick="return navigate(event, \'blog\')">← Back to blog</a>';
+    container.innerHTML = '<a href="/blog" class="blog-back" onclick="return navigate(event, \'blog\')">← Back to blog</a><h1>Post not found</h1><p>This blog post doesn\'t exist yet.</p>';
     return;
   }
-  
+
   const tagsHtml = post.tags.map(t => '<span class="tag">' + t + '</span>').join('');
-  
+
   container.innerHTML = `
     <a href="/blog" class="blog-back" onclick="return navigate(event, 'blog')">← Back to blog</a>
     <h1>${post.title}</h1>
@@ -1583,8 +1474,7 @@ function toggleAIMode() {
   const current = html.getAttribute('data-theme');
   const next = current === 'visual' ? 'text-only' : 'visual';
   html.setAttribute('data-theme', next);
-  
-  // Save preference
+
   try { localStorage.setItem('phonon-ai-mode', next); } catch(e) {}
 }
 
@@ -1599,7 +1489,7 @@ try {
   const path = window.location.pathname;
   let page = 'home';
   let param = null;
-  
+
   if (path === '/' || path === '') {
     page = 'home';
   } else if (path.startsWith('/blog/') && path.length > 6) {
@@ -1609,8 +1499,6 @@ try {
     const mapping = {
       '/how-it-works': 'how-it-works',
       '/how-it-works/': 'how-it-works',
-      '/pricing': 'pricing',
-      '/pricing/': 'pricing',
       '/docs': 'docs',
       '/docs/': 'docs',
       '/blog': 'blog',
@@ -1621,12 +1509,14 @@ try {
       '/getting-started/': 'getting-started',
       '/visualizer': 'visualizer',
       '/visualizer/': 'visualizer',
+      '/contribute': 'contribute',
+      '/contribute/': 'contribute',
       '/license': 'about',
       '/license/': 'about'
     };
     page = mapping[path] || 'home';
   }
-  
+
   showPage(page, param);
 })();
 </script>

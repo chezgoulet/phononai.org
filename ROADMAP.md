@@ -1,6 +1,6 @@
 # Phonon Roadmap
 
-## Phase 1 — Pool Mode (Alpha) *[Current — v0.0.1]*
+## Phase 1 — Pool Mode (Alpha) *[Current]*
 
 - [x] Coordinator Go binary — HTTP server, mDNS discovery, YAML config, web UI
 - [x] Phone sidecar Kotlin APK — foreground service, heartbeat, inference via LiteRT-LM
@@ -42,8 +42,6 @@
 - [ ] **Community theme pack system**
   - [ ] Theme pack contract documented
   - [ ] PR-based submission
-  - [ ] Credits for accepted themes
-  - [ ] Future: marketplace
 
 ## Phase 3 — Home Assistant Integration
 
@@ -51,29 +49,14 @@
 - [ ] Each phone exposed as a device with sensors: temperature, battery, inference load, model, state
 - [ ] Coordinator exposes Prometheus metrics endpoint consumable by HA
 - [ ] Automations: route around overheating phones, disable non-critical routing off-hours, notify on error states
-- [ ] No phononai.org account required — purely local
+- [ ] No account required — purely local
 
-## Phase 4 — Business Model & Infrastructure
+## Phase 4 — Shard Mode
 
-- [ ] **phononai.org website** — Static site: project explainer, donation model, subscription tiers
-- [ ] **Donation pipeline** — Intake, testing, commissioning, credit issuance
-  - [ ] Fair market value via Swappa/eBay comps
-  - [ ] Per-phone case-by-case credit assignment
-  - [ ] Credit offsets usage overage (monthly subscription still due)
-- [ ] **Public pool metering** — Authentik multi-tenancy + token tracking + Stripe billing
-  - [ ] Flat $9/month Basic tier
-  - [ ] Overage at cost+margin
-  - [ ] Priority scheduling for donors
-- [ ] **Phonon + Methexis integration** — Inference layer + knowledge infrastructure, fully self-hosted
-- [ ] **Hardware kits** — Cooling racks, power hubs, USB-C ethernet — everything but the phones
+- [ ] Multi-phone model sharding (running larger models across the pool)
+- [ ] Dynamic pool/shard mode switching
 
-## Phase 5 — Shard Mode
-
-- [ ] prima.cpp integration for CPU-based pipeline parallelism
-- [ ] Multi-phone model sharding (30B+ models across the pool)
-- [ ] Dynamic pool↔shard mode switching
-
-## Phase 6 — NPU-Accelerated Sharding (The Moat)
+## Phase 5 — NPU-Accelerated Sharding
 
 - [ ] Cross-phone NPU graph slicing
 - [ ] KV cache distribution across phones
@@ -82,4 +65,4 @@
 
 ---
 
-*Self-hosted pool is always free. phononai.org funds development and operations.*
+*Self-hosted is always free. All software is open source (Apache 2.0).*
