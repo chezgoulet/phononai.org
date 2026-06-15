@@ -892,32 +892,70 @@ $ phonon coordinator --config cluster.yaml
      ═══════════════════════════════════════════════════ -->
 <main id="page-visualizer" class="page">
   <section>
-    <div class="container" style="max-width: 1000px;">
-      <div class="section-label text-center">Visualization Bench</div>
-      <h1 class="section-title text-center">Theme packs, live</h1>
-      <p class="section-subtitle text-center mx-auto">This is the same benchmark tool used to develop theme packs. Tweak VizState sliders and watch packs react in real time. Each pack is a self-contained Kotlin file in the phonon repo.</p>
+    <div class="container" style="max-width: 900px;">
+      <div class="section-label text-center">Visualization Packs</div>
+      <h1 class="section-title text-center">Theme gallery</h1>
+      <p class="section-subtitle text-center mx-auto">Each pack is a self-contained Canvas 2D renderer in the sidecar APK, mirrored in the JS bench for in-browser prototyping. Screenshots below show each theme in its mid-activity state.</p>
 
-      <div class="visualizer-frame">
-        <iframe src="bench.html" title="Phonon Visualization Bench"></iframe>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:24px; margin-top:48px;">
+
+        <div class="feature-card" style="padding:0; overflow:hidden;">
+          <div style="aspect-ratio:16/9; background:linear-gradient(135deg, #0a0a1a 0%, #1a0030 50%, #0a0a1a 100%); position:relative; display:flex; align-items:center; justify-content:center; color:var(--ink-faint); font-size:0.85rem;">
+            <span>[Neon Ring screenshot]</span>
+          </div>
+          <div style="padding:20px;">
+            <h3 style="margin-bottom:4px;">Neon Ring</h3>
+            <p style="color:var(--ink-soft); font-size:0.875rem;">A living reactor core: palette, turbulence, orbital collisions and energy arcs shift smoothly from calm idle to a roiling high-inference state.</p>
+          </div>
+        </div>
+
+        <div class="feature-card" style="padding:0; overflow:hidden;">
+          <div style="aspect-ratio:16/9; background:linear-gradient(180deg, #000 0%, #0a2f1a 50%, #000 100%); position:relative; display:flex; align-items:center; justify-content:center; color:var(--ink-faint); font-size:0.85rem;">
+            <span>[Bioluminescent Dreamscape screenshot]</span>
+          </div>
+          <div style="padding:20px;">
+            <h3 style="margin-bottom:4px;">Bioluminescent Dreamscape</h3>
+            <p style="color:var(--ink-soft); font-size:0.875rem;">Free-swimming bioluminescent organisms drift through the abyss, their luminous bodies tracing sinuous paths in the dark.</p>
+          </div>
+        </div>
+
+        <div class="feature-card" style="padding:0; overflow:hidden;">
+          <div style="aspect-ratio:16/9; background:linear-gradient(180deg, #050510 0%, #0d0d2b 50%, #050510 100%); position:relative; display:flex; align-items:center; justify-content:center; color:var(--ink-faint); font-size:0.85rem;">
+            <span>[Matrix Rain screenshot]</span>
+          </div>
+          <div style="padding:20px;">
+            <h3 style="margin-bottom:4px;">Matrix Rain</h3>
+            <p style="color:var(--ink-soft); font-size:0.875rem;">CRT phosphor rain whose speed tracks workload, brightness tracks battery, and hue bends toward red as the phone heats up.</p>
+          </div>
+        </div>
+
+        <div class="feature-card" style="padding:0; overflow:hidden;">
+          <div style="aspect-ratio:16/9; background:linear-gradient(135deg, #080820 0%, #001a33 50%, #080820 100%); position:relative; display:flex; align-items:center; justify-content:center; color:var(--ink-faint); font-size:0.85rem;">
+            <span>[Cyber HUD screenshot]</span>
+          </div>
+          <div style="padding:20px;">
+            <h3 style="margin-bottom:4px;">Cyber HUD</h3>
+            <p style="color:var(--ink-soft); font-size:0.875rem;">Tactical heads-up display: perspective wireframe, reactive corner brackets, a radar mapping live peers, and an oscilloscope tracing inference load.</p>
+          </div>
+        </div>
+
+        <div class="feature-card" style="padding:0; overflow:hidden;">
+          <div style="aspect-ratio:16/9; background:linear-gradient(135deg, #050515 0%, #1a1425 50%, #050515 100%); position:relative; display:flex; align-items:center; justify-content:center; color:var(--ink-faint); font-size:0.85rem;">
+            <span>[LCARS screenshot]</span>
+          </div>
+          <div style="padding:20px;">
+            <h3 style="margin-bottom:4px;">LCARS</h3>
+            <p style="color:var(--ink-soft); font-size:0.875rem;">A structurally faithful Star Trek: TNG Okudagram console — unit-grid elbows, half-pill end-caps, numbered elements, and bracket-grouped readouts.</p>
+          </div>
+        </div>
+
       </div>
 
-      <div class="arch-section" style="max-width: 720px; margin: 0 auto;">
-        <h2><span class="emoji-badge">🧩</span> What you're seeing</h2>
-        <p>The bench simulates the theme pack runtime in your browser. Use the controls on the left to change VizState fields — inference load, battery level, temperature, processing status — and watch the selected pack react in real time at ~60 fps.</p>
-        <p>Each pack you see here is a <code>VisualizationPack</code> implementation in the phonon repo. Prototype new packs in the bench, then port them to Kotlin and open a PR.</p>
-        <ul>
-          <li><strong>Pack selector</strong> — switch between available themes</li>
-          <li><strong>State sliders</strong> — inference load, battery, temperature, queue depth</li>
-          <li><strong>Toggles</strong> — processing mode, charging status, low-power mode</li>
-          <li><strong>Live output</strong> — rendered at full frame rate</li>
-        </ul>
-      </div>
-
-      <div class="cta-card" style="margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto;">
+      <div class="cta-card" style="margin-top:48px; max-width:600px; margin-left:auto; margin-right:auto;">
         <h2>Build your own pack</h2>
-        <p>Grab the bench, prototype something, port it to Kotlin, and open a PR.</p>
-        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-          <a href="/getting-started" class="btn btn-amber" onclick="return navigate(event, 'getting-started')">Get Started</a>
+        <p>Grab the JS bench, prototype something, port it to Kotlin, and open a PR.</p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="https://github.com/chezgoulet/phonon/blob/testing/docs/bench/phonon-viz-bench.html" class="btn btn-amber" target="_blank" rel="noopener">Bench on GitHub →</a>
           <a href="https://github.com/chezgoulet/phonon/issues?q=is%3Aissue+is%3Aopen+label%3Atheme-pack" class="btn btn-secondary" target="_blank" rel="noopener">Theme Pack Issues →</a>
         </div>
       </div>
