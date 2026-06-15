@@ -7,6 +7,8 @@
 <meta name="description" content="Phonon turns old Android phones into a private, local AI inference cluster. Alpha — help us build it.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://phononai.org">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<meta property="og:image" content="https://phononai.org/logo.svg">
 
 <!-- The Phonon palette: midnight, solar-cyan, neon-pink, star-amber, border-purple -->
 
@@ -789,7 +791,7 @@ nav {
         <h2 class="section-title">Three ways to contribute</h2>
         <p class="section-subtitle mx-auto">The fastest path to beta is people like you using it, testing it, and helping us improve it.</p>
       </div>
-      <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="features-grid grid-3">
         <div class="feature-card" style="text-align: center;">
           <div style="font-size: 2.5rem; margin-bottom: 12px;">🔧</div>
           <h3>Test and Report</h3>
@@ -1316,41 +1318,6 @@ window.addEventListener('popstate', function(e) {
     showPage(e.state.page, e.state.params);
   }
 });
-
-
-<p>Today we shipped Phonon v0.1 — the first milestone release with NPU-accelerated inference, a full CI/CD pipeline, and the foundation for a visual identity system.</p>
-
-<h2>What's new</h2>
-
-<h3>LiteRT-LM: NPU inference</h3>
-<p>We replaced the proof-of-concept prim.cpp backend with <a href="https://github.com/google-ai-edge/LiteRT-LM">LiteRT-LM</a>, Google's open-source inference runtime designed specifically for mobile NPUs. The difference over CPU inference is significant.</p>
-<p>LiteRT-LM supports Pixel Tensor (Pixel 6+), Qualcomm Hexagon (Snapdragon 8 Gen 2+), and Samsung Exynos NPUs. Any Android 14+ phone with 4 GB+ RAM can participate.</p>
-
-<h3>Full CI/CD pipeline</h3>
-<p>Every commit to the <code>testing</code> branch triggers:</p>
-<ul>
-<li>NDK cache restoration (saves ~8 minutes per build)</li>
-<li>Release-signed APK build with the production keystore</li>
-<li>Docker image build and push to Docker Hub</li>
-<li>On tag: GitHub Release with signed APK asset</li>
-</ul>
-
-<h3>Battery-aware orchestration</h3>
-<p>The coordinator routes around phones that are below 20% battery and not charging. The sidecar auto-degrades visualization complexity in low-power mode. No phone will be drained below safe levels by inference workload.</p>
-
-<h2>What's next</h2>
-<p>The roadmap for v0.2 focuses on three areas:</p>
-<ul>
-<li><strong>Pairing and security:</strong> mTLS between coordinator and phones, network pairing UI, OIDC auth for the API</li>
-<li><strong>Visual identity:</strong> Theme pack system with more packs, coordinated multi-phone animations</li>
-<li><strong>Reliability:</strong> Download resume, model cache management, pre-flight readiness checks</li>
-</ul>
-
-<h2>Try it</h2>
-<p>Pull the Docker image, install the APK on a phone, and point any OpenAI-compatible agent at it. The full setup takes about 15 minutes.</p>
-<p><a href="/getting-started" class="btn btn-primary" onclick="return navigate(event, 'getting-started')">Get Started →</a></p>
-`
-};
 
 function loadBlogPost(slug) {
   const container = document.getElementById('blog-post-container');
