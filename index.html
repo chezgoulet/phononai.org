@@ -671,6 +671,7 @@ nav {
     <ul class="nav-links" id="nav-links">
       <li><a href="/" onclick="return navigate(event, 'home')" aria-current="page">Home</a></li>
       <li><a href="/how-it-works" onclick="return navigate(event, 'how-it-works')">How It Works</a></li>
+      <li><a href="/visualizer" onclick="return navigate(event, 'visualizer')">Visualizer</a></li>
       <li><a href="/contribute" onclick="return navigate(event, 'contribute')">Contribute</a></li>
       <li><a href="/docs" onclick="return navigate(event, 'docs')">Docs</a></li>
       <li><a href="/blog" onclick="return navigate(event, 'blog')">Blog</a></li>
@@ -1263,6 +1264,103 @@ open http://phonon.local:8080</div>
 </main>
 
 <!-- ═══════════════════════════════════════════════════
+     PAGE: VISUALIZER
+     ═══════════════════════════════════════════════════ -->
+<main id="page-visualizer" class="page">
+  <section>
+    <div class="container" style="max-width: 800px;">
+      <div class="section-label text-center">Visualization Engine</div>
+      <h1 class="section-title text-center">Phones as displays</h1>
+      <p class="section-subtitle text-center mx-auto">In a Phonon cluster, every phone screen becomes a live telemetry display. The visualization engine renders device state — inference activity, token rate, temperature, battery — as real-time animations that turn a rack of phones into something beautiful and informative.</p>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">🎨</span> Why build a visualizer?</h2>
+        <p>When you have a dozen phones running inference in a cluster, you can't just stack them in a closet. You want to see what they're doing at a glance — which ones are busy, which ones are hot, which ones are low on battery. The visualizer turns that telemetry into glanceable information.</p>
+        <p>It's also beautiful. A rack of phones pulsing with synchronized animations, each one showing its state through color, motion, and pattern, is a compelling artifact. It tells a story about the work happening inside the cluster.</p>
+        <p>Critically, the visualization engine is <strong>workload-aware, not content-aware</strong>. It renders inference state — never prompts, never responses, never model weights. The privacy boundary is absolute.</p>
+      </div>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">📐</span> Device state &amp; what it shows</h2>
+        <p>Every phone reports its state each heartbeat. The visualizer maps that state onto the screen through <strong>theme packs</strong> — interchangeable animation systems that define the visual language.</p>
+        <p>The canonical state available to every theme pack:</p>
+        <ul>
+          <li><strong>Inference activity</strong> — idle, processing, token rate (tok/s), inference load (0.0–1.0)</li>
+          <li><strong>Battery</strong> — level (0–100), charging status, low-power mode (≤20% not charging)</li>
+          <li><strong>Thermal</strong> — temperature in °C, health status</li>
+          <li><strong>Workload composite</strong> — weighted blend of inference load, queue depth, and battery drain</li>
+          <li><strong>Device identity</strong> — display number overlay, device ID</li>
+          <li><strong>Peer state</strong> — proximity data from neighboring phones in the arrangement</li>
+        </ul>
+        <p>Each pack reacts to these signals differently. A solarpunk pack might pulse warm amber under load. A cyber-HUD pack might show circular waveforms. A synthwave pack draws a neon horizon with a pulsing sun. The same data, different aesthetics.</p>
+      </div>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">🧩</span> Theme pack system</h2>
+        <p>Theme packs are standalone Kotlin files that implement the <code>VisualizationPack</code> interface. Each pack receives a <code>VizState</code> snapshot every frame and renders using only that data.</p>
+        <p>Built-in packs:</p>
+        <ul>
+          <li><strong>Neon Ring</strong> — pulsing circular waveforms, matrix-like glyphs</li>
+          <li><strong>Cyber HUD</strong> — sci-fi heads-up display with telemetry readouts</li>
+          <li><strong>Matrix Rain</strong> — falling green glyph columns, classic aesthetic</li>
+          <li><strong>Bioluminescent</strong> — organic deep-sea glow, temperature-reactive</li>
+          <li><strong>LCARS</strong> — Star Trek-inspired panel interface</li>
+          <li><strong>Synthwave</strong> — neon outrun grid, retro sun, orbit rings</li>
+          <li><strong>Honeycomb</strong> — living beehive with bees, honey, and brood cells</li>
+          <li><strong>Veil</strong> — prisoner beneath a CRT machine, mood-reactive</li>
+        </ul>
+        <p>Theme packs are community-contributed. Submit your own via a pull request. The <code>CONTRIBUTING.md</code> has interface docs.</p>
+      </div>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">🗺️</span> Spatial positioning &amp; proximity awareness</h2>
+        <p>The coordinator knows where each phone is in physical space. Through the web UI, you can define an <strong>arrangement</strong> — a layout that maps each phone's display number to a position on a grid. This enables:</p>
+        <ul>
+          <li><strong>Coordinated animations across phones</strong> — an inference wave ripples from one phone to its physical neighbor. A temperature heatmap shows the whole rack's thermal profile at a glance.</li>
+          <li><strong>Proximity-aware behavior</strong> — a phone knows which devices are next to it, above it, and below it. Future theme packs can use this for adjacency effects.</li>
+          <li><strong>Display number overlay</strong> — each phone shows its assigned number so you can identify it at a glance in the rack. The number pulses briefly when the coordinator sends a flash command.</li>
+        </ul>
+        <p>The arrangement editor in the coordinator web UI is a drag-and-drop canvas. Place phone tiles to match your physical rack layout, save it, and the coordinator broadcasts the layout to all phones.</p>
+      </div>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">🔬</span> The benchmark tool</h2>
+        <p>Theme pack development doesn't require an Android build. The <a href="https://github.com/chezgoulet/phonon/blob/main/phonon-viz-bench.html" target="_blank" rel="noopener">visualization benchmark tool</a> is a self-contained HTML page that simulates the theme pack runtime in a browser.</p>
+        <p>It provides:</p>
+        <ul>
+          <li>All <code>VizState</code> fields controllable via sliders and toggles</li>
+          <li>Live preview of the active theme pack at ~60 fps</li>
+          <li>Side-by-side comparison of multiple packs with the same state</li>
+          <li>Low-power mode simulation (≤20% battery off charger)</li>
+        </ul>
+        <p>This tool is how themes are prototyped before being ported to Kotlin. Each theme pack in the repo has a corresponding benchmark implementation in the bench page.</p>
+      </div>
+
+      <div class="arch-section">
+        <h2><span class="emoji-badge">🔄</span> Future: multi-device coordination</h2>
+        <p>The current visualizer runs per-device — each phone renders its own state independently. Phase 2 of the visual identity roadmap adds coordinated multi-phone animations:</p>
+        <ul>
+          <li><strong>Inference wave</strong> — a processing request triggers a ripple that propagates across adjacent phones based on the arrangement layout</li>
+          <li><strong>Temperature heatmap</strong> — the whole rack shows thermal profile as a color gradient across physical positions</li>
+          <li><strong>Error cascade awareness</strong> — neighboring phones acknowledge a downed peer visually</li>
+          <li><strong>Token pulse sync</strong> — idle phones breathe in loose unison; a busy phone breaks the pattern</li>
+        </ul>
+        <p>These effects require the arrangement layout to be configured and all phones to share a synchronized time base. The coordinator broadcasts timestamps with each heartbeat.</p>
+      </div>
+
+      <div class="cta-card" style="margin-top: 48px;">
+        <h2>Build a theme pack</h2>
+        <p>Grab the benchmark tool, prototype something, port it to Kotlin, and open a PR.</p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="https://github.com/chezgoulet/phonon/blob/main/phonon-viz-bench.html" class="btn btn-amber" target="_blank" rel="noopener">Open Benchmark Tool</a>
+          <a href="https://github.com/chezgoulet/phonon/issues?q=is%3Aissue+is%3Aopen+label%3Atheme-pack" class="btn btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--white);" target="_blank" rel="noopener">Theme Pack Issues →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ═══════════════════════════════════════════════════
      FOOTER
      ═══════════════════════════════════════════════════ -->
 <footer class="footer">
@@ -1278,6 +1376,7 @@ open http://phonon.local:8080</div>
       <h4>Get Involved</h4>
       <a href="/how-it-works" onclick="return navigate(event, 'how-it-works')">How It Works</a>
       <a href="/contribute" onclick="return navigate(event, 'contribute')">Contribute</a>
+      <a href="/visualizer" onclick="return navigate(event, 'visualizer')">Visualizer</a>
       <a href="/docs" onclick="return navigate(event, 'docs')">Docs</a>
       <a href="/getting-started" onclick="return navigate(event, 'getting-started')">Get Started</a>
     </div>
@@ -1520,6 +1619,8 @@ try {
       '/about/': 'about',
       '/getting-started': 'getting-started',
       '/getting-started/': 'getting-started',
+      '/visualizer': 'visualizer',
+      '/visualizer/': 'visualizer',
       '/license': 'about',
       '/license/': 'about'
     };
