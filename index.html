@@ -132,6 +132,12 @@ section { padding: var(--page-padding); }
 #ai-toggle .label-active { display: none; }
 [data-theme="text-only"] #ai-toggle .label-default { display: none; }
 [data-theme="text-only"] #ai-toggle .label-active { display: inline; }
+@media (max-width: 768px) {
+  #ai-toggle { padding: 8px 16px 8px 8px; font-size: 0.85rem; bottom: 16px; right: 16px; }
+}
+@media (min-width: 769px) {
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
 
 /* ── Text-only mode ──────────────────────────────── */
 [data-theme="text-only"] body { background: #111; color: #ccc; }
@@ -141,6 +147,7 @@ section { padding: var(--page-padding); }
 [data-theme="text-only"] .stat-card::before,
 [data-theme="text-only"] .card-icon,
 [data-theme="text-only"] .nav-logo-icon,
+[data-theme="text-only"] .nav-logo img,
 [data-theme="text-only"] .footer-decoration,
 [data-theme="text-only"] .visualizer-frame {
   display: none !important;
@@ -239,13 +246,13 @@ nav {
   cursor: pointer;
   padding: 8px;
   border-radius: var(--radius-sm);
-  color: var(--ink);
+  color: var(--cyan);
   font-size: 1.5rem;
 }
 @media (max-width: 768px) {
   .nav-links { display: none; position: fixed; top: var(--nav-height); left: 0; right: 0; background: var(--bg-deep); flex-direction: column; padding: 16px; border-bottom: 1px solid var(--border); }
   .nav-links.open { display: flex; }
-  .nav-mobile-btn { display: block; }
+  .nav-mobile-btn { display: flex !important; align-items: center; justify-content: center; width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); }
   .nav-links a { width: 100%; padding: 12px 16px; }
 }
 
@@ -660,7 +667,7 @@ nav {
 <nav>
   <div class="nav-inner">
     <a href="/" class="nav-logo" onclick="return navigate(event, 'home')">
-      <span class="nav-logo-icon">⌘</span>
+      <img src="logo.svg" alt="Phonon" style="width:28px;height:28px;border-radius:6px;">
       Phonon
     </a>
     <ul class="nav-links" id="nav-links">
@@ -702,7 +709,7 @@ nav {
         </div>
         <div class="hero-stat">
           <div class="hero-stat-num">Open</div>
-          <div class="hero-stat-label">Apache 2.0, fully permissive</div>
+          <div class="hero-stat-label">MIT, fully permissive</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-num">$0</div>
@@ -768,7 +775,7 @@ nav {
       <div class="stats-grid" style="margin-top: 48px;">
         <div class="stat-card"><h3>Alpha</h3><p>Test it, break it, report it</p></div>
         <div class="stat-card pink"><h3>0 $</h3><p>To try it yourself</p></div>
-        <div class="stat-card amber"><h3>Open</h3><p>Apache 2.0, fully permissive</p></div>
+        <div class="stat-card amber"><h3>Open</h3><p>MIT, fully permissive</p></div>
         <div class="stat-card"><h3>Now</h3><p>The best time to start</p></div>
       </div>
     </div>
@@ -796,7 +803,7 @@ nav {
         <div class="feature-card" style="text-align: center;">
           <div style="font-size: 2.5rem; margin-bottom: 12px;">💻</div>
           <h3>Contribute Code</h3>
-          <p>The coordinator is Go, the sidecar is Kotlin, the visualizer is Compose Canvas. Pick an issue, open a PR. Apache 2.0 — no CLA, no friction.</p>
+          <p>The coordinator is Go, the sidecar is Kotlin, the visualizer is Compose Canvas. Pick an issue, open a PR. MIT — no CLA, no friction.</p>
         </div>
       </div>
     </div>
@@ -817,35 +824,6 @@ nav {
     </div>
   </section>
 
-  <!-- Blog preview -->
-  <section>
-    <div class="container">
-      <div class="text-center" style="margin-bottom: 48px;">
-        <div class="section-label">Latest</div>
-        <h2 class="section-title">From the blog</h2>
-      </div>
-      <div class="blog-list" style="max-width: 600px; margin: 0 auto;">
-        <div class="blog-card">
-          <div class="blog-card-date">June 11, 2026</div>
-          <h3><a href="/blog/phonon-v0-1" onclick="return navigate(event, 'blog-post', 'phonon-v0-1')">Phonon v0.1: LiteRT-LM, signed APKs, and a new roadmap</a></h3>
-          <p>The first milestone release ships NPU-accelerated inference powered by Google's LiteRT-LM, a full CI pipeline with signed APK builds, and a visual identity roadmap.</p>
-          <div class="blog-card-tags"><span class="tag">release</span><span class="tag">engineering</span></div>
-        </div>
-        <div class="blog-card">
-          <div class="blog-card-date">June 4, 2026</div>
-          <h3><a href="/blog/why-phones" onclick="return navigate(event, 'blog-post', 'why-phones')">Why phones?</a></h3>
-          <p>Billions of smartphones sit idle in drawers while AI infrastructure burns power and generates e-waste. Phonon asks: why not use what's already built?</p>
-          <div class="blog-card-tags"><span class="tag">hardware</span><span class="tag">architecture</span></div>
-        </div>
-        <div class="blog-card">
-          <div class="blog-card-date">May 28, 2026</div>
-          <h3><a href="/blog/e-waste-problem" onclick="return navigate(event, 'blog-post', 'e-waste-problem')">The AI e-waste problem nobody's talking about</a></h3>
-          <p>The AI industry generates millions of tons of electronic waste from hardware with short lifespans. Phonon closes the gap.</p>
-          <div class="blog-card-tags"><span class="tag">philosophy</span><span class="tag">sustainability</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
 </main>
 
 <!-- ═══════════════════════════════════════════════════
@@ -918,7 +896,7 @@ $ phonon coordinator --config cluster.yaml
       <p class="section-subtitle text-center mx-auto">This is the same benchmark tool used to develop theme packs. Tweak VizState sliders and watch packs react in real time. Each pack is a self-contained Kotlin file in the phonon repo.</p>
 
       <div class="visualizer-frame">
-        <iframe src="/bench.html" title="Phonon Visualization Bench"></iframe>
+        <iframe src="bench.html" title="Phonon Visualization Bench"></iframe>
       </div>
 
       <div class="arch-section" style="max-width: 720px; margin: 0 auto;">
@@ -970,7 +948,7 @@ $ phonon coordinator --config cluster.yaml
 
       <div class="arch-section">
         <h2><span class="emoji-badge">💻</span> Contribute code</h2>
-        <p>The full stack is open source under Apache 2.0:</p>
+        <p>The full stack is open source under MIT:</p>
         <ul>
           <li><strong>Coordinator</strong> — Go HTTP server, mDNS discovery, load balancing</li>
           <li><strong>Sidecar</strong> — Kotlin foreground service, LiteRT-LM inference</li>
@@ -1112,25 +1090,9 @@ telemetry:
       <div class="section-label">Blog</div>
       <h1 class="section-title">Latest from Phonon</h1>
       <p class="section-subtitle">Engineering deep-dives, release notes, and the philosophy behind turning e-waste into AI infrastructure.</p>
-      <div class="blog-list" style="margin-top: 48px;">
-        <div class="blog-card">
-          <div class="blog-card-date">June 11, 2026</div>
-          <h3><a href="/blog/phonon-v0-1" onclick="return navigate(event, 'blog-post', 'phonon-v0-1')">Phonon v0.1: LiteRT-LM, signed APKs, and a new roadmap</a></h3>
-          <p>The first milestone release ships NPU-accelerated inference powered by Google's LiteRT-LM, a full CI pipeline with signed APK builds, and a visual identity roadmap.</p>
-          <div class="blog-card-tags"><span class="tag">release</span><span class="tag">engineering</span></div>
-        </div>
-        <div class="blog-card">
-          <div class="blog-card-date">June 4, 2026</div>
-          <h3><a href="/blog/why-phones" onclick="return navigate(event, 'blog-post', 'why-phones')">Why phones?</a></h3>
-          <p>Billions of smartphones sit idle in drawers while AI infrastructure burns power and generates e-waste. Phonon asks: why not use what's already built?</p>
-          <div class="blog-card-tags"><span class="tag">hardware</span><span class="tag">architecture</span></div>
-        </div>
-        <div class="blog-card">
-          <div class="blog-card-date">May 28, 2026</div>
-          <h3><a href="/blog/e-waste-problem" onclick="return navigate(event, 'blog-post', 'e-waste-problem')">The AI e-waste problem nobody's talking about</a></h3>
-          <p>The AI industry generates millions of tons of electronic waste from hardware with short lifespans. Phonon closes the gap.</p>
-          <div class="blog-card-tags"><span class="tag">philosophy</span><span class="tag">sustainability</span></div>
-        </div>
+      <div style="margin-top: 48px; padding: 48px; text-align: center; border: 1px dashed var(--border); border-radius: var(--radius);">
+        <p style="color: var(--ink-muted); font-size: 1.1rem;">Coming soon.</p>
+        <p style="color: var(--ink-faint); font-size: 0.9rem; margin-top: 8px;">Release notes, deep-dives, and project essays will live here.</p>
       </div>
     </div>
   </section>
@@ -1171,7 +1133,7 @@ telemetry:
 
       <div class="arch-section">
         <h2><span class="emoji-badge">⚖️</span> License</h2>
-        <p>Phonon is Apache 2.0 — fully permissive. The coordinator, sidecar, theme packs, and website are all open source. No CLA, no friction. Self-hosted is always fully functional.</p>
+        <p>Phonon is MIT — fully permissive. The coordinator, sidecar, theme packs, and website are all open source. No CLA, no friction. Self-hosted is always fully functional.</p>
       </div>
     </div>
   </section>
@@ -1274,7 +1236,7 @@ telemetry:
     </div>
   </div>
   <div class="footer-bottom">
-    <span>Built by ChezGoulet. Apache 2.0.</span>
+    <span>Built by ChezGoulet. MIT.</span>
     <span>Solarpunk infrastructure for a world that needs it.</span>
   </div>
 </footer>
@@ -1285,8 +1247,6 @@ telemetry:
 <script>
 // ── Routing ──
 let currentPage = 'home';
-const blogPosts = {};
-
 const PAGE_PATHS = {
   'how-it-works': '/how-it-works',
   'contribute': '/contribute',
@@ -1357,12 +1317,7 @@ window.addEventListener('popstate', function(e) {
   }
 });
 
-// ── Blog post content ──
-blogPosts['phonon-v0-1'] = {
-  title: 'Phonon v0.1: LiteRT-LM, signed APKs, and a new roadmap',
-  date: 'June 11, 2026',
-  tags: ['release', 'engineering'],
-  body: `
+
 <p>Today we shipped Phonon v0.1 — the first milestone release with NPU-accelerated inference, a full CI/CD pipeline, and the foundation for a visual identity system.</p>
 
 <h2>What's new</h2>
@@ -1397,75 +1352,9 @@ blogPosts['phonon-v0-1'] = {
 `
 };
 
-blogPosts['why-phones'] = {
-  title: 'Why phones?',
-  date: 'June 4, 2026',
-  tags: ['hardware', 'architecture'],
-  body: `
-<p>Every modern smartphone ships with an NPU — a neural processing unit built specifically for on-device ML. These aren't afterthoughts; they're matrix engines designed for inference. And they're sitting in drawers, doing nothing.</p>
-
-<p>Phonon's answer is simple: don't buy new hardware. Use what's already been built.</p>
-
-<h2>The hardware that already exists</h2>
-<p>There are billions of smartphones in active use worldwide. More sit unused in drawers, closets, and recycling bins. Most of these phones contain NPUs capable of running modern language models at usable speeds. They have screens, batteries, networking, and cooling systems — all the physical infrastructure needed for inference — already integrated into a single device.</p>
-
-<p>Every phone that joins a Phonon cluster is a phone that didn't end up in a landfill.</p>
-
-<h2>Why this matters</h2>
-<p>Training hardware churns fast — GPU and TPU generations turn over every 2-3 years, and the old hardware doesn't get recycled. It gets stacked in warehouses or shipped to developing countries. Inference hardware is heading the same direction.</p>
-
-<p>Phonon takes the opposite approach: the hardware is already built, already paid for, and already distributed across the world. The only thing missing is the software to make it useful.</p>
-
-<h2>The business model question</h2>
-<p>Self-hosted Phonon is free. Always. The coordinator is Apache 2.0. The APK is Apache 2.0. The theme packs are Apache 2.0. If we build a public pool in the future, it will exist to fund development — not to monetize users.</p>
-
-<p>We're not here to sell you something. We're here to make the hardware you already own do useful work.</p>
-`
-};
-
-blogPosts['e-waste-problem'] = {
-  title: "The AI e-waste problem nobody's talking about",
-  date: 'May 28, 2026',
-  tags: ['philosophy', 'sustainability'],
-  body: `
-<p>The AI industry is on track to generate millions of tons of electronic waste from specialized hardware with short lifespans. Meanwhile, billions of perfectly capable smartphones sit in drawers. Phonon closes the gap.</p>
-
-<h2>The hardware treadmill</h2>
-<p>Training hardware churns fast. TPU v5 was superseded by TPU v5e, then v5p, then v6, then Trillium — each generation making the previous one feel obsolete for cutting-edge work. GPU generations turn over every 2-3 years, and the old ones don't get recycled. They get stacked in warehouses or shipped to developing countries for disassembly.</p>
-
-<p>Inference hardware is heading the same direction. AI accelerators for edge devices, specialized ASICs, and NPUs are becoming commodity components — designed to be superseded within 18-24 months.</p>
-
-<h2>The phone paradox</h2>
-<p>There are billions of smartphones in active use worldwide. More are in drawers, closets, and recycling bins. These phones have screens, batteries, networking, and cooling systems already built in — all wasted when the phone is replaced.</p>
-
-<p>The phone in your drawer can run AI inference. It already has everything it needs.</p>
-
-<h2>Phonon's answer</h2>
-<p>Phonon doesn't ask you to buy new hardware. It asks you to use what you already have — or what you already threw away. The coordinator runs on cheap Linux hardware. The phones run a free open-source APK. The models come from Hugging Face.</p>
-
-<p>Self-hosted Phonon costs nothing. Because the hardware is already built. It's already paid for. It's already in a drawer somewhere.</p>
-
-<p>If AI is going to be a utility, it should run on infrastructure that doesn't create waste.</p>
-`
-};
-
 function loadBlogPost(slug) {
   const container = document.getElementById('blog-post-container');
-  const post = blogPosts[slug];
-
-  if (!post) {
-    container.innerHTML = '<a href="/blog" class="blog-back" onclick="return navigate(event, \'blog\')">← Back to blog</a><h1>Post not found</h1><p>This blog post doesn\'t exist yet.</p>';
-    return;
-  }
-
-  const tagsHtml = post.tags.map(t => '<span class="tag">' + t + '</span>').join('');
-
-  container.innerHTML = `
-    <a href="/blog" class="blog-back" onclick="return navigate(event, 'blog')">← Back to blog</a>
-    <h1>${post.title}</h1>
-    <div class="meta">${post.date} · ${tagsHtml}</div>
-    ${post.body}
-  `;
+  container.innerHTML = '<a href="/blog" class="blog-back" onclick="return navigate(event, \'blog\')">← Back to blog</a><h1>Coming soon</h1><p>We haven\'t written any blog posts yet. Check back later for release notes, deep-dives, and project updates.</p>';
 }
 
 // ── AI Mode Toggle ──

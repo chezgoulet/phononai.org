@@ -23,4 +23,4 @@ Full setup takes about 15 minutes.
 
 ## License
 
-Apache 2.0 — fully permissive. Self-hosted is free, always, with no feature limitations. No CLA, no friction.
+MIT — fully permissive. Self-hosted is free, always, with no feature limitations. No CLA, no friction.

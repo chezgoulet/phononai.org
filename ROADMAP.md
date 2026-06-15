@@ -65,4 +65,4 @@
 
 ---
 
-*Self-hosted is always free. All software is open source (Apache 2.0).*
+*Self-hosted is always free. All software is open source (MIT).*
