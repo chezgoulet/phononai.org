@@ -1,13 +1,13 @@
 # phononai.org
 
-Source for <https://phononai.org>.
+The project site for Phonon — old phones as inference servers.
 
-**Status: the live page is stale.** It still describes the retired 2026
-incarnation of the project — a Go coordinator, NPU acceleration, an e-waste and
-donation framing, theme packs. That direction has been dropped and the site is
-being rebuilt.
+One static page. Open `index.html` locally, or let GitHub Pages serve it.
 
-The project now: **old phones as inference servers for local agentic AI.**
-The code and the architecture are at <https://github.com/chezgoulet/phonon>.
+- `index.html` — the whole site (no build step, no external assets)
+- `logo.svg` — the mark used in the header and as the favicon
+- `CNAME` — phononai.org
 
-This README is here so nobody mistakes the current page for the current plan.
+Every number on the page is measured on the device named, and the limits section
+exists so nothing is discovered in production. If a claim here is not true of the
+app, the page is wrong.
