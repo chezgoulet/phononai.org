@@ -19,45 +19,59 @@
   body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
   a{color:var(--cyan);text-decoration:none}
   a:hover{text-decoration:underline}
-  .wrap{max-width:720px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
   header{padding:26px 0}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.16em;font-size:12.5px}
-  .brand svg{width:18px;height:18px}
   header .wrap{display:flex;align-items:center;gap:18px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.16em;font-size:12.5px;color:var(--text)}
+  .brand svg{width:18px;height:18px}
   header nav{margin-left:auto;display:flex;gap:18px;font-size:13.5px}
   header nav a{color:var(--dim)}
   header nav a:hover{color:var(--text);text-decoration:none}
 
-  .hero{padding:56px 24px 24px}
+  .hero{padding:44px 24px 24px}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}
+  @media(max-width:760px){.hero-grid{grid-template-columns:1fr;gap:20px}}
+  .art{position:relative;width:100%;aspect-ratio:1/1;max-width:340px;margin-left:auto}
+  @media(max-width:760px){.art{max-width:260px;margin:0 auto}}
+  .art canvas{width:100%;height:100%;display:block}
   .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase}
-  h1{font-size:clamp(38px,7vw,60px);line-height:1.04;letter-spacing:-.035em;font-weight:660;margin:18px 0 0}
-  .lede{font-size:clamp(17px,2.2vw,20px);color:var(--dim);margin:20px 0 0}
-  .cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:32px}
-  .cta .badge{display:block;height:52px;width:auto}
+  h1{font-size:clamp(36px,6.4vw,56px);line-height:1.05;letter-spacing:-.035em;font-weight:660;margin:16px 0 0}
+  .lede{font-size:clamp(16.5px,2.1vw,19px);color:var(--dim);margin:18px 0 0}
+  .cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:28px}
+  .cta img.badge{display:block;height:48px;width:auto}
   .alt{font-size:13.5px;color:var(--dim)}
-  .req{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:14px;letter-spacing:.02em}
+  .req{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:12px;letter-spacing:.02em}
 
-  section{padding:52px 0;border-top:1px solid var(--border)}
-  h2{font-size:clamp(22px,3vw,27px);letter-spacing:-.02em;margin:0 0 18px;font-weight:640}
+  section{padding:46px 0;border-top:1px solid var(--border)}
+  h2{font-size:clamp(21px,2.8vw,26px);letter-spacing:-.02em;margin:0 0 16px;font-weight:640}
   p{margin:0 0 14px}
   p.big{font-size:17px}
   .muted{color:var(--dim)}
 
-  ul.plain{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+  ul.plain{list-style:none;margin:0;padding:0;display:grid;gap:15px}
   ul.plain li{padding-left:20px;position:relative}
   ul.plain li:before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--cyan);opacity:.75}
   ul.plain b{font-weight:600}
   ul.plain span{color:var(--dim)}
 
-  ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:16px}
+  ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:15px}
   ol.steps li{counter-increment:s;padding-left:38px;position:relative}
   ol.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:24px;height:24px;border:1px solid var(--border);border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--cyan)}
-  ol.steps b{font-weight:600}
   ol.steps span{color:var(--dim)}
-
   code{font-family:var(--mono);font-size:.92em;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:1px 6px}
 
-  footer{padding:34px 0 60px;border-top:1px solid var(--border);font-size:13px;color:var(--dim)}
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+  @media(max-width:760px){.shots{grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto}}
+  .ph{background:var(--panel);border:1px solid var(--border);border-radius:26px;padding:8px;box-shadow:0 18px 40px -24px rgba(0,229,255,.25)}
+  .ph img{display:block;width:100%;height:auto;border-radius:20px}
+  .cap{font-size:12.5px;color:var(--dim);text-align:center;margin-top:10px}
+
+  .beta{background:linear-gradient(180deg, rgba(0,229,255,.06), rgba(0,229,255,.02));border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin:8px 0 0}
+  .beta .tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase}
+  .beta p{margin:8px 0 0;color:var(--dim);font-size:14.5px}
+  .beta a{white-space:nowrap}
+
+  footer{padding:30px 0 56px;border-top:1px solid var(--border);font-size:13px;color:var(--dim)}
   footer .row{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
   footer .row a{color:var(--dim)}
   footer .row a:hover{color:var(--text)}
@@ -84,29 +98,25 @@
 
 <main id="top">
   <div class="wrap hero">
-    <div class="eyebrow">Open source · Android</div>
-    <h1>Turn an old phone into an AI server.</h1>
-    <p class="lede">
-      Phonon runs a language model on an Android phone and serves it to your own
-      network as an OpenAI-compatible API. No cloud, no subscription, nothing
-      leaves the house.
-    </p>
-    <div class="cta">
-      <a href="obtainium://add/https://github.com/chezgoulet/phonon" aria-label="Add Phonon to Obtainium">
-        <svg xmlns="http://www.w3.org/2000/svg" width="240" height="56" viewBox="0 0 240 56" role="img" aria-label="Get it on Obtainium" class="badge">
-  <rect x="1" y="1" width="238" height="54" rx="12" fill="#0A0F16" stroke="#1C2A3A"/>
-  <g fill="none" stroke="#00E5FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M28 18v14"/>
-    <path d="M21 25l7 7 7-7"/>
-    <path d="M20 38h16"/>
-  </g>
-  <text x="54" y="24" fill="#8496A3" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.5" letter-spacing="1.4">GET IT ON</text>
-  <text x="54" y="41" fill="#D7E3DF" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="17" font-weight="600">Obtainium</text>
-</svg>
-      </a>
-      <span class="alt">or <a href="https://github.com/chezgoulet/phonon/releases/latest">download the APK from GitHub</a></span>
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Open source · Android</div>
+        <h1>Turn an old phone into an AI server.</h1>
+        <p class="lede">
+          Phonon runs a language model on an Android phone and serves it to your own
+          network as an OpenAI-compatible API. No cloud, no subscription, nothing
+          leaves the house.
+        </p>
+        <div class="cta">
+          <a href="obtainium://add/https://github.com/chezgoulet/phonon" aria-label="Add Phonon to Obtainium">
+            <img class="badge" src="/assets/badge_obtainium.png" alt="Get it on Obtainium" width="646" height="250">
+          </a>
+          <span class="alt">or <a href="https://github.com/chezgoulet/phonon/releases/latest">download the APK from GitHub</a></span>
+        </div>
+        <p class="req">Android 12+ · 64-bit · 8 GB RAM for the small models</p>
+      </div>
+      <div class="art" aria-hidden="true"><canvas id="orb"></canvas></div>
     </div>
-    <p class="req">Android 12+ · 64-bit · 8 GB RAM for the small models</p>
   </div>
 
   <section>
@@ -149,24 +159,34 @@
 
   <section>
     <div class="wrap">
-      <h2>What it needs</h2>
-      <p>
-        A 64-bit Android phone on Android 12 or newer, 8 GB of RAM for the small
-        models, and a charger. A Pixel 7 is what we measure on; other phones are
-        welcome, with their own numbers.
-      </p>
+      <h2>The app</h2>
+      <div class="shots">
+        <figure style="margin:0">
+          <div class="ph"><img src="/assets/screens/serve.png" alt="Serve screen: throughput, uptime, endpoint and thermals" width="540" height="1200" loading="lazy"></div>
+          <figcaption class="cap">Serving, with the endpoint and its cost</figcaption>
+        </figure>
+        <figure style="margin:0">
+          <div class="ph"><img src="/assets/screens/models.png" alt="Model picker: families, sizes, measured rates and context" width="540" height="1200" loading="lazy"></div>
+          <figcaption class="cap">Five families, measured on the phone</figcaption>
+        </figure>
+        <figure style="margin:0">
+          <div class="ph"><img src="/assets/screens/settings.png" alt="Settings: device, performance profile and tuning" width="540" height="1200" loading="lazy"></div>
+          <figcaption class="cap">Defaults from the hardware, tunable</figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
-  <section>
+  <section style="border-bottom:none;padding-bottom:26px">
     <div class="wrap">
-      <h2>What it doesn't do yet</h2>
-      <ul class="plain">
-        <li><b>One thing at a time.</b> <span>One model per phone, one request in flight. A second request waits.</span></li>
-        <li><b>No charging control.</b> <span>The app can pause on low battery or heat; it cannot limit charge.</span></li>
-        <li><b>No TLS on the LAN.</b> <span>The API key protects the endpoint; traffic is plain HTTP.</span></li>
-        <li><b>Early software.</b> <span>Models are chosen and verified, but the app is new — expect rough edges.</span></li>
-      </ul>
+      <div class="beta">
+        <div class="tag">Early beta</div>
+        <p>
+          Phonon is early software. The measurements on this page are real, but the app
+          is new and will have rough edges — expect breakage, and please
+          <a href="https://github.com/chezgoulet/phonon/issues">report it</a>.
+        </p>
+      </div>
     </div>
   </section>
 </main>
@@ -182,5 +202,73 @@
   </div>
 </footer>
 
+<script>
+(function () {
+  var c = document.getElementById('orb');
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dpr = Math.min(devicePixelRatio || 1, 2);
+  var pts = [], N = 130, last = 0, FRAME = 1000 / 30;
+
+  function size() {
+    var r = c.getBoundingClientRect();
+    c.width = Math.max(1, Math.round(r.width * dpr));
+    c.height = Math.max(1, Math.round(r.height * dpr));
+  }
+  function seed() {
+    pts = [];
+    for (var i = 0; i < N; i++) {
+      var a = Math.random() * Math.PI * 2;
+      pts.push({
+        a: a,
+        // disc-uniform radius: dense core, soft edge
+        r: 0.10 + Math.sqrt(Math.random()) * 0.46,
+        s: (0.0012 + Math.random() * 0.0038) * (Math.random() < 0.5 ? 1 : -1),
+        w: 0.5 + Math.random() * 1.5,
+        ph: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  function draw(t) {
+    if (!reduce && t - last < FRAME) { requestAnimationFrame(draw); return; }
+    if (!reduce) last = t;
+    var w = c.width, h = c.height;
+    ctx.clearRect(0, 0, w, h);
+    var cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.5;
+    var core = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.55);
+    core.addColorStop(0, 'rgba(0,229,255,0.10)');
+    core.addColorStop(0.6, 'rgba(0,229,255,0.03)');
+    core.addColorStop(1, 'rgba(0,229,255,0)');
+    ctx.fillStyle = core;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * 0.55, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      if (!reduce) p.a += p.s;
+      var wob = Math.sin(p.a * 1.7 + p.ph) * 0.02;
+      var rr = (p.r + wob) * R;
+      var x = cx + Math.cos(p.a) * rr;
+      var y = cy + Math.sin(p.a) * rr * 0.94;
+      var edge = 1 - Math.abs(p.r - 0.42) / 0.34;
+      var alpha = 0.18 + 0.5 * Math.max(0.1, Math.min(1, edge));
+      var g = ctx.createRadialGradient(x, y, 0, x, y, p.w * 4.2 * dpr);
+      g.addColorStop(0, 'rgba(180,255,250,' + (alpha * 0.95).toFixed(3) + ')');
+      g.addColorStop(0.35, 'rgba(0,229,255,' + (alpha * 0.55).toFixed(3) + ')');
+      g.addColorStop(1, 'rgba(0,229,255,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, p.w * 4.2 * dpr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  size(); seed();
+  addEventListener('resize', function () { size(); });
+  requestAnimationFrame(draw);
+})();
+</script>
 </body>
 </html>
