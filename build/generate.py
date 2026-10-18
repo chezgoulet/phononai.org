@@ -507,6 +507,10 @@ def build_data(args) -> dict:
         m.setdefault("prefill_tps", None)
         m.setdefault("app_version", None)
         m.setdefault("measured_date", None)
+        # The manifest names the device once, at the top level; provenance()
+        # reads it from the measured block, so carry it across. Without this the
+        # page says "an unnamed device" beside a sentence naming the device.
+        m.setdefault("measured_on", d["device"])
     supported = [d for d in devices if d["status"] == "supported"]
     candidates = [d for d in devices if d["status"] != "supported"]
 
