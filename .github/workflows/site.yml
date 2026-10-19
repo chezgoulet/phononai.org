@@ -1,0 +1,122 @@
+name: site
+
+# The page is generated from a release of chezgoulet/phonon, so it has to be
+# rebuilt when one appears. Four ways in:
+#
+#   repository_dispatch  the release workflow's app-release event, with the tag
+#   schedule             a daily catch-up, and the backstop when the dispatch
+#                        token is missing or the call failed
+#   workflow_dispatch    a manual rebuild, optionally pinned to a tag
+#   push to main         so a change to this template takes effect immediately
+
+on:
+  repository_dispatch:
+    types: [app-release]
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "App tag to build from (blank: the latest release)"
+        required: false
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Resolve the app tag
+        id: tag
+        env:
+          DISPATCH_TAG: ${{ github.event.client_payload.tag }}
+          INPUT_TAG: ${{ github.event.inputs.tag }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${DISPATCH_TAG:-${INPUT_TAG:-}}"
+          if [ -z "$TAG" ]; then
+            # The newest non-draft release, rather than releases/latest, so a
+            # draft does not resolve to the release before it.
+            TAG="$(gh api "repos/chezgoulet/phonon/releases?per_page=20" \
+              --jq '[.[] | select(.draft == false) | .tag_name | select(startswith("v"))][0]')"
+          fi
+          test -n "$TAG" || { echo "::error::could not resolve an app tag"; exit 1; }
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "building the site from chezgoulet/phonon at $TAG"
+
+      # The generator reads files with `git show <tag>:<path>`, so it needs the
+      # objects, not a working tree. fetch-depth: 0 is not required; the single
+      # tagged commit carries every blob it reads.
+      - name: Check out the app repository at the tag
+        uses: actions/checkout@v4
+        with:
+          repository: chezgoulet/phonon
+          ref: ${{ steps.tag.outputs.tag }}
+          path: app
+          submodules: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the generator's dependencies
+        run: pip install -r build/requirements.txt
+
+      - name: Generate the site
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 build/generate.py \
+            --app-repo app \
+            --ref "${{ steps.tag.outputs.tag }}" \
+            --out dist
+
+      # StrictUndefined in the generator already fails on an unwired field.
+      # This catches a tag that survived rendering but never got substituted —
+      # a template edited to escape Jinja, for instance.
+      - name: No template placeholder may survive
+        run: |
+          set -euo pipefail
+          # -I: a PNG is not a template. Scanning the og:image for "{{" would
+          # eventually report a match in binary noise and block a good build.
+          if grep -nRI -e '{{' -e '{%' -e '{#' dist/; then
+            echo "::error::unresolved template placeholder in dist/"
+            exit 1
+          fi
+          echo "no placeholders remain"
+
+      - name: Link check
+        run: |
+          python3 build/linkcheck.py dist \
+            --app-repo app \
+            --ref "${{ steps.tag.outputs.tag }}"
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
