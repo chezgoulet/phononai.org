@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Phonon {{ app.version }} — turn an old phone into an AI server</title>
 <meta name="description" content="{{ meta.description }}">
 <meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
 <link rel="canonical" href="{{ site.url }}">
 <meta property="og:title" content="Phonon {{ app.version }} — turn an old phone into an AI server">
 <meta property="og:description" content="{{ meta.og_description }}">
@@ -19,357 +20,580 @@
 <meta name="twitter:description" content="{{ meta.og_description }}">
 <meta name="twitter:image" content="{{ site.url }}og.png">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/rajdhani-semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/rajdhani-bold.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  /* The design language of hermesvox.org, the sister project: true OLED black,
+     cyan light, a violet accent, Rajdhani display type, monospace for numbers. */
+  @font-face{font-family:"Rajdhani";src:url("/assets/fonts/rajdhani-medium.woff2") format("woff2");font-weight:500;font-display:swap}
+  @font-face{font-family:"Rajdhani";src:url("/assets/fonts/rajdhani-semibold.woff2") format("woff2");font-weight:600;font-display:swap}
+  @font-face{font-family:"Rajdhani";src:url("/assets/fonts/rajdhani-bold.woff2") format("woff2");font-weight:700;font-display:swap}
+
   :root{
-    --bg:#000; --panel:#0A0F16; --border:#1C2A3A; --text:#D7E3DF; --dim:#8496A3; --cyan:#00E5FF;
-    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    --bg:#000; --surface:#0A0F16; --surface-high:#101724; --border:#1C2A3A;
+    --cyan:#00E5FF; --cyan-soft:#2A6A7A; --violet:#8B5CF6; --violet-soft:#4A3C6E;
+    --text:#E6EDF7; --dim:#8B98AC; --ok:#34D399; --warn:#FBBF24;
+    --display:"Rajdhani","Segoe UI",system-ui,sans-serif;
+    --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --radius:28px; --gutter:clamp(16px,4vw,40px);
+    color-scheme:dark;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
-  a{color:var(--cyan);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
-  header{padding:26px 0}
-  header .wrap{display:flex;align-items:center;gap:18px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:.16em;font-size:12.5px;color:var(--text)}
-  .brand svg{width:18px;height:18px}
-  header nav{margin-left:auto;display:flex;gap:18px;font-size:13.5px}
-  header nav a{color:var(--dim)}
-  header nav a:hover{color:var(--text);text-decoration:none}
-
-  .hero{padding:44px 24px 24px}
-  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}
-  @media(max-width:760px){.hero-grid{grid-template-columns:1fr;gap:20px}}
-  .art{position:relative;width:100%;aspect-ratio:1/1;max-width:340px;margin-left:auto}
-  @media(max-width:760px){.art{max-width:260px;margin:0 auto}}
-  .art canvas{width:100%;height:100%;display:block}
-  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase}
-  h1{font-size:clamp(36px,6.4vw,56px);line-height:1.05;letter-spacing:-.035em;font-weight:660;margin:16px 0 0}
-  .lede{font-size:clamp(16.5px,2.1vw,19px);color:var(--dim);margin:18px 0 0}
-  .cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:28px}
-  .btn{display:inline-block;background:var(--cyan);color:#00131A;font-weight:650;font-size:14.5px;
-       padding:12px 18px;border-radius:10px;letter-spacing:-.01em;white-space:nowrap}
-  /* The label carries a version, a size and an ISO date. Left to wrap, the date
-     breaks at its own hyphens and orphans the year, so keep it on one line at
-     desktop widths — with room to spare, because the column is only so wide and
-     a different font metric must not push it over. Below the breakpoint the
-     button gets its own full width and wraps between the separators instead. */
-  @media(max-width:560px){.btn{white-space:normal}}
-  .btn:hover{text-decoration:none;filter:brightness(1.08)}
-  .cta img.badge{display:block;height:44px;width:auto}
-  .alt{font-size:13.5px;color:var(--dim)}
-  .req{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:12px;letter-spacing:.02em}
-  .sum{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-top:10px;word-break:break-all}
-  .sum code{background:none;border:none;padding:0;color:var(--dim)}
-
-  section{padding:46px 0;border-top:1px solid var(--border)}
-  h2{font-size:clamp(21px,2.8vw,26px);letter-spacing:-.02em;margin:0 0 16px;font-weight:640}
-  h3{font-size:15px;letter-spacing:-.01em;margin:26px 0 8px;font-weight:640}
+  html{scroll-behavior:smooth;scroll-padding-top:72px}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--text);font:17px/1.65 var(--body);
+       -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  img{max-width:100%;height:auto;display:block}
+  a{color:var(--cyan);text-decoration-thickness:1px;text-underline-offset:3px}
+  a:hover{color:#7ff2ff}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
+  code{font:.88em var(--mono);color:var(--text);background:var(--surface-high);border:1px solid var(--border);padding:.1em .4em;border-radius:6px;word-break:break-word}
+  .accent{color:var(--cyan)}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--surface);padding:8px 14px;border-radius:999px;z-index:20}
+  .skip:focus{left:8px}
   p{margin:0 0 14px}
-  p.big{font-size:17px}
-  .muted{color:var(--dim)}
-  .prov{font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.01em}
-  .prov a{color:var(--dim);text-decoration:underline}
 
-  ul.plain{list-style:none;margin:0;padding:0;display:grid;gap:15px}
-  ul.plain li{padding-left:20px;position:relative}
-  ul.plain li:before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--cyan);opacity:.75}
-  ul.plain b{font-weight:600}
-  ul.plain span{color:var(--dim)}
+  /* ---------- nav ---------- */
+  .nav{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:16px;
+       padding:12px var(--gutter);background:rgba(0,0,0,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+       border-bottom:1px solid rgba(28,42,58,.6)}
+  .brand{display:inline-flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;
+         font:700 1.25rem/1 var(--display);letter-spacing:.16em;text-transform:uppercase}
+  .brand img{width:34px;height:34px}
+  .brand:hover{color:var(--text)}
+  .nav ul{list-style:none;display:flex;gap:4px;margin:0;padding:0;flex-wrap:wrap;justify-content:flex-end}
+  .nav a:not(.brand){display:block;padding:6px 12px;color:var(--dim);text-decoration:none;
+       font:600 .95rem/1.2 var(--display);letter-spacing:.12em;text-transform:uppercase;border-radius:999px}
+  .nav a:not(.brand):hover{color:var(--text);background:var(--surface-high)}
+  .nav a.gh{color:var(--cyan);border:1px solid var(--border)}
+  @media(max-width:900px){.nav li.opt{display:none}}
 
-  ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:15px}
-  ol.steps li{counter-increment:s;padding-left:38px;position:relative}
-  ol.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:24px;height:24px;border:1px solid var(--border);border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--cyan)}
-  ol.steps span{color:var(--dim)}
-  code{font-family:var(--mono);font-size:.92em;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:1px 6px}
-  pre{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;overflow-x:auto;margin:0 0 14px}
-  pre code{background:none;border:none;padding:0;font-size:12.5px;line-height:1.5}
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:clamp(40px,7vw,88px) var(--gutter) clamp(48px,7vw,80px);isolation:isolate;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;z-index:-1;
+       background:radial-gradient(55% 60% at 78% 40%,rgba(0,229,255,.10),transparent 70%)}
+  .hero-grid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:8px}.art{order:-1}}
+  .art{position:relative;width:100%;aspect-ratio:1/1;max-width:400px;margin-left:auto}
+  @media(max-width:860px){.art{max-width:220px;margin:0 auto}}
+  .art canvas{width:100%;height:100%;display:block}
+  .pills{margin:0 0 18px;display:flex;flex-wrap:wrap;gap:8px}
+  .pill{display:inline-block;padding:4px 14px;border:1px solid var(--cyan-soft);color:var(--cyan);border-radius:999px;
+        font:600 .82rem/1.4 var(--display);letter-spacing:.16em;text-transform:uppercase;background:rgba(10,15,22,.6)}
+  .pill.beta{color:var(--warn);border-color:rgba(251,191,36,.35)}
+  h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0}
+  h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:700;letter-spacing:.01em}
+  .lead{font-size:clamp(1.05rem,2.2vw,1.25rem);margin:22px 0 0;max-width:600px}
+  .get{margin-top:30px;max-width:620px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px}
+  .get-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+  .button{display:inline-flex;flex-direction:column;gap:2px;padding:12px 24px;border-radius:999px;
+          background:linear-gradient(90deg,#00C4E0,var(--violet));color:#04070b;text-decoration:none}
+  .button b{font:700 1.1rem/1.1 var(--display);letter-spacing:.12em;text-transform:uppercase}
+  .button small{font:600 .82rem/1.2 var(--mono);opacity:.85}
+  .button:hover{color:#000;filter:brightness(1.1)}
+  .badge-link{display:inline-block;border-radius:12px}
+  .badge-link img{height:58px;width:auto}
+  .fine{color:var(--dim);font-size:.9rem;margin:14px 0 0}
+  .fine b{color:var(--text);font-weight:600}
+  .sum{font:.78rem/1.5 var(--mono);color:var(--dim);margin:10px 0 0;word-break:break-all}
+  .sum code{background:none;border:0;padding:0;color:var(--dim);font-size:1em}
 
-  table{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 14px}
-  caption{text-align:left;font-family:var(--mono);font-size:11.5px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;padding-bottom:8px}
-  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
-  th{font-weight:600;font-size:12.5px;color:var(--dim);letter-spacing:.03em;text-transform:uppercase}
-  td.num{font-family:var(--mono);font-size:13px;white-space:nowrap}
-  .warn{border:1px solid var(--border);border-left:3px solid var(--cyan);border-radius:10px;
-        padding:14px 16px;color:var(--dim);font-size:14px;background:rgba(0,229,255,.03)}
+  /* ---------- glance strip ---------- */
+  .glance{list-style:none;margin:0;padding:0 var(--gutter);display:grid;gap:12px;
+          grid-template-columns:repeat(auto-fit,minmax(200px,1fr));max-width:calc(1160px + 2*var(--gutter));margin-inline:auto}
+  .glance li{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:18px 22px}
+  .glance b{display:block;font:700 1.9rem/1.1 var(--display);color:var(--cyan);letter-spacing:.01em}
+  .glance span{display:block;color:var(--dim);font-size:.92rem;margin-top:4px}
 
-  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
-  @media(max-width:760px){.shots{grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto}}
-  .ph{background:var(--panel);border:1px solid var(--border);border-radius:26px;padding:8px;box-shadow:0 18px 40px -24px rgba(0,229,255,.25)}
-  .ph img{display:block;width:100%;height:auto;border-radius:20px}
-  .cap{font-size:12.5px;color:var(--dim);text-align:center;margin-top:10px}
+  /* ---------- bands ---------- */
+  .band{padding:clamp(64px,10vw,112px) var(--gutter);border-top:1px solid rgba(28,42,58,.45)}
+  .glance + .band{border-top:0}
+  .wrap{max-width:1160px;margin:0 auto}
+  .kicker{margin:0 0 12px;color:var(--cyan);font:600 .9rem/1 var(--display);letter-spacing:.28em;text-transform:uppercase}
+  h2{font-size:clamp(2rem,4.6vw,3.1rem);font-weight:700;max-width:820px}
+  h3{font-size:1.35rem;font-weight:700;letter-spacing:.02em}
+  h3.sub{margin:64px 0 0;font-size:clamp(1.5rem,3vw,2rem)}
+  .intro{color:var(--dim);font-size:1.08rem;max-width:760px;margin:20px 0 0}
+  .intro b{color:var(--text);font-weight:600}
+  .prov{font:.8rem/1.6 var(--mono);color:var(--dim);margin:18px 0 0;max-width:880px}
+  .prov a{color:var(--dim)}
+  .prov a:hover{color:var(--cyan)}
 
-  .beta{background:linear-gradient(180deg, rgba(0,229,255,.06), rgba(0,229,255,.02));border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin:8px 0 0}
-  .beta .tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase}
-  .beta p{margin:8px 0 0;color:var(--dim);font-size:14.5px}
-  .beta a{white-space:nowrap}
+  .cards{display:grid;gap:16px;margin-top:40px}
+  .cards.three{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .cards.two{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px}
+  .card p{color:var(--dim);margin:10px 0 0}
+  .card.good{border-color:rgba(52,211,153,.3)}
+  .card.good h3{color:var(--ok)}
+  .card.bad h3{color:#b69cfb}
+  .card.bad{border-color:var(--violet-soft)}
+  .tag{display:inline-block;vertical-align:middle;padding:2px 10px;border-radius:999px;white-space:nowrap;
+       font:600 .7rem/1.5 var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--violet);border:1px solid var(--violet-soft)}
+  .tag.ok{color:var(--ok);border-color:rgba(52,211,153,.35)}
+  .tag.warn{color:var(--warn);border-color:rgba(251,191,36,.35)}
+  .tag.cyan{color:var(--cyan);border-color:var(--cyan-soft)}
 
-  footer{padding:30px 0 56px;border-top:1px solid var(--border);font-size:13px;color:var(--dim)}
-  footer .row{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
-  footer .row a{color:var(--dim)}
-  footer .row a:hover{color:var(--text)}
-  footer .grow{flex:1}
+  /* ---------- speed ---------- */
+  .speed{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:16px;margin-top:40px}
+  @media(max-width:820px){.speed{grid-template-columns:1fr}}
+  .big-num{font:700 clamp(3.6rem,10vw,6rem)/1 var(--display);color:var(--cyan);letter-spacing:.01em}
+  .big-num small{font-size:.38em;color:var(--dim);letter-spacing:.08em;margin-left:6px}
+  .card .lede{color:var(--text);font-size:1.08rem;margin-top:14px}
+  .ticks{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+  .ticks li{padding-left:28px;position:relative;color:var(--dim)}
+  .ticks li::before{content:"";position:absolute;left:4px;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+  .ticks b{color:var(--text);font-weight:600}
+
+  /* ---------- tables: stacked cards on a phone ---------- */
+  .table-card{margin-top:40px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 22px 6px;overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.95rem}
+  caption{text-align:left;padding:14px 0 10px;color:var(--cyan);font:600 .9rem/1.2 var(--display);letter-spacing:.2em;text-transform:uppercase}
+  th,td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  th{color:var(--dim);font:600 .82rem/1.2 var(--display);letter-spacing:.14em;text-transform:uppercase}
+  td.num{font-family:var(--mono);font-size:.88rem;white-space:nowrap}
+  td .name{font-weight:600}
+  td .note{display:block;color:var(--dim);font-size:.88rem;margin-top:4px}
+  td .tag{margin-left:6px}
+  @media(max-width:760px){
+    .table-card{padding:6px 18px;overflow:visible}
+    table,tbody,tr,td,caption{display:block;width:100%}
+    thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+    tr{padding:14px 0;border-bottom:1px solid var(--border)}
+    tbody tr:last-child{border-bottom:0}
+    td{border:0;padding:4px 0;display:flex;gap:14px;justify-content:space-between;white-space:normal}
+    td.num{white-space:normal;text-align:right}
+    td::before{content:attr(data-label);flex:none;color:var(--dim);font:600 .78rem/1.9 var(--display);letter-spacing:.14em;text-transform:uppercase}
+    td.lead-cell{display:block;padding-bottom:8px}
+    td.lead-cell::before{content:none}
+    td > :not(.note){text-align:right}
+  }
+  dl.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:20px 0 0}
+  dl.terms div{border:1px solid var(--border);border-radius:18px;padding:14px 18px}
+  dl.terms dt{font:700 1.05rem/1.2 var(--display);letter-spacing:.06em;color:var(--text)}
+  dl.terms dd{margin:6px 0 0;color:var(--dim);font-size:.92rem}
+
+  /* ---------- steps ---------- */
+  .steps{counter-reset:s;list-style:none;padding:0;margin:40px 0 0;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .steps li{counter-increment:s;position:relative;padding:20px 22px 20px 64px;border-radius:22px;border:1px solid var(--border);color:var(--dim)}
+  .steps li::before{content:counter(s);position:absolute;left:20px;top:18px;width:30px;height:30px;border-radius:50%;
+       display:grid;place-items:center;font:700 1rem/1 var(--display);color:#000;background:var(--cyan)}
+  .steps b{display:block;color:var(--text);font:700 1.15rem/1.3 var(--display);letter-spacing:.04em;margin-bottom:4px}
+
+  .notice{margin-top:32px;max-width:880px;padding:18px 24px;border-radius:20px;background:rgba(251,191,36,.06);
+          border:1px solid rgba(251,191,36,.28);color:var(--text)}
+  .notice b{color:var(--warn);font-family:var(--display);letter-spacing:.12em;text-transform:uppercase}
+  .notice p{margin:6px 0 0;color:var(--dim)}
+  .notice p:first-child{margin-top:0}
+
+  /* ---------- configs ---------- */
+  details{border:1px solid var(--border);border-radius:22px;background:var(--surface);margin-top:12px}
+  details.first{margin-top:24px}
+  summary{cursor:pointer;padding:18px 24px;padding-right:56px;list-style:none;position:relative}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:24px;top:18px;color:var(--cyan);font-size:1.4rem;line-height:1.2}
+  details[open] summary::after{content:"−"}
+  summary b{display:block;font:600 1.15rem/1.3 var(--display);letter-spacing:.03em}
+  summary span{display:block;color:var(--dim);font-size:.92rem;margin-top:4px}
+  .code{position:relative;margin:0 16px 16px}
+  pre{margin:0;background:#05080c;border:1px solid var(--border);border-radius:16px;padding:16px 18px;overflow:auto;max-height:520px}
+  pre code{background:none;border:0;padding:0;font-size:.8rem;line-height:1.55;word-break:normal;color:#cfe3ea}
+  .copy{position:absolute;top:10px;right:12px;cursor:pointer;padding:4px 12px;border-radius:999px;border:1px solid var(--border);
+        background:var(--surface-high);color:var(--dim);font:600 .78rem/1.4 var(--display);letter-spacing:.14em;text-transform:uppercase}
+  .copy:hover{color:var(--text)}
+
+  /* ---------- changelog ---------- */
+  .log{display:grid;gap:16px;margin-top:40px}
+  .log .card h3{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+  .log .card p{max-width:820px}
+  .log .card.current{border-color:var(--cyan-soft)}
+
+  /* ---------- phones ---------- */
+  .phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,3vw,40px);margin:44px 0 0;padding:0;list-style:none}
+  .phone{margin:0}
+  .phone img{border-radius:30px;border:1px solid var(--border);box-shadow:0 30px 80px -30px rgba(0,229,255,.18);background:#000}
+  .phone figcaption{color:var(--dim);font-size:.92rem;text-align:center;margin-top:14px}
+  @media(max-width:700px){
+    .phones{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:72%;overflow-x:auto;scroll-snap-type:x mandatory;
+            padding-bottom:12px;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter)}
+    .phone{scroll-snap-align:center}
+  }
+
+  /* ---------- sources ---------- */
+  .src{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+  .src a{display:inline-block;padding:6px 14px;border:1px solid var(--border);border-radius:999px;font:.85rem var(--mono);text-decoration:none}
+  .src a:hover{border-color:var(--cyan-soft);background:var(--surface-high)}
+  .card .src{margin-top:14px}
+
+  /* ---------- footer ---------- */
+  .foot{border-top:1px solid var(--border);padding:40px var(--gutter) 56px;color:var(--dim)}
+  .foot .wrap{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center}
+  .foot .grow{flex:1}
+  .foot a{color:var(--dim)}
+  .foot a:hover{color:var(--cyan)}
+  .brand.small{font-size:1rem}
+  .brand.small img{width:26px;height:26px}
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<header>
-  <div class="wrap">
-    <a class="brand" href="#top" aria-label="Phonon">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="12" r="3" fill="#00E5FF"/>
-        <circle cx="12" cy="12" r="8" stroke="#00E5FF" stroke-opacity=".35"/>
-      </svg>
-      PHONON
-    </a>
-    <nav>
-      <a href="{{ app.source_url }}">GitHub</a>
-      <a href="{{ app.doc_base }}/docs">Docs</a>
-      <a href="{{ app.releases_url }}">Release</a>
-    </nav>
-  </div>
+<header class="nav" id="top">
+  <a class="brand" href="#top" aria-label="Phonon home">
+    <img src="/logo.svg" width="34" height="34" alt="">
+    <span>Phonon</span>
+  </a>
+  <nav aria-label="Primary">
+    <ul>
+      <li class="opt"><a href="#what">What</a></li>
+      <li class="opt"><a href="#speed">Speed</a></li>
+      <li class="opt"><a href="#phones">Phones</a></li>
+      <li class="opt"><a href="#models">Models</a></li>
+      <li class="opt"><a href="#setup">Set up</a></li>
+      <li class="opt"><a href="{{ app.doc_base }}/docs">Docs</a></li>
+      <li><a class="gh" href="{{ app.source_url }}">GitHub</a></li>
+    </ul>
+  </nav>
 </header>
 
-<main id="top">
-  <div class="wrap hero">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow">Open source · Android · {{ app.version }}</div>
-        <h1>Turn an old phone into an AI server.</h1>
-        <p class="lede">
-          Phonon runs a language model on an Android phone and serves it to your own
-          network as an OpenAI-compatible API. No cloud, no subscription, nothing
-          leaves the house.
-        </p>
-        <div class="cta">
-          <a class="btn" href="{{ release.apk_url }}">Download APK · v{{ app.version }} · {{ release.apk_size }} · {{ release.published }}</a>
-          <a href="{{ app.obtainium_url }}" aria-label="Add Phonon to Obtainium">
-            <img class="badge" src="/assets/badge_obtainium.png" alt="Get it on Obtainium" width="646" height="250">
+<main id="main">
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-grid">
+    <div>
+      <p class="pills"><span class="pill beta">Early beta · {{ app.version }}</span><span class="pill">Open source</span><span class="pill">Android</span></p>
+      <h1 id="hero-title">Turn an old phone into an <span class="accent">AI&nbsp;server</span>.</h1>
+      <p class="lead">
+        Phonon runs an AI language model on an Android phone. Other programs on your
+        home network can then use it, the same way they would use OpenAI's service — it
+        offers an <b>OpenAI-compatible API</b>. There's no cloud and no subscription, and
+        nothing leaves your house.
+      </p>
+      <div class="get" id="get">
+        <div class="get-row">
+          <a class="button" href="{{ release.apk_url }}">
+            <b>Download the APK</b>
+            <small>v{{ app.version }} · {{ release.apk_size }} · {{ release.published }}</small>
+          </a>
+          <a class="badge-link" href="{{ app.obtainium_url }}" aria-label="Add Phonon to Obtainium">
+            <img src="/assets/badge_obtainium.png" alt="Get it on Obtainium" width="646" height="250">
           </a>
         </div>
-        <p class="alt">Obtainium installs the same APK and keeps it updated when a new release is published — that is the only reason it is here.</p>
+        <p class="fine"><b>Needs:</b> Android {{ app.android_min }} or newer · {{ app.abi_short }} ({{ app.abi }}) · {{ requirements.min_ram }} of RAM for the small models</p>
+        <p class="fine">Obtainium installs the same APK and updates it when a new release comes out. That's the only reason it's here.</p>
         <p class="sum">
           {% if release.has_checksum %}SHA-256 <code>{{ release.sha256 }}</code>
-          {% else %}checksum unavailable — this release predates the SHA256SUMS file{% endif %}
+          {% else %}No checksum: this release is older than the SHA256SUMS file.{% endif %}
         </p>
-        <p class="req">Android {{ app.android_min }}+ · {{ app.abi_short }} · {{ requirements.min_ram }} RAM for the small models</p>
       </div>
-      <div class="art" aria-hidden="true"><canvas id="orb"></canvas></div>
+    </div>
+    <div class="art" aria-hidden="true"><canvas id="orb"></canvas></div>
+  </div>
+</section>
+
+<ul class="glance" aria-label="At a glance">
+  {% if headline %}
+  <li><b>{{ headline.value }} tok/s</b><span>{{ headline.kind }} speed on a {{ headline.device }}</span></li>
+  {% else %}
+  <li><b>Not measured</b><span>serving speed for this release</span></li>
+  {% endif %}
+  <li><b>{{ models.count }} models</b><span>from {{ models.families }} families, {{ models.size_min }}–{{ models.size_max }} each</span></li>
+  <li><b>Android {{ app.android_min }}+</b><span>on a {{ app.abi_short }} ARM processor</span></li>
+  <li><b>{{ requirements.min_ram }} RAM</b><span>enough for the small models</span></li>
+</ul>
+
+<section id="what" class="band" aria-labelledby="what-title">
+  <div class="wrap">
+    <p class="kicker">What you get</p>
+    <h2 id="what-title">Your own AI endpoint, on a phone you already own.</h2>
+    <div class="cards three">
+      <article class="card">
+        <h3>Your own endpoint</h3>
+        <p>The phone gets one address on your network, locked with an API key. It handles
+          chat, streamed replies and tool calls, just like any OpenAI-style API.</p>
+      </article>
+      <article class="card">
+        <h3>The model you choose</h3>
+        <p>Pick from {{ models.families }} model families ({{ models.family_labels | join(', ') }}), {{ models.size_min }} to {{ models.size_max }} each.
+          The app downloads the model and checks that the file is correct before using it.</p>
+      </article>
+      <article class="card">
+        <h3>Works with your agents as-is</h3>
+        <p>Point any OpenAI-compatible tool at it — no code changes needed. Have two phones?
+          They can work on two tasks at the same time.</p>
+      </article>
+    </div>
+
+    <h3 class="sub">Is this for you?</h3>
+    <div class="cards two">
+      <article class="card good">
+        <h3>Good for</h3>
+        <p>Batches of agent work that run overnight. Private data that should stay in your
+          house. Tinkering with a phone you already have.</p>
+      </article>
+      <article class="card bad">
+        <h3>Not for</h3>
+        <p>Fast, back-and-forth chat, or models so big they need a graphics card (GPU). A phone
+          answers one request at a time, and it is not fast.</p>
+      </article>
     </div>
   </div>
+</section>
 
-  <section>
-    <div class="wrap">
-      <h2>What you get</h2>
-      <ul class="plain">
-        <li><b>Your own endpoint.</b> <span>One address on your network, behind an API key. Chat, streaming and tool calls, same as any OpenAI API.</span></li>
-        <li><b>The model you choose.</b> <span>{{ models.families }} families, {{ models.size_min }}–{{ models.size_max }} each, downloaded in the app and checked before it is used.</span></li>
-        <li><b>Agents without changes.</b> <span>Point any OpenAI-compatible client at it. Two phones serve two tasks at once.</span></li>
-      </ul>
+<section id="speed" class="band" aria-labelledby="speed-title">
+  <div class="wrap">
+    <p class="kicker">Speed</p>
+    <h2 id="speed-title">Fast enough to leave running.</h2>
+    <div class="speed">
+      <article class="card">
+        {% if headline %}
+        <div class="big-num">{{ headline.value }}<small>tok/s</small></div>
+        <p class="lede">{{ headline.sentence }}.</p>
+        <p>{{ headline.note }}</p>
+        <p class="prov">Measured on {{ headline.provenance }}. <a href="{{ evidence.performance }}">docs/performance.md</a></p>
+        {% else %}
+        <div class="big-num">—</div>
+        <p class="lede">No serving speed has been measured for this release.</p>
+        <p>This page won't quote a number that the device files for this build don't contain.</p>
+        {% endif %}
+      </article>
+      <article class="card">
+        <ul class="ticks">
+          <li><b>What “tok/s” means.</b> Tokens per second. A token is a word or a piece of a
+            word, so this is roughly how fast the reply gets written. “Decode” is the
+            writing step, after the model has read your prompt.</li>
+          {% if sustained %}
+          <li><b>Over the long run: {{ sustained.value }} tok/s.</b> That's the speed after fifteen
+            minutes of non-stop work on a {{ sustained.device }}. Use this number when you plan.
+            <span class="prov" style="display:block;margin-top:6px">Measured on {{ sustained.provenance }}. <a href="{{ evidence.sustained }}">docs/sustained-load.md</a></span></li>
+          {% else %}
+          <li><b>Long-run speed: not measured yet.</b> Nobody has measured this build after fifteen
+            minutes of non-stop work. Phones slow down as they heat up, so the short-run number
+            is not a stand-in for it.</li>
+          {% endif %}
+          <li><b>Is that enough?</b> It's slower than a cloud service, but faster than waiting
+            on a person. For agent work that runs in the background, it's enough. And the only
+            extra cost is the power the phone uses.</li>
+        </ul>
+      </article>
     </div>
-  </section>
 
-  <section>
-    <div class="wrap">
-      <h2>Fast enough to leave running</h2>
-      {% if headline %}
-      <p class="big">{{ headline.sentence }}.</p>
-      <p class="muted">{{ headline.note }}</p>
-      <p class="prov">Measured on {{ headline.provenance }}. <a href="{{ evidence.performance }}">docs/performance.md</a></p>
-      {% else %}
-      <p class="big">No serving rate has been measured for this release.</p>
-      <p class="muted">This page will not quote a number that the device manifests for this build do not carry.</p>
-      {% endif %}
-      {% if sustained %}
-      <p>Sustained: {{ sustained.value }} tok/s after fifteen minutes of continuous work on a {{ sustained.device }} — that is the figure to plan with.</p>
-      <p class="prov">Measured on {{ sustained.provenance }}. <a href="{{ evidence.sustained }}">docs/sustained-load.md</a></p>
-      {% else %}
-      <p class="muted">Sustained throughput after fifteen minutes of continuous work has not been measured on this build. The short-run figure above is not a substitute for it.</p>
-      {% endif %}
-      <p class="muted">
-        That is slower than a cloud API and faster than waiting for a person. For
-        agent work that runs in the background, it is enough — and the marginal cost
-        is whatever the phone did.
-      </p>
-    </div>
-  </section>
+    {% if cost %}
+    <h3 class="sub">What it costs to run</h3>
+    <p class="intro">{{ cost.text }}</p>
+    <p class="prov">Power measured on {{ cost.provenance }}. The electricity price is an assumption made by this page, not a measurement: ${{ site.electricity_rate }}/kWh.</p>
+    {% endif %}
+  </div>
+</section>
 
-  <section>
-    <div class="wrap">
-      <h2>What's new in {{ app.version }}</h2>
-      {% for entry in changelog %}
-      <h3>{{ app.tag }} · build {{ entry.version_code }}</h3>
-      <p class="muted">{{ entry.text }}</p>
-      {% endfor %}
-      <p class="prov">From the release changelogs at <a href="{{ app.doc_base }}/fastlane/metadata/android/en-US/changelogs">the tag</a>, not from these notes.</p>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <h2>Three steps</h2>
-      <ol class="steps">
-        <li><b>Install the app.</b> <span>Download the APK above, or add the releases URL to Obtainium.</span></li>
-        <li><b>Pick a model.</b> <span>The app downloads it, checks its hash, and serves it.</span></li>
-        <li><b>Point your agent at it.</b> <span>Use <code>http://&lt;phone&gt;:8080/v1</code> with your key. Add LiteLLM if you run more than one phone.</span></li>
-      </ol>
-
-      <h3>opencode</h3>
-      <p class="muted">A provider pointing at one phone, and an agent that stays inside it.</p>
-      <pre><code>{{ quickstart.opencode | e }}</code></pre>
-
-      <h3>LiteLLM, for more than one phone</h3>
-      <p class="muted">Pinned deployments so every turn of a task hits the same server's KV cache.</p>
-      <pre><code>{{ quickstart.litellm | e }}</code></pre>
-
-      <p class="warn">
-        <b>The API key travels unencrypted.</b> Phonon serves plain HTTP, so the key and
-        everything you send cross the LAN in the clear. Keep the phone on a network you
-        trust, and never port-forward it to the internet.
-      </p>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <h2>Will my phone work?</h2>
-      <p class="muted">
-        Anything that runs Android {{ app.android_min }} or newer on an arm64 CPU and has the
-        RAM below. The app checks the phone's CPU features and memory at launch and says
-        what it found — if it cannot run a model, it tells you why instead of failing to start.
-      </p>
+<section id="phones" class="band" aria-labelledby="phones-title">
+  <div class="wrap">
+    <p class="kicker">Will my phone work?</p>
+    <h2 id="phones-title">Probably, if it's 64-bit and has the memory.</h2>
+    <p class="intro">
+      Any phone with <b>Android {{ app.android_min }} or newer</b>, a <b>64-bit ARM processor ({{ app.abi }})</b>
+      and at least <b>{{ requirements.min_ram }} of RAM</b> for the small models should work. When the app
+      starts, it checks the phone's processor and memory and tells you what it found. If the
+      phone can't run a model, the app tells you why instead of just failing to start.
+    </p>
+    <div class="table-card">
       <table>
-        <caption>Devices with published measurements</caption>
+        <caption>Phones with published measurements</caption>
         <thead>
-          <tr><th>Device</th><th>RAM</th><th>Model</th><th class="num">Decode</th><th>Status</th></tr>
+          <tr><th>Phone</th><th>RAM</th><th>Model</th><th>Speed</th><th>Status</th></tr>
         </thead>
         <tbody>
         {% for d in devices.supported %}
           <tr>
-            <td>{{ d.device }}{% if d.soc %} <span class="muted">· {{ d.soc }}</span>{% endif %}</td>
-            <td class="num">{{ d.ram_gb }} GB</td>
-            <td>{{ d.model or '—' }}</td>
-            <td class="num">{% if d.measured.decode_tps %}{{ d.measured.decode_tps }} tok/s{% else %}not measured{% endif %}</td>
-            <td>supported</td>
+            <td class="lead-cell"><span class="name">{{ d.device }}</span>{% if d.soc %}<span class="note">{{ d.soc }}</span>{% endif %}</td>
+            <td class="num" data-label="RAM">{{ d.ram_gb }} GB</td>
+            <td data-label="Model"><span>{{ d.model or '—' }}</span></td>
+            <td class="num" data-label="Speed">{% if d.measured.decode_tps %}{{ d.measured.decode_tps }} tok/s{% else %}not measured{% endif %}</td>
+            <td data-label="Status"><span class="tag ok">supported</span></td>
           </tr>
         {% endfor %}
         {% for d in devices.candidate %}
           <tr>
-            <td>{{ d.device }}{% if d.soc %} <span class="muted">· {{ d.soc }}</span>{% endif %}</td>
-            <td class="num">{{ d.ram_gb }} GB</td>
-            <td>{{ d.model or '—' }}</td>
-            <td class="num">{% if d.measured.decode_tps %}{{ d.measured.decode_tps }} tok/s{% else %}not measured{% endif %}</td>
-            <td>candidate — not yet measured through a full sustained run</td>
+            <td class="lead-cell"><span class="name">{{ d.device }}</span>{% if d.soc %}<span class="note">{{ d.soc }}</span>{% endif %}</td>
+            <td class="num" data-label="RAM">{{ d.ram_gb }} GB</td>
+            <td data-label="Model"><span>{{ d.model or '—' }}</span></td>
+            <td class="num" data-label="Speed">{% if d.measured.decode_tps %}{{ d.measured.decode_tps }} tok/s{% else %}not measured{% endif %}</td>
+            <td data-label="Status"><span><span class="tag warn">candidate</span><span class="note">not yet measured through a full long run</span></span></td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
-      <p class="prov">
-        {% for d in devices.supported + devices.candidate %}
-        {{ d.device }}: {% if d.measured.app_version %}measured with v{{ d.measured.app_version }}{% else %}no measuring build recorded{% endif %}{% if d.measured.measured_date %}, {{ d.measured.measured_date }}{% endif %}{% if d.measured.agent_turn_s is none %} · agent-turn time not measured{% endif %}. <a href="{{ app.doc_base }}/devices/{{ d.file }}">devices/{{ d.file }}</a>
-        {% endfor %}
-      </p>
-      <p class="muted">A device is listed as supported only once it has a fifteen-minute sustained run behind it; the rest are candidates, labelled as such.</p>
     </div>
-  </section>
+    <p class="intro">A phone is marked <b>supported</b> only after it has passed a fifteen-minute non-stop
+      run. The rest are <b>candidates</b>, and they're labelled that way.</p>
+    <p class="prov">
+      {% for d in devices.supported + devices.candidate %}
+      {{ d.device }}: {% if d.measured.app_version %}measured with v{{ d.measured.app_version }}{% else %}no measuring build recorded{% endif %}{% if d.measured.measured_date %}, {{ d.measured.measured_date }}{% endif %}{% if d.measured.agent_turn_s is none %} · agent-turn time not measured{% endif %}. <a href="{{ app.doc_base }}/devices/{{ d.file }}">devices/{{ d.file }}</a><br>
+      {% endfor %}
+    </p>
+  </div>
+</section>
 
-  <section>
-    <div class="wrap">
-      <h2>Is this for you?</h2>
-      <ul class="plain">
-        <li><b>Good for</b> <span>overnight agent batches, private data that should not leave the house, and tinkering with a phone you already own.</span></li>
-        <li><b>Not for</b> <span>interactive chat speed, or models large enough to need a GPU. A phone serves one request at a time, and it is not fast.</span></li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <h2>What it serves</h2>
+<section id="models" class="band" aria-labelledby="models-title">
+  <div class="wrap">
+    <p class="kicker">What it serves</p>
+    <h2 id="models-title">{{ models.count }} models to choose from.</h2>
+    <p class="intro">Each one is a different trade-off between speed, answer quality and memory.
+      The note under each name says what it's best at.</p>
+    <div class="table-card">
       <table>
         <caption>{{ models.count }} models, {{ models.families }} families</caption>
         <thead>
-          <tr><th>Model</th><th>Quant</th><th>Context</th><th class="num">Download</th><th class="num">Pixel 7 decode</th><th>Needs</th></tr>
+          <tr><th>Model</th><th>Quant</th><th>Context</th><th>Download</th><th>Measured speed</th><th>Needs</th><th>Licence</th></tr>
         </thead>
         <tbody>
         {% for m in models.table %}
           <tr>
-            <td>{{ m.name }}{% if m.multimodal %} <span class="muted">· vision</span>{% endif %}<br><span class="muted">{{ m.job_fit }}</span></td>
-            <td class="num">{{ m.quant }}</td>
-            <td class="num">{{ m.context }}</td>
-            <td class="num">{{ m.size }}</td>
-            <td class="num">{% if m.decode %}{{ m.decode }}{% else %}not measured{% endif %}</td>
-            <td>{{ m.tier }}</td>
+            <td class="lead-cell"><span class="name">{{ m.name }}</span>{% if m.multimodal %}<span class="tag cyan">vision</span>{% endif %}<span class="note">{{ m.job_fit }}</span></td>
+            <td class="num" data-label="Quant">{{ m.quant }}</td>
+            <td class="num" data-label="Context">{{ m.context }}</td>
+            <td class="num" data-label="Download">{{ m.size }}</td>
+            <td class="num" data-label="Speed"><span>{% if m.decode %}{{ m.decode }}{% if m.measured_on %}<span class="note">{{ m.measured_on }}</span>{% endif %}{% else %}not measured{% endif %}</span></td>
+            <td class="num" data-label="Needs">{{ m.tier }} RAM</td>
+            <td data-label="Licence"><span>{{ m.license }}{% if not m.osi %}<span class="note">not OSI-approved</span>{% endif %}</span></td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
-      <p class="prov">Sizes, contexts, licences and rates from <a href="{{ app.doc_base }}/app/app/src/main/assets/catalog.json">catalog.json</a> at the tag; measured rates are Pixel 7 runs, see <a href="{{ evidence.models }}">docs/models.md</a>.</p>
-
-      {% if cost %}
-      <h3>What it costs to run</h3>
-      <p>{{ cost.text }}</p>
-      <p class="prov">Power measured on {{ cost.provenance }}. Rate is a stated assumption on this page, not a measurement: ${{ site.electricity_rate }}/kWh.</p>
-      {% endif %}
     </div>
-  </section>
+    <dl class="terms">
+      <div><dt>Quant</dt><dd>How the model was compressed to fit on a phone. More compression means a smaller file, at some cost to answer quality.</dd></div>
+      <div><dt>Context</dt><dd>How much text the model can keep in mind at once, counted in tokens (K = thousand).</dd></div>
+      <div><dt>Measured speed</dt><dd>Writing speed in tokens per second. Two numbers mean two separate test runs.</dd></div>
+      <div><dt>Vision</dt><dd>The model can look at images as well as read text.</dd></div>
+    </dl>
+    <p class="prov">Sizes, contexts, licences and speeds come from <a href="{{ app.doc_base }}/app/app/src/main/assets/catalog.json">catalog.json</a> at the tag. The measured speeds are Pixel 7 runs; see <a href="{{ evidence.models }}">docs/models.md</a>.</p>
+  </div>
+</section>
 
-  <section>
-    <div class="wrap">
-      <h2>The app</h2>
-      <div class="shots">
-        {% for shot in screenshots %}
-        <figure style="margin:0">
-          <div class="ph"><img src="{{ shot.href }}" alt="{{ shot.alt }}" width="{{ shot.width }}" height="{{ shot.height }}" loading="lazy"></div>
-          <figcaption class="cap">{{ shot.alt }}</figcaption>
-        </figure>
+<section id="setup" class="band" aria-labelledby="setup-title">
+  <div class="wrap">
+    <p class="kicker">Set up</p>
+    <h2 id="setup-title">Three steps.</h2>
+    <ol class="steps">
+      <li><b>Install the app.</b> Download the APK <a href="#get">above</a>, or add the releases page to Obtainium.</li>
+      <li><b>Pick a model.</b> The app downloads it, checks its hash (a fingerprint that proves the file is intact), and starts serving it.</li>
+      <li><b>Point your agent at it.</b> Use <code>http://&lt;phone&gt;:8080/v1</code> with your key. Running more than one phone? Add LiteLLM in front.</li>
+    </ol>
+
+    <div class="notice">
+      <p><b>Your API key is sent unencrypted.</b></p>
+      <p>Phonon uses plain HTTP, not HTTPS. That means your key and everything you send cross
+        your network without encryption. Keep the phone on a network you trust, and never
+        open it up to the internet with port forwarding.</p>
+    </div>
+
+    <h3 class="sub">Example configs</h3>
+    <p class="intro">These come straight from the app repository at {{ app.tag }}.</p>
+    <details class="first">
+      <summary><b>opencode</b><span>A coding agent. This config adds the phone as a model provider, plus an agent that only uses the phone.</span></summary>
+      <div class="code"><button class="copy" type="button" hidden>Copy</button><pre><code>{{ quickstart.opencode | e }}</code></pre></div>
+    </details>
+    <details>
+      <summary><b>LiteLLM, for more than one phone</b><span>Each task is “pinned” to one phone, so every step of the task goes to the same phone. That phone can then reuse the work it already did on earlier steps (its KV cache) instead of starting over.</span></summary>
+      <div class="code"><button class="copy" type="button" hidden>Copy</button><pre><code>{{ quickstart.litellm | e }}</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section id="screens" class="band" aria-labelledby="screens-title">
+  <div class="wrap">
+    <p class="kicker">See it</p>
+    <h2 id="screens-title">The app.</h2>
+    <ul class="phones">
+      {% for shot in screenshots %}
+      <li><figure class="phone">
+        <img src="{{ shot.href }}" alt="{{ shot.alt }}" width="{{ shot.width }}" height="{{ shot.height }}" loading="lazy" decoding="async">
+        <figcaption>{{ shot.alt }}</figcaption>
+      </figure></li>
+      {% endfor %}
+    </ul>
+    <p class="prov">These are the app's own fastlane screenshots at {{ app.tag }}, copied into this build — not a saved copy that could go stale.</p>
+  </div>
+</section>
+
+<section id="new" class="band" aria-labelledby="new-title">
+  <div class="wrap">
+    <p class="kicker">Release notes</p>
+    <h2 id="new-title">What's new in {{ app.version }}.</h2>
+    <div class="log">
+      {% for entry in changelog %}
+      <article class="card{% if entry.version_code == app.version_code %} current{% endif %}">
+        <h3>Build {{ entry.version_code }}{% if entry.version_code == app.version_code %} <span class="tag cyan">this release · {{ app.tag }}</span>{% endif %}</h3>
+        {% for para in entry.text.split('\n\n') %}
+        <p>{{ para | e }}</p>
         {% endfor %}
-      </div>
-      <p class="prov">Screenshots are the app's own fastlane captures at {{ app.tag }}, copied into this build — not a stored copy.</p>
+      </article>
+      {% endfor %}
     </div>
-  </section>
+    <p class="prov">Taken from the release notes at <a href="{{ app.doc_base }}/fastlane/metadata/android/en-US/changelogs">the tag</a>, not written for this page.</p>
+  </div>
+</section>
 
-  <section>
-    <div class="wrap">
-      <h2>Where the numbers come from</h2>
-      <p class="muted">
-        Every figure on this page is read from a file in the app repository at
-        {{ app.tag }} when the page is built. If a value is missing there, the page
-        says so instead of filling it in.
-      </p>
-      <ul class="plain">
-        <li><b>Release</b> <span><a href="{{ evidence.performance }}">docs/performance.md</a> · <a href="{{ evidence.sustained }}">docs/sustained-load.md</a> · <a href="{{ evidence.benchmark }}">docs/benchmark.md</a> · <a href="{{ evidence.battery }}">docs/battery.md</a></span></li>
-        <li><b>Models and device manifests</b> <span><a href="{{ app.doc_base }}/app/app/src/main/assets/catalog.json">catalog.json</a> · <a href="{{ app.doc_base }}/devices">devices/</a></span></li>
-      </ul>
+<section id="sources" class="band" aria-labelledby="sources-title">
+  <div class="wrap">
+    <p class="kicker">Where the numbers come from</p>
+    <h2 id="sources-title">Every number has a source.</h2>
+    <p class="intro">
+      Every figure on this page is read from a file in the app's repository at {{ app.tag }}
+      when the page is built. If a value is missing there, the page says so instead of
+      making one up.
+    </p>
+    <div class="cards two">
+      <article class="card">
+        <h3>Release measurements</h3>
+        <ul class="src">
+          <li><a href="{{ evidence.performance }}">docs/performance.md</a></li>
+          <li><a href="{{ evidence.sustained }}">docs/sustained-load.md</a></li>
+          <li><a href="{{ evidence.benchmark }}">docs/benchmark.md</a></li>
+          <li><a href="{{ evidence.battery }}">docs/battery.md</a></li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Models and phones</h3>
+        <ul class="src">
+          <li><a href="{{ app.doc_base }}/app/app/src/main/assets/catalog.json">catalog.json</a></li>
+          <li><a href="{{ app.doc_base }}/devices">devices/</a></li>
+        </ul>
+      </article>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section style="border-bottom:none;padding-bottom:26px">
-    <div class="wrap">
-      <!-- Demo recording: place a file at assets/demo.mp4 and uncomment. Nothing is
-           generated for this; a placeholder video would be a fabricated demo.
+<section id="status" class="band" aria-labelledby="status-title">
+  <div class="wrap">
+    <!-- Demo recording: place a file at assets/demo.mp4 and uncomment. Nothing is
+         generated for this; a placeholder video would be a fabricated demo.
 
-      <h2>Two minutes of it running</h2>
-      <video controls preload="none" poster="{{ site.url }}og.png" style="width:100%;border-radius:14px">
-        <source src="/assets/demo.mp4" type="video/mp4">
-      </video>
-      -->
-      <div class="beta">
-        <div class="tag">Early beta · {{ app.version }}</div>
-        <p>
-          Phonon is early software. The measurements on this page are real, but the app
-          is new and will have rough edges — expect breakage, and please
-          <a href="{{ app.source_url }}/issues">report it</a>.
-        </p>
-      </div>
+    <h2>Two minutes of it running</h2>
+    <video controls preload="none" poster="{{ site.url }}og.png" style="width:100%;border-radius:28px;margin-bottom:32px">
+      <source src="/assets/demo.mp4" type="video/mp4">
+    </video>
+    -->
+    <p class="kicker">Status</p>
+    <h2 id="status-title">Early beta.</h2>
+    <div class="notice">
+      <p><b>Early beta · {{ app.version }}</b></p>
+      <p>Phonon is new software. The measurements on this page are real, but the app will
+        have rough edges. Expect things to break, and please
+        <a href="{{ app.source_url }}/issues">report it</a> when they do.</p>
     </div>
-  </section>
+  </div>
+</section>
+
 </main>
 
-<footer>
-  <div class="wrap row">
-    <span>Phonon · {{ app.license }}</span>
+<footer class="foot">
+  <div class="wrap">
+    <a class="brand small" href="#top"><img src="/logo.svg" width="26" height="26" alt=""><span>Phonon</span></a>
+    <span>{{ app.license }}</span>
     <span class="grow"></span>
     <a href="{{ app.source_url }}">Source</a>
     <a href="{{ app.doc_base }}/BUILDING.md">Build</a>
@@ -431,10 +655,12 @@
       var y = cy + Math.sin(p.a) * rr * 0.94;
       var edge = 1 - Math.abs(p.r - 0.42) / 0.34;
       var alpha = 0.18 + 0.5 * Math.max(0.1, Math.min(1, edge));
+      // every fourth point carries the violet accent, as on hermesvox.org
+      var hue = i % 4 === 0 ? '139,92,246' : '0,229,255';
       var g = ctx.createRadialGradient(x, y, 0, x, y, p.w * 4.2 * dpr);
       g.addColorStop(0, 'rgba(180,255,250,' + (alpha * 0.95).toFixed(3) + ')');
-      g.addColorStop(0.35, 'rgba(0,229,255,' + (alpha * 0.55).toFixed(3) + ')');
-      g.addColorStop(1, 'rgba(0,229,255,0)');
+      g.addColorStop(0.35, 'rgba(' + hue + ',' + (alpha * 0.55).toFixed(3) + ')');
+      g.addColorStop(1, 'rgba(' + hue + ',0)');
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(x, y, p.w * 4.2 * dpr, 0, Math.PI * 2);
@@ -445,6 +671,21 @@
   size(); seed();
   addEventListener('resize', function () { size(); });
   requestAnimationFrame(draw);
+})();
+
+// Copy buttons on the example configs; hidden unless the clipboard is available.
+(function () {
+  if (!navigator.clipboard) return;
+  document.querySelectorAll('.copy').forEach(function (b) {
+    b.hidden = false;
+    b.addEventListener('click', function () {
+      var text = b.parentNode.querySelector('code').textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        b.textContent = 'Copied';
+        setTimeout(function () { b.textContent = 'Copy'; }, 1600);
+      });
+    });
+  });
 })();
 </script>
 </body>

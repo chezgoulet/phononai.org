@@ -718,6 +718,13 @@ def render(data: dict, args) -> Path:
     if not badge.exists():
         raise Fail("assets/badge_obtainium.png is missing; the install section needs it")
     shutil.copy(badge, assets / badge.name)
+    # Rajdhani (SIL OFL 1.1), the display face shared with hermesvox.org.
+    fonts = sorted(Path("assets/fonts").glob("*.woff2"))
+    if not fonts:
+        raise Fail("assets/fonts/*.woff2 is missing; the page's display type needs it")
+    (assets / "fonts").mkdir()
+    for font in fonts:
+        shutil.copy(font, assets / "fonts" / font.name)
     for shot in data["screenshots"]:
         (assets / "screens" / shot["name"]).write_bytes(shot["bytes"])
 
