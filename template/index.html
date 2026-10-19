@@ -295,7 +295,7 @@
 
 <ul class="glance" aria-label="At a glance">
   {% if headline %}
-  <li><b>{{ headline.value }} tok/s</b><span>{{ headline.kind }} speed on a {{ headline.device }}</span></li>
+  <li><b>{{ headline.value }} {{ headline.unit }}</b><span>{{ headline.label }} on a {{ headline.device }}</span></li>
   {% else %}
   <li><b>Not measured</b><span>serving speed for this release</span></li>
   {% endif %}
@@ -349,7 +349,7 @@
     <div class="speed">
       <article class="card">
         {% if headline %}
-        <div class="big-num">{{ headline.value }}<small>tok/s</small></div>
+        <div class="big-num">{{ headline.value }}<small>{{ headline.unit }}</small></div>
         <p class="lede">{{ headline.sentence }}.</p>
         <p>{{ headline.note }}</p>
         <p class="prov">Measured on {{ headline.provenance }}. <a href="{{ evidence.performance }}">docs/performance.md</a></p>
@@ -599,6 +599,7 @@
     <a href="{{ app.doc_base }}/BUILDING.md">Build</a>
     <a href="{{ evidence.performance }}">Measurements</a>
     <a href="{{ app.doc_base }}/LICENSE">Licence</a>
+    <a href="/assets/fonts/OFL.txt">Font licence (OFL 1.1)</a>
     <a href="{{ app.releases_url }}">Release {{ app.version }}</a>
   </div>
 </footer>

@@ -523,6 +523,8 @@ def build_data(args) -> dict:
             headline = {
                 "kind": "agent_turn",
                 "value": m["agent_turn_s"],
+                "unit": "s",
+                "label": "agent-turn time",
                 "sentence": f"An agent turn in {m['agent_turn_s']:g} s on a {d['device']}",
                 "note": "One agent-shaped request — a system prompt and tool schemas of about "
                         "2,800 tokens, plus 128 generated tokens — through the app's own /v1.",
@@ -537,6 +539,8 @@ def build_data(args) -> dict:
                 headline = {
                     "kind": "decode",
                     "value": m["decode_tps"],
+                    "unit": "tok/s",
+                    "label": "decode speed",
                     "sentence": f"{m['decode_tps']:g} tok/s decode on a {d['device']}",
                     "note": "128 greedy tokens through the app's own /v1, at the manifest's "
                             "reference configuration.",
@@ -720,11 +724,14 @@ def render(data: dict, args) -> Path:
     shutil.copy(badge, assets / badge.name)
     # Rajdhani (SIL OFL 1.1), the display face shared with hermesvox.org.
     fonts = sorted(Path("assets/fonts").glob("*.woff2"))
+    font_licence = Path("assets/fonts/OFL.txt")
     if not fonts:
         raise Fail("assets/fonts/*.woff2 is missing; the page's display type needs it")
     (assets / "fonts").mkdir()
     for font in fonts:
         shutil.copy(font, assets / "fonts" / font.name)
+    if font_licence.is_file():
+        shutil.copy(font_licence, assets / "fonts" / font_licence.name)
     for shot in data["screenshots"]:
         (assets / "screens" / shot["name"]).write_bytes(shot["bytes"])
 
