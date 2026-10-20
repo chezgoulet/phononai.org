@@ -307,6 +307,18 @@ class Canvas:
         for c in range(3):
             self.px[i + c] = int(self.px[i + c] * (1 - a) + colour[c] * a)
 
+    def rect(self, x0: int, y0: int, x1: int, y1: int, colour, alpha=1.0):
+        for y in range(max(0, int(y0)), min(self.h, int(y1))):
+            for x in range(max(0, int(x0)), min(self.w, int(x1))):
+                self.blend(x, y, colour, alpha)
+
+    def frame(self, x0: int, y0: int, x1: int, y1: int, t: int, colour, alpha=1.0):
+        """An open square: four bars, mitred at the corners."""
+        self.rect(x0, y0, x1, y0 + t, colour, alpha)
+        self.rect(x0, y1 - t, x1, y1, colour, alpha)
+        self.rect(x0, y0 + t, x0 + t, y1 - t, colour, alpha)
+        self.rect(x1 - t, y0 + t, x1, y1 - t, colour, alpha)
+
     def disc(self, cx: float, cy: float, r: float, colour, alpha=1.0):
         for y in range(max(0, int(cy - r)), min(self.h, int(cy + r) + 1)):
             for x in range(max(0, int(cx - r)), min(self.w, int(cx + r) + 1)):
@@ -363,24 +375,59 @@ class Canvas:
 
 
 def og_image(path: Path, version: str):
-    """1200x630: the mark from the header, the name, and the version."""
+    """1200x630: the band strip, the BENCH mark, the name, the version.
+
+    The mark is the same geometry as the header SVG — three open squares joined
+    by right-angle traces, dot at the centre — drawn from the 118-unit box the
+    template uses, so the two cannot drift apart.
+    """
     W, H = 1200, 630
     canvas = Canvas(W, H)
-    cyan = (0, 229, 255)
-    white = (215, 227, 223)
+    ground = (8, 7, 10)
+    ink = (255, 247, 240)
+    primary = (255, 209, 102)
+    dim = (167, 154, 166)
+    bands = [(59, 31, 110), (194, 24, 91), (255, 107, 0), (255, 209, 102)]
 
-    # The avatar art from the page, stood in for: a soft core with an outer ring.
-    cx, cy = 880, H // 2
-    canvas.glow(cx, cy, 460, cyan)
-    for r in range(190, 0, -1):
-        canvas.disc(cx, cy, r, cyan, 0.012)
-    canvas.ring(cx, cy, 190, 2.0, cyan, 0.55)
-    canvas.ring(cx, cy, 250, 1.0, cyan, 0.18)
-    canvas.disc(cx, cy, 34, (180, 255, 250), 0.95)
+    canvas.rect(0, 0, W, H, ground)
 
-    canvas.text("PHONON", 96, 214, 9, white)
-    canvas.text(f"v{version}", 96, 330, 4, cyan)
-    canvas.text("phononai.org", 96, 404, 2, white, 0.55)
+    # The four-band strip along the bottom: the brand, not a reading.
+    band_h = 42
+    for i, colour in enumerate(bands):
+        canvas.rect(i * W // 4, H - band_h, (i + 1) * W // 4 + 1, H, colour)
+
+    # The mark, on the ground with no plate: one colour, hard edges.
+    size, ox, oy = 300, 810, 140
+    unit = size / 118.0
+
+    def px(v: float) -> int:
+        return int(round(ox + v * unit))
+
+    def py(v: float) -> int:
+        return int(round(oy + v * unit))
+
+    t = max(2, int(round(5 * unit)))
+
+    def square(x: float, y: float):
+        canvas.frame(px(x), py(y), px(x + 28), py(y + 28), t, ink)
+
+    def hbar(x0: float, x1: float, y: float):
+        canvas.rect(px(x0), py(y) - t // 2, px(x1), py(y) + (t + 1) // 2, ink)
+
+    def vbar(x: float, y0: float, y1: float):
+        canvas.rect(px(x) - t // 2, py(y0), px(x) + (t + 1) // 2, py(y1), ink)
+
+    square(12, 12)
+    square(78, 78)
+    square(78, 12)
+    hbar(40, 78, 26)   # top-left square's centre line, out to the top-right square
+    vbar(26, 40, 92)   # down the left, from the top-left square
+    hbar(26, 78, 92)   # and across to the bottom-right square
+    canvas.disc(px(59), py(59), 5 * unit, ink)
+
+    canvas.text("PHONON", 96, 196, 9, ink)
+    canvas.text(f"v{version}", 96, 330, 4, primary)
+    canvas.text("phononai.org", 96, 404, 2, dim)
 
     canvas.save(path)
 
@@ -722,16 +769,19 @@ def render(data: dict, args) -> Path:
     if not badge.exists():
         raise Fail("assets/badge_obtainium.png is missing; the install section needs it")
     shutil.copy(badge, assets / badge.name)
-    # Rajdhani (SIL OFL 1.1), the display face shared with hermesvox.org.
+    # Archivo Black, Inter and IBM Plex Mono, all SIL OFL 1.1. The licence text
+    # that covers all three ships beside the fonts, and is required: a page that
+    # serves a font without its licence is not something to publish quietly.
     fonts = sorted(Path("assets/fonts").glob("*.woff2"))
     font_licence = Path("assets/fonts/OFL.txt")
     if not fonts:
         raise Fail("assets/fonts/*.woff2 is missing; the page's display type needs it")
+    if not font_licence.is_file():
+        raise Fail("assets/fonts/OFL.txt is missing; the page ships fonts under that licence")
     (assets / "fonts").mkdir()
     for font in fonts:
         shutil.copy(font, assets / "fonts" / font.name)
-    if font_licence.is_file():
-        shutil.copy(font_licence, assets / "fonts" / font_licence.name)
+    shutil.copy(font_licence, assets / "fonts" / font_licence.name)
     for shot in data["screenshots"]:
         (assets / "screens" / shot["name"]).write_bytes(shot["bytes"])
 
