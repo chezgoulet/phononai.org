@@ -25,7 +25,8 @@ build/requirements.txt     PyYAML and Jinja2
 .github/workflows/site.yml the build and deploy pipeline
 CNAME logo.svg robots.txt  static files, copied into dist/ verbatim
 assets/badge_obtainium.png the Obtainium badge
-assets/fonts/              Rajdhani (SIL OFL 1.1), shared with hermesvox.org
+assets/fonts/              Archivo Black, Inter, IBM Plex Mono (all SIL OFL 1.1),
+                           with OFL.txt covering the three
 dist/                      output; generated, never committed
 ```
 
